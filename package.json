@@ -14,8 +14,32 @@
   },
   "categories": ["Visualization", "Other"],
   "keywords": ["receipt", "uke", "医療", "レセプト", "診療報酬"],
-  "activationEvents": [],
+  "activationEvents": ["onLanguage:uke"],
   "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "uke",
+        "aliases": ["UKE", "Receipt"],
+        "extensions": [".UKE", ".uke"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "receiptisan.preview",
+        "title": "Receiptisan: Preview"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "receiptisan.preview",
+          "when": "editorLangId == uke"
+        }
+      ]
+    }
+  },
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
