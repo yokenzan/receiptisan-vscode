@@ -8,5 +8,8 @@ tsconfig.json
 biome.json
 docs/**
 CLAUDE.md
+receiptisan
+recediff
+.claude/**
 **/*.ts
 **/*.map
