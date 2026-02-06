@@ -1,0 +1,73 @@
+{
+  "name": "receiptisan-preview",
+  "displayName": "Receiptisan Preview",
+  "description": "Preview RECEIPTC.UKE files (Japanese medical receipt) as SVG using receiptisan CLI",
+  "version": "0.0.0-development",
+  "publisher": "yokenzan",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yokenzan/receiptisan-preview"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Visualization", "Other"],
+  "keywords": ["receipt", "uke", "医療", "レセプト", "診療報酬"],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "pretest": "npm run compile",
+    "test": "echo 'No tests yet'"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.0",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/exec": "^7.1.0",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^12.0.3",
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.0.0",
+    "semantic-release": "^25.0.3",
+    "typescript": "^5.6.0"
+  },
+  "release": {
+    "branches": ["main"],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      [
+        "@semantic-release/npm",
+        {
+          "npmPublish": false
+        }
+      ],
+      [
+        "@semantic-release/exec",
+        {
+          "prepareCmd": "vsce package"
+        }
+      ],
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            {
+              "path": "*.vsix",
+              "label": "VSCode Extension"
+            }
+          ]
+        }
+      ],
+      "@semantic-release/git"
+    ]
+  }
+}

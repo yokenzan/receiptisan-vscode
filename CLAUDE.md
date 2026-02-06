@@ -4,16 +4,60 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Structure
 
-This repository manages two related Ruby gems via symlinks:
+This repository contains:
 
-- `receiptisan/` → current version (v2, v0.4.x)
-- `recediff/` → legacy version (v1, v0.1.0)
+1. **VSCode Extension** (`receiptisan-preview`) — TypeScript extension for previewing RECEIPTC.UKE files
+2. **Symlinks to Ruby CLI tools**:
+   - `receiptisan/` → current version (v2, v0.4.x)
+   - `recediff/` → legacy version (v1, v0.1.0)
 
-Both are separate git repositories. Each is a CLI tool for parsing and previewing Japanese electronic medical receipt files (`RECEIPTC.UKE`).
+The Ruby CLI tools are separate git repositories. The VSCode extension calls the receiptisan CLI to generate previews.
 
-## Build & Development Commands
+## VSCode Extension Development
 
-Both projects share the same command structure:
+```bash
+# Install dependencies
+npm install
+
+# Compile TypeScript
+npm run compile
+
+# Watch mode
+npm run watch
+
+# Lint (Biome)
+npm run lint
+
+# Lint with auto-fix
+npm run lint:fix
+
+# Format
+npm run format
+
+# Package VSIX
+npx vsce package
+```
+
+### Technology Stack
+
+- **Language**: TypeScript
+- **Formatter/Linter**: Biome
+- **Release**: semantic-release (conventional commits)
+- **Branching**: GitHub feature flow (topic branches → PR → main)
+
+### Commit Convention
+
+Follow [Conventional Commits](https://www.conventionalcommits.org/):
+
+- `feat:` — new feature (minor version bump)
+- `fix:` — bug fix (patch version bump)
+- `docs:` — documentation only
+- `chore:` — maintenance, no release
+- `refactor:` — code change that neither fixes a bug nor adds a feature
+
+## Ruby CLI Development
+
+Both Ruby projects share the same command structure:
 
 ```bash
 # Install dependencies
