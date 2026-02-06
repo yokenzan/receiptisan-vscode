@@ -45,8 +45,14 @@
         "receiptisan.command": {
           "type": "string",
           "default": "receiptisan",
-          "description": "Command to execute receiptisan CLI (e.g., 'receiptisan', 'bundle exec receiptisan', '/usr/local/bin/receiptisan')",
-          "markdownDescription": "receiptisan CLIの実行コマンド（例: `receiptisan`, `bundle exec receiptisan`, `/usr/local/bin/receiptisan`）"
+          "description": "Command to execute receiptisan CLI (e.g., 'receiptisan', 'bundle exec ruby exe/receiptisan')",
+          "markdownDescription": "receiptisan CLIの実行コマンド（例: `receiptisan`, `bundle exec ruby exe/receiptisan`）"
+        },
+        "receiptisan.cwd": {
+          "type": "string",
+          "default": "",
+          "description": "Working directory for CLI execution. Required when using 'bundle exec'. Leave empty to use default.",
+          "markdownDescription": "`bundle exec` 使用時に必要な作業ディレクトリ。receiptisanリポジトリのパスを指定（例: `/home/user/receiptisan`）"
         }
       }
     }

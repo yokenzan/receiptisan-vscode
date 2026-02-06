@@ -31,6 +31,7 @@ export async function executeReceiptisan(
     const child = spawn(command, args, {
       shell: true,
       windowsHide: true,
+      cwd: config.cwd,
     });
 
     if (cancellationToken) {
