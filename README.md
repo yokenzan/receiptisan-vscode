@@ -2,6 +2,8 @@
 
 RECEIPTC.UKE ファイル（日本の電子レセプトファイル）をSVGでプレビューするVSCode拡張です。
 
+![プレビュー画面](docs/images/preview-screenshot.png)
+
 ## 機能
 
 - `.UKE` ファイルを開いた状態でコマンドパレットから「Receiptisan: Preview」を実行すると、レセプト用紙のSVGプレビューを隣カラムに表示
