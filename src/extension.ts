@@ -1,9 +1,10 @@
 import * as vscode from 'vscode';
+import { showPreview } from './preview';
 
 export function activate(context: vscode.ExtensionContext): void {
   console.log('receiptisan-preview is now active');
 
-  const previewCommand = vscode.commands.registerCommand('receiptisan.preview', () => {
+  const previewCommand = vscode.commands.registerCommand('receiptisan.preview', async () => {
     const editor = vscode.window.activeTextEditor;
 
     if (!editor) {
@@ -16,8 +17,7 @@ export function activate(context: vscode.ExtensionContext): void {
       return;
     }
 
-    // TODO: Implement preview in subsequent tasks
-    vscode.window.showInformationMessage(`Preview: ${editor.document.fileName}`);
+    await showPreview(editor.document);
   });
 
   context.subscriptions.push(previewCommand);
