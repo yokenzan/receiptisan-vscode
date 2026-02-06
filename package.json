@@ -1,0 +1,114 @@
+{
+  "name": "receiptisan-preview",
+  "displayName": "Receiptisan Preview",
+  "description": "Preview RECEIPTC.UKE files (Japanese medical receipt) as SVG using receiptisan CLI",
+  "version": "0.0.0-development",
+  "publisher": "yokenzan",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yokenzan/receiptisan-preview"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Visualization", "Other"],
+  "keywords": ["receipt", "uke", "医療", "レセプト", "診療報酬"],
+  "activationEvents": ["onLanguage:uke"],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "uke",
+        "aliases": ["UKE", "Receipt"],
+        "extensions": [".UKE", ".uke"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "receiptisan.preview",
+        "title": "Receiptisan: Preview"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "receiptisan.preview",
+          "when": "editorLangId == uke"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Receiptisan Preview",
+      "properties": {
+        "receiptisan.command": {
+          "type": "string",
+          "default": "receiptisan",
+          "description": "Command to execute receiptisan CLI (e.g., 'receiptisan', 'bundle exec ruby exe/receiptisan')",
+          "markdownDescription": "receiptisan CLIの実行コマンド（例: `receiptisan`, `bundle exec ruby exe/receiptisan`）"
+        },
+        "receiptisan.cwd": {
+          "type": "string",
+          "default": "",
+          "description": "Working directory for CLI execution. Required when using 'bundle exec'. Leave empty to use default.",
+          "markdownDescription": "`bundle exec` 使用時に必要な作業ディレクトリ。receiptisanリポジトリのパスを指定（例: `/home/user/receiptisan`）"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "pretest": "npm run compile",
+    "test": "echo 'No tests yet'"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.0",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/exec": "^7.1.0",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^12.0.3",
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.0.0",
+    "semantic-release": "^25.0.3",
+    "typescript": "^5.6.0"
+  },
+  "release": {
+    "branches": ["main"],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      [
+        "@semantic-release/npm",
+        {
+          "npmPublish": false
+        }
+      ],
+      [
+        "@semantic-release/exec",
+        {
+          "prepareCmd": "vsce package"
+        }
+      ],
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            {
+              "path": "*.vsix",
+              "label": "VSCode Extension"
+            }
+          ]
+        }
+      ],
+      "@semantic-release/git"
+    ]
+  }
+}
