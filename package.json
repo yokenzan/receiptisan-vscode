@@ -38,6 +38,17 @@
           "when": "editorLangId == uke"
         }
       ]
+    },
+    "configuration": {
+      "title": "Receiptisan Preview",
+      "properties": {
+        "receiptisan.command": {
+          "type": "string",
+          "default": "receiptisan",
+          "description": "Command to execute receiptisan CLI (e.g., 'receiptisan', 'bundle exec receiptisan', '/usr/local/bin/receiptisan')",
+          "markdownDescription": "receiptisan CLIの実行コマンド（例: `receiptisan`, `bundle exec receiptisan`, `/usr/local/bin/receiptisan`）"
+        }
+      }
     }
   },
   "scripts": {
