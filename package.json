@@ -39,6 +39,11 @@
         }
       ]
     },
+    "configurationDefaults": {
+      "[uke]": {
+        "files.encoding": "shiftjis"
+      }
+    },
     "configuration": {
       "title": "Receiptisan Preview",
       "properties": {
