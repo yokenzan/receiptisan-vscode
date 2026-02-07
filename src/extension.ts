@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { createUkeInlayHintsProvider } from './inlay-hints';
 import { showPreview } from './preview';
 
 export function activate(context: vscode.ExtensionContext): void {
@@ -20,7 +21,12 @@ export function activate(context: vscode.ExtensionContext): void {
     await showPreview(editor.document);
   });
 
-  context.subscriptions.push(previewCommand);
+  const inlayHintsProvider = vscode.languages.registerInlayHintsProvider(
+    'uke',
+    createUkeInlayHintsProvider(),
+  );
+
+  context.subscriptions.push(previewCommand, inlayHintsProvider);
 }
 
 export function deactivate(): void {
