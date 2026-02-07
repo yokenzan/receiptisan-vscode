@@ -100,9 +100,9 @@ export interface ReceiptType {
 // 患者
 
 export interface Patient {
-  id: string;
+  id: string | null;
   name: string;
-  name_kana: string;
+  name_kana: string | null;
   sex: CodeNameShort;
   birth_date: DateValue;
 }
@@ -114,17 +114,17 @@ export type TokkiJikou = CodeName;
 // 保険
 
 export interface Hokens {
-  iryou_hoken: IryouHoken;
+  iryou_hoken: IryouHoken | null;
   kouhi_futan_iryous: KouhiFutanIryou[];
   main: string;
 }
 
 export interface IryouHoken {
   hokenja_bangou: string;
-  kigou: string;
+  kigou: string | null;
   bangou: string;
-  edaban: string;
-  kyuufu_wariai: number;
+  edaban: string | null;
+  kyuufu_wariai: number | null;
   teishotoku_type: string | null;
 }
 
@@ -242,7 +242,7 @@ export interface CommentItem extends TekiyouItemBase {
 // 療養の給付
 
 export interface RyouyouNoKyuufu {
-  iryou_hoken: RyouyouIryouHoken;
+  iryou_hoken: RyouyouIryouHoken | null;
   kouhi_futan_iryous: RyouyouKouhi[];
 }
 

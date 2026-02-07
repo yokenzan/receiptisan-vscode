@@ -317,15 +317,19 @@ function renderHokenCard(receipt: Receipt): string {
       <tr><th>公費${i + 1} 受給者番号</th><td>${escapeHtml(k.jukyuusha_bangou)}</td></tr>`;
   }
 
+  const iryouHokenRows = ih
+    ? `<tr><th>保険者番号</th><td>${escapeHtml(ih.hokenja_bangou)}</td></tr>
+      <tr><th>記号・番号</th><td>${escapeHtml(ih.kigou)} ・ ${escapeHtml(ih.bangou)}</td></tr>
+      <tr><th>枝番</th><td>${escapeHtml(ih.edaban)}</td></tr>
+      <tr><th>給付割合</th><td>${ih.kyuufu_wariai != null ? `${ih.kyuufu_wariai}%` : ''}</td></tr>`
+    : '';
+
   return `
 <div class="card">
   <div class="card-title">保険情報</div>
   <div class="card-body">
     <table>
-      <tr><th>保険者番号</th><td>${escapeHtml(ih.hokenja_bangou)}</td></tr>
-      <tr><th>記号・番号</th><td>${escapeHtml(ih.kigou)} ・ ${escapeHtml(ih.bangou)}</td></tr>
-      <tr><th>枝番</th><td>${escapeHtml(ih.edaban)}</td></tr>
-      <tr><th>給付割合</th><td>${ih.kyuufu_wariai}%</td></tr>
+      ${iryouHokenRows}
       ${kouhiRows}
     </table>
   </div>
@@ -427,6 +431,8 @@ function renderKyuufuCard(receipt: Receipt): string {
   const k = receipt.ryouyou_no_kyuufu;
   const ih = k.iryou_hoken;
 
+  if (!ih) return '';
+
   return `
 <div class="card">
   <div class="card-title">療養の給付</div>
@@ -440,7 +446,8 @@ function renderKyuufuCard(receipt: Receipt): string {
 </div>`;
 }
 
-function escapeHtml(text: string): string {
+function escapeHtml(text: string | null | undefined): string {
+  if (text == null) return '';
   return text
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
