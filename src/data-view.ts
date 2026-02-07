@@ -80,13 +80,9 @@ function renderDataView(data: ReceiptisanJsonOutput): string {
 
     for (const receipt of digitalizedReceipt.receipts) {
       const receiptId = `receipt-${index}`;
-      const patient = receipt.patient;
-      const labelParts: string[] = [];
-      if (patient.id != null) labelParts.push(patient.id);
-      labelParts.push(patient.name);
-      const label = labelParts.join(' ');
+      const label = buildReceiptLabel(receipt);
 
-      navItems += `<li><a href="#${receiptId}" class="nav-item" data-target="${receiptId}">${escapeHtml(label)}</a></li>\n`;
+      navItems += `<li><a href="#${receiptId}" class="nav-item" data-target="${receiptId}">${label}</a></li>\n`;
       receiptSections += renderReceipt(receipt, receiptId);
       index++;
     }
@@ -132,6 +128,21 @@ function renderDataView(data: ReceiptisanJsonOutput): string {
     --badge-main-bg: #c62828;
     --badge-main-fg: #ffffff;
 
+    --nyuuin-bg: #c62828;
+    --nyuuin-fg: #ffffff;
+    --gairai-bg: #1565c0;
+    --gairai-fg: #ffffff;
+
+    --sex-male-bg: #1565c0;
+    --sex-male-fg: #ffffff;
+    --sex-female-bg: #c62828;
+    --sex-female-fg: #ffffff;
+
+    --utagai-bg: #f57c00;
+    --utagai-fg: #ffffff;
+    --worpro-bg: #7b1fa2;
+    --worpro-fg: #ffffff;
+
     --font-mono: 'SF Mono', 'Cascadia Code', 'Consolas', 'Courier New', monospace;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -150,25 +161,26 @@ function renderDataView(data: ReceiptisanJsonOutput): string {
     border-right: none;
     border-top: 1px solid var(--border);
     order: 1;
-    overflow-x: auto;
-    overflow-y: hidden;
+    max-height: 30vh;
+    overflow-y: auto;
     padding: 0;
   }
-  #nav ul { list-style: none; display: flex; flex-wrap: nowrap; margin: 0; padding: 0; }
+  #nav ul { list-style: none; display: flex; flex-direction: column; margin: 0; padding: 0; }
   #nav li a {
     display: block;
-    padding: 6px 12px;
+    padding: 3px 10px;
     color: var(--text);
     text-decoration: none;
     font-size: 12px;
     white-space: nowrap;
-    border-left: none;
-    border-bottom: 2px solid transparent;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-left: 2px solid transparent;
   }
   #nav li a:hover { background: var(--bg-hover); }
   #nav li a.active {
     background: var(--bg-hover);
-    border-bottom-color: var(--accent);
+    border-left-color: var(--accent);
     color: var(--text-bright);
   }
   #content {
@@ -188,6 +200,16 @@ function renderDataView(data: ReceiptisanJsonOutput): string {
     padding-bottom: 4px;
     border-bottom: 1px solid var(--border);
     margin-bottom: 6px;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: var(--bg);
+  }
+  .receipt-info-card {
+    position: sticky;
+    top: 26px;
+    z-index: 1;
+    background: var(--bg);
   }
   .card {
     background: var(--bg-card);
@@ -236,6 +258,12 @@ function renderDataView(data: ReceiptisanJsonOutput): string {
   .tag-tenki-4 { background: var(--tenki-4-bg); color: var(--tenki-4-fg); }
   .tag-type { background: var(--badge-type-bg); color: var(--badge-type-fg); font-family: var(--font-mono); }
   .tag-tokki { background: var(--badge-tokki-bg); color: var(--badge-tokki-fg); font-family: var(--font-mono); }
+  .tag-nyuuin { background: var(--nyuuin-bg); color: var(--nyuuin-fg); }
+  .tag-gairai { background: var(--gairai-bg); color: var(--gairai-fg); }
+  .tag-sex-male { background: var(--sex-male-bg); color: var(--sex-male-fg); }
+  .tag-sex-female { background: var(--sex-female-bg); color: var(--sex-female-fg); }
+  .tag-utagai { background: var(--utagai-bg); color: var(--utagai-fg); }
+  .tag-worpro { background: var(--worpro-bg); color: var(--worpro-fg); }
   .text-right { text-align: right; }
   .text-dim { color: var(--text-dim); }
   .text-orange { color: var(--orange); }
@@ -393,6 +421,22 @@ function getCategoryColorClass(type: string): string {
   }
 }
 
+function renderNyuugaiTag(nyuugai: string): string {
+  if (nyuugai === 'nyuuin') {
+    return '<span class="tag tag-nyuuin">入院</span>';
+  }
+  return '<span class="tag tag-gairai">外来</span>';
+}
+
+function buildReceiptLabel(receipt: Receipt): string {
+  const patient = receipt.patient;
+  const idPart = String(receipt.id).padStart(5, '0');
+  const shinryouYm = escapeHtml(receipt.shinryou_ym.wareki.text);
+  const nyuugaiLabel = receipt.nyuugai === 'nyuuin' ? '入院' : '外来';
+  const patientId = patient.id ?? '';
+  return `${idPart} - ${shinryouYm}診療 ${nyuugaiLabel} ${escapeHtml(patientId)} ${escapeHtml(patient.name)}`;
+}
+
 // --- Render functions ---
 
 function renderUkeHeader(dr: DigitalizedReceipt): string {
@@ -414,12 +458,11 @@ function renderUkeHeader(dr: DigitalizedReceipt): string {
 }
 
 function renderReceipt(receipt: Receipt, id: string): string {
-  const p = receipt.patient;
-  const headerText = `${p.name}（${p.name_kana ?? ''}）${p.sex.short_name} ${p.birth_date.wareki.text}`;
+  const headerText = buildReceiptLabel(receipt);
 
   return `
 <div id="${id}" class="receipt-section">
-  <div class="receipt-header">${escapeHtml(headerText)}</div>
+  <div class="receipt-header">${headerText}</div>
   ${renderReceiptHeader(receipt)}
   ${renderPatientCard(receipt)}
   ${renderHokenCard(receipt)}
@@ -455,7 +498,7 @@ function renderReceiptHeader(receipt: Receipt): string {
       : '<span class="text-dim">なし</span>';
 
   return `
-<div class="card">
+<div class="card receipt-info-card">
   <div class="card-body">
     <table class="receipt-info-table">
       <tr>
@@ -467,12 +510,12 @@ function renderReceiptHeader(receipt: Receipt): string {
         <td>${typeBadges}</td>
       </tr>
       <tr>
-        <th>特記</th>
+        <th>特記事項</th>
         <td>${tokkiBadges}</td>
       </tr>
       <tr>
         <th>入外</th>
-        <td>${receipt.nyuugai === 'nyuuin' ? '入院' : '外来'}</td>
+        <td>${renderNyuugaiTag(receipt.nyuugai)}</td>
       </tr>
       ${receipt.nyuugai === 'nyuuin' && receipt.nyuuin_date ? `<tr><th>入院日</th><td>${escapeHtml(receipt.nyuuin_date.wareki.text)}</td></tr>` : ''}
       ${receipt.nyuugai === 'nyuuin' && receipt.byoushou_types.length > 0 ? `<tr><th>病床</th><td>${receipt.byoushou_types.map((b) => escapeHtml(b.short_name)).join('、')}</td></tr>` : ''}
@@ -483,6 +526,12 @@ function renderReceiptHeader(receipt: Receipt): string {
 
 function renderPatientCard(receipt: Receipt): string {
   const p = receipt.patient;
+  const sexTag =
+    String(p.sex.code) === '1'
+      ? `<span class="tag tag-sex-male">${escapeHtml(p.sex.name)}</span>`
+      : String(p.sex.code) === '2'
+        ? `<span class="tag tag-sex-female">${escapeHtml(p.sex.name)}</span>`
+        : escapeHtml(p.sex.name);
 
   return `
 <div class="card">
@@ -491,7 +540,7 @@ function renderPatientCard(receipt: Receipt): string {
     <table>
       <tr><th>患者番号</th><td>${escapeHtml(p.id)}</td></tr>
       <tr><th>氏名</th><td>${escapeHtml(p.name)}${p.name_kana ? `（${escapeHtml(p.name_kana)}）` : ''}</td></tr>
-      <tr><th>性別</th><td>${escapeHtml(p.sex.name)}</td></tr>
+      <tr><th>性別</th><td>${sexTag}</td></tr>
       <tr><th>生年月日</th><td>${escapeHtml(p.birth_date.wareki.text)}</td></tr>
     </table>
   </div>
@@ -503,83 +552,67 @@ function renderHokenCard(receipt: Receipt): string {
   const ih = h.iryou_hoken;
   const k = receipt.ryouyou_no_kyuufu;
 
-  let iryouHokenSection = '';
+  if (!ih && h.kouhi_futan_iryous.length === 0) return '';
+
+  let rows = '';
+  const detailParts: string[] = [];
+
   if (ih) {
     const kih = k.iryou_hoken;
-    const detailParts: string[] = [];
+    // 資格番号: kigou・bangou・edaban (null要素はスキップ)
+    const shikakuParts = [ih.kigou, ih.bangou, ih.edaban].filter((v) => v != null);
+    const shikakuBangou = shikakuParts.join('・');
+
+    rows += `<tr>
+      <td>医療保険</td>
+      <td class="code">${escapeHtml(ih.hokenja_bangou)}</td>
+      <td>${escapeHtml(shikakuBangou)}</td>
+      <td class="num">${kih ? `${kih.shinryou_jitsunissuu}日` : ''}</td>
+      <td class="num">${kih ? `${formatNumber(kih.goukei_tensuu)}点` : ''}</td>
+      <td class="num">${kih?.ichibu_futankin != null ? `${formatNumber(kih.ichibu_futankin)}円` : ''}</td>
+      <td class="num"></td>
+    </tr>`;
+
     if (ih.kyuufu_wariai != null) detailParts.push(`給付割合: ${ih.kyuufu_wariai}%`);
     if (ih.teishotoku_type) detailParts.push(`低所得: ${escapeHtml(ih.teishotoku_type)}`);
-    const detailRow =
-      detailParts.length > 0
-        ? `<div class="hoken-detail">${detailParts.map((p) => `<span>${p}</span>`).join('')}</div>`
-        : '';
-
-    iryouHokenSection = `
-    <table class="hoken-integrated-table">
-      <tr>
-        <th>保険者番号</th>
-        <th>記号</th>
-        <th>番号</th>
-        <th>枝番</th>
-        <th>実日数</th>
-        <th>請求点数</th>
-        <th>負担金</th>
-        <th>給付対象負担金</th>
-      </tr>
-      <tr>
-        <td class="code">${escapeHtml(ih.hokenja_bangou)}</td>
-        <td>${escapeHtml(ih.kigou)}</td>
-        <td>${escapeHtml(ih.bangou)}</td>
-        <td>${escapeHtml(ih.edaban)}</td>
-        <td class="num">${kih ? `${kih.shinryou_jitsunissuu}日` : ''}</td>
-        <td class="num">${kih ? `${formatNumber(kih.goukei_tensuu)}点` : ''}</td>
-        <td class="num">${kih?.ichibu_futankin != null ? `${formatNumber(kih.ichibu_futankin)}円` : ''}</td>
-        <td class="num">${kih?.kyuufu_taishou_ichibu_futankin != null ? `(${formatNumber(kih.kyuufu_taishou_ichibu_futankin)}円)` : ''}</td>
-      </tr>
-    </table>
-    ${detailRow}`;
   }
 
-  let kouhiSection = '';
-  if (h.kouhi_futan_iryous.length > 0) {
-    let kouhiRows = '';
-    for (let i = 0; i < h.kouhi_futan_iryous.length; i++) {
-      const kouhi = h.kouhi_futan_iryous[i];
-      const rk = k.kouhi_futan_iryous[i];
-      kouhiRows += `<tr>
-        <td>公費${i + 1}</td>
-        <td class="code">${escapeHtml(kouhi.futansha_bangou)}</td>
-        <td class="code">${escapeHtml(kouhi.jukyuusha_bangou)}</td>
-        <td class="num">${rk ? `${rk.shinryou_jitsunissuu}日` : ''}</td>
-        <td class="num">${rk ? `${formatNumber(rk.goukei_tensuu)}点` : ''}</td>
-        <td class="num">${rk?.ichibu_futankin != null ? `${formatNumber(rk.ichibu_futankin)}円` : ''}</td>
-        <td class="num">${rk?.kyuufu_taishou_ichibu_futankin != null ? `(${formatNumber(rk.kyuufu_taishou_ichibu_futankin)}円)` : ''}</td>
-      </tr>`;
-    }
-
-    kouhiSection = `
-    <table class="hoken-integrated-table" style="margin-top: 6px;">
-      <tr>
-        <th>公費</th>
-        <th>負担者番号</th>
-        <th>受給者番号</th>
-        <th>実日数</th>
-        <th>請求点数</th>
-        <th>負担金</th>
-        <th>給付対象負担金</th>
-      </tr>
-      ${kouhiRows}
-    </table>`;
+  for (let i = 0; i < h.kouhi_futan_iryous.length; i++) {
+    const kouhi = h.kouhi_futan_iryous[i];
+    const rk = k.kouhi_futan_iryous[i];
+    rows += `<tr>
+      <td>公費${i + 1}</td>
+      <td class="code">${escapeHtml(kouhi.futansha_bangou)}</td>
+      <td>${escapeHtml(kouhi.jukyuusha_bangou)}</td>
+      <td class="num">${rk ? `${rk.shinryou_jitsunissuu}日` : ''}</td>
+      <td class="num">${rk ? `${formatNumber(rk.goukei_tensuu)}点` : ''}</td>
+      <td class="num">${rk?.ichibu_futankin != null ? `${formatNumber(rk.ichibu_futankin)}円` : ''}</td>
+      <td class="num">${rk?.kyuufu_taishou_ichibu_futankin != null ? `(${formatNumber(rk.kyuufu_taishou_ichibu_futankin)}円)` : ''}</td>
+    </tr>`;
   }
 
-  if (!iryouHokenSection && !kouhiSection) return '';
+  const detailRow =
+    detailParts.length > 0
+      ? `<div class="hoken-detail">${detailParts.map((p) => `<span>${p}</span>`).join('')}</div>`
+      : '';
 
   return `
 <div class="card">
   <div class="card-title">保険情報</div>
   <div class="card-body">
-    ${iryouHokenSection}
-    ${kouhiSection}
+    <table class="hoken-integrated-table">
+      <tr>
+        <th>区分</th>
+        <th>事業者番号</th>
+        <th>資格番号</th>
+        <th>実日数</th>
+        <th>請求点数</th>
+        <th>負担金</th>
+        <th>給付対象負担金</th>
+      </tr>
+      ${rows}
+    </table>
+    ${detailRow}
   </div>
 </div>`;
 }
@@ -593,6 +626,10 @@ function renderShoubyoumeiCard(groups: ShoubyoumeiGroup[]): string {
     for (const s of group.shoubyoumeis) {
       idx++;
       const mainBadge = s.is_main ? '<span class="tag tag-main">主</span>' : '';
+      const utagaiBadge = s.master_shuushokugos.some((m) => String(m.code) === '8002')
+        ? '<span class="tag tag-utagai">疑</span>'
+        : '';
+      const worproBadge = s.is_worpro === true ? '<span class="tag tag-worpro">未</span>' : '';
       const tenkiClass = getTenkiColorClass(s.tenki.code);
       const tenkiBadge = `<span class="tag ${tenkiClass}">${escapeHtml(s.tenki.name)}</span>`;
 
@@ -616,6 +653,8 @@ function renderShoubyoumeiCard(groups: ShoubyoumeiGroup[]): string {
         <td>${idx}</td>
         <td class="code">${escapeHtml(s.master_shoubyoumei.code)}${shuushokugoSub}</td>
         <td>${mainBadge}</td>
+        <td>${utagaiBadge}</td>
+        <td>${worproBadge}</td>
         <td>${escapeHtml(s.full_text)}${commentText}</td>
         <td>${escapeHtml(s.start_date.wareki.text)}</td>
         <td>${tenkiBadge}</td>
@@ -628,7 +667,7 @@ function renderShoubyoumeiCard(groups: ShoubyoumeiGroup[]): string {
   <div class="card-title">傷病名</div>
   <div class="card-body">
     <table>
-      <tr><th>#</th><th>コード</th><th>主</th><th>傷病名</th><th>開始日</th><th>転帰</th></tr>
+      <tr><th>#</th><th>コード</th><th>主</th><th>疑</th><th>未</th><th>傷病名</th><th>開始日</th><th>転帰</th></tr>
       ${rows}
     </table>
   </div>
