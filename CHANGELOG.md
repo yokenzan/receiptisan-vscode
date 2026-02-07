@@ -1,3 +1,24 @@
+# 1.0.0 (2026-02-07)
+
+
+### Bug Fixes
+
+* add cwd configuration for bundle exec support ([58c90f3](https://github.com/yokenzan/receiptisan-vscode/commit/58c90f3898ccb888613da016070661cafd8bf238))
+* **ci:** use Node.js 22 for release job ([88006b7](https://github.com/yokenzan/receiptisan-vscode/commit/88006b71fc81038c7dcd925298fc301512ef4b48))
+* correct repository URL in package.json ([1d1cda0](https://github.com/yokenzan/receiptisan-vscode/commit/1d1cda0fa4f5353635e1454f48ab9ce8bd585102))
+* escape file paths with special characters for shell execution ([c5841c8](https://github.com/yokenzan/receiptisan-vscode/commit/c5841c8a6132334e61d73be6e26e736a6088f288))
+
+
+### Features
+
+* add receiptisan.command configuration ([cf3037d](https://github.com/yokenzan/receiptisan-vscode/commit/cf3037d9e37d1dc2d98e8082af2ea7850a16f662))
+* add UKE language registration and preview command ([f343f23](https://github.com/yokenzan/receiptisan-vscode/commit/f343f23005da401939491282bf375687c30698d1))
+* add zoom controls to preview and default Shift_JIS encoding for UKE files ([aad6edc](https://github.com/yokenzan/receiptisan-vscode/commit/aad6edc31ea2189d9405145f3928adcd68c250ed))
+* fit preview width to tab and auto-resize with ResizeObserver ([b9014b2](https://github.com/yokenzan/receiptisan-vscode/commit/b9014b261047807b7c69b8cb9deefaee30f95ccf))
+* implement CLI execution with progress and cancellation ([67d175d](https://github.com/yokenzan/receiptisan-vscode/commit/67d175d8795bb56e553f84e3dedd1ad9dae46439))
+* implement Webview SVG preview ([beb9947](https://github.com/yokenzan/receiptisan-vscode/commit/beb9947e373215c9e726d8aa37805f78308b3fc1))
+* reuse single preview tab instead of opening new tabs ([1b8ed90](https://github.com/yokenzan/receiptisan-vscode/commit/1b8ed9040854e71f5e867446484d7478817654ab))
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
