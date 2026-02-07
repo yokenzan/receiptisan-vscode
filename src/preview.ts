@@ -118,12 +118,9 @@ function wrapWithZoomControls(cliHtml: string): string {
       justify-content: center;
     }
     #zoom-toolbar button:hover { background: #444; }
-    #zoom-level {
-      color: #ccc;
-      font-size: 12px;
-      font-family: monospace;
-      min-width: 40px;
-      text-align: center;
+    #zoom-toolbar button.active {
+      border-color: #4fc1ff;
+      color: #4fc1ff;
     }
     #preview-container {
       width: 100%;
@@ -139,9 +136,8 @@ function wrapWithZoomControls(cliHtml: string): string {
 <body>
   <div id="zoom-toolbar">
     <button id="zoom-out" title="縮小">−</button>
-    <span id="zoom-level">100%</span>
     <button id="zoom-in" title="拡大">+</button>
-    <button id="zoom-reset" title="リセット">↺</button>
+    <button id="zoom-fit" title="タブ幅にフィット" class="active">⤢</button>
   </div>
   <div id="preview-container">
     <div id="preview-content">${cliHtml}</div>
@@ -151,42 +147,76 @@ function wrapWithZoomControls(cliHtml: string): string {
       const STEP = 0.1;
       const MIN = 0.1;
       const MAX = 3.0;
+
       let scale = 1.0;
+      let fitToWidth = true;
 
       const content = document.getElementById('preview-content');
-      const label = document.getElementById('zoom-level');
+      const container = document.getElementById('preview-container');
+      const fitBtn = document.getElementById('zoom-fit');
+
+      function getSvgNativeWidth() {
+        const svg = content.querySelector('svg');
+        if (!svg) return 0;
+        const w = svg.getAttribute('width');
+        if (w) return parseFloat(w);
+        const vb = svg.getAttribute('viewBox');
+        if (vb) {
+          const parts = vb.split(/[\\s,]+/);
+          if (parts.length >= 4) return parseFloat(parts[2]);
+        }
+        return 0;
+      }
+
+      function calcFitScale() {
+        const svgWidth = getSvgNativeWidth();
+        if (svgWidth <= 0) return 1.0;
+        return container.clientWidth / svgWidth;
+      }
 
       function applyZoom() {
         content.style.transform = 'scale(' + scale + ')';
-        label.textContent = Math.round(scale * 100) + '%';
+        fitBtn.classList.toggle('active', fitToWidth);
+      }
+
+      function applyFitToWidth() {
+        scale = calcFitScale();
+        applyZoom();
+      }
+
+      function enterManualZoom(newScale) {
+        fitToWidth = false;
+        scale = Math.min(MAX, Math.max(MIN, newScale));
+        applyZoom();
       }
 
       document.getElementById('zoom-in').addEventListener('click', function() {
-        scale = Math.min(MAX, scale + STEP);
-        applyZoom();
+        enterManualZoom(scale + STEP);
       });
 
       document.getElementById('zoom-out').addEventListener('click', function() {
-        scale = Math.max(MIN, scale - STEP);
-        applyZoom();
+        enterManualZoom(scale - STEP);
       });
 
-      document.getElementById('zoom-reset').addEventListener('click', function() {
-        scale = 1.0;
-        applyZoom();
+      fitBtn.addEventListener('click', function() {
+        fitToWidth = true;
+        applyFitToWidth();
       });
 
-      document.getElementById('preview-container').addEventListener('wheel', function(e) {
+      container.addEventListener('wheel', function(e) {
         if (e.ctrlKey) {
           e.preventDefault();
-          if (e.deltaY < 0) {
-            scale = Math.min(MAX, scale + STEP);
-          } else {
-            scale = Math.max(MIN, scale - STEP);
-          }
-          applyZoom();
+          var delta = e.deltaY < 0 ? STEP : -STEP;
+          enterManualZoom(scale + delta);
         }
       }, { passive: false });
+
+      var ro = new ResizeObserver(function() {
+        if (fitToWidth) applyFitToWidth();
+      });
+      ro.observe(container);
+
+      applyFitToWidth();
     })();
   </script>
 </body>
