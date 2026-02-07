@@ -28,13 +28,29 @@
     "commands": [
       {
         "command": "receiptisan.preview",
-        "title": "Receiptisan: Preview"
+        "title": "Receiptisan: Preview (SVG)"
+      },
+      {
+        "command": "receiptisan.dataViewVertical",
+        "title": "Receiptisan: Data View (Vertical / 縦分割)"
+      },
+      {
+        "command": "receiptisan.dataViewHorizontal",
+        "title": "Receiptisan: Data View (Horizontal / 横分割)"
       }
     ],
     "menus": {
       "commandPalette": [
         {
           "command": "receiptisan.preview",
+          "when": "editorLangId == uke"
+        },
+        {
+          "command": "receiptisan.dataViewVertical",
+          "when": "editorLangId == uke"
+        },
+        {
+          "command": "receiptisan.dataViewHorizontal",
           "when": "editorLangId == uke"
         }
       ]
@@ -64,7 +80,7 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
+    "compile": "tsc -p ./ && cp src/*.css out/",
     "watch": "tsc -watch -p ./",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
