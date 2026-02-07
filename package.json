@@ -28,13 +28,21 @@
     "commands": [
       {
         "command": "receiptisan.preview",
-        "title": "Receiptisan: Preview"
+        "title": "Receiptisan: Preview (SVG)"
+      },
+      {
+        "command": "receiptisan.dataView",
+        "title": "Receiptisan: Data View"
       }
     ],
     "menus": {
       "commandPalette": [
         {
           "command": "receiptisan.preview",
+          "when": "editorLangId == uke"
+        },
+        {
+          "command": "receiptisan.dataView",
           "when": "editorLangId == uke"
         }
       ]
