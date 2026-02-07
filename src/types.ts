@@ -29,7 +29,7 @@ export interface Receipt {
   tensuu_shuukei: TensuuShuukei;
   nyuuin_date: DateValue | null;
   nyuuinryou_abbrev_labels: string[];
-  byoushou_types: string[];
+  byoushou_types: CodeNameShort[];
   kijun_marks: unknown | null;
 }
 
