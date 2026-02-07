@@ -21,7 +21,8 @@ export async function executeReceiptisan(
 ): Promise<CliResult> {
   const config = getConfig();
   const command = config.command;
-  const args = ['--preview', `--format=${format}`, filePath];
+  const quotedPath = `'${filePath.replace(/'/g, "'\\''")}'`;
+  const args = ['--preview', `--format=${format}`, quotedPath];
 
   return new Promise((resolve, reject) => {
     const chunks: Buffer[] = [];
