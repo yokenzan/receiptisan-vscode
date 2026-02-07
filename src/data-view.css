@@ -1,0 +1,445 @@
+:root {
+  --bg: #f5f5f5;
+  --bg-card: #ffffff;
+  --bg-hover: #e8eaed;
+  --border: #d0d4d8;
+  --text: #333333;
+  --text-dim: #777777;
+  --text-bright: #111111;
+  --accent: #0066cc;
+  --accent-dim: #004d99;
+  --green: #2e7d32;
+  --orange: #c75000;
+  --yellow: #7a6b00;
+
+  --color-si: #333333;
+  --color-iy: #1a5fb4;
+  --color-to: #1b7742;
+  --color-co: #8a6d00;
+
+  --tenki-1-bg: #d32f2f;
+  --tenki-1-fg: #ffffff;
+  --tenki-2-bg: #388e3c;
+  --tenki-2-fg: #ffffff;
+  --tenki-3-bg: #0097a7;
+  --tenki-3-fg: #ffffff;
+  --tenki-4-bg: #1565c0;
+  --tenki-4-fg: #ffffff;
+
+  --badge-type-bg: #9c27b0;
+  --badge-type-fg: #ffffff;
+  --badge-tokki-bg: #1976d2;
+  --badge-tokki-fg: #ffffff;
+  --badge-main-bg: #c62828;
+  --badge-main-fg: #ffffff;
+
+  --nyuuin-bg: #c62828;
+  --nyuuin-fg: #ffffff;
+  --gairai-bg: #1565c0;
+  --gairai-fg: #ffffff;
+
+  --sex-male-bg: #1565c0;
+  --sex-male-fg: #ffffff;
+  --sex-female-bg: #c62828;
+  --sex-female-fg: #ffffff;
+
+  --utagai-bg: #f57c00;
+  --utagai-fg: #ffffff;
+  --worpro-bg: #7b1fa2;
+  --worpro-fg: #ffffff;
+
+  --font-mono: "SF Mono", "Cascadia Code", "Consolas", "Courier New", monospace;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif;
+  font-size: 13px;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+#nav {
+  width: 100%;
+  min-width: unset;
+  border-right: none;
+  border-top: 1px solid var(--border);
+  order: 1;
+  max-height: 30vh;
+  overflow-y: auto;
+  padding: 0;
+}
+
+#nav ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+}
+
+#nav li a {
+  display: block;
+  padding: 3px 10px;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-left: 2px solid transparent;
+}
+
+#nav li a:hover {
+  background: var(--bg-hover);
+}
+
+#nav li a.active {
+  background: var(--bg-hover);
+  border-left-color: var(--accent);
+  color: var(--text-bright);
+}
+
+#content {
+  order: 0;
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 12px;
+}
+
+.receipt-section {
+  margin-bottom: 20px;
+  scroll-margin-top: 8px;
+}
+
+.receipt-header {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-bright);
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 6px;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--bg);
+}
+
+.receipt-info-card {
+  position: sticky;
+  top: 26px;
+  z-index: 1;
+  background: var(--bg);
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  margin-bottom: 6px;
+}
+
+.card-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.card-body {
+  padding: 4px 8px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th {
+  text-align: left;
+  font-size: 11px;
+  color: var(--text-dim);
+  padding: 2px 6px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+table td {
+  padding: 2px 6px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+
+table tr:last-child td {
+  border-bottom: none;
+}
+
+.tag {
+  display: inline-block;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.tag-main {
+  background: var(--badge-main-bg);
+  color: var(--badge-main-fg);
+  font-weight: 600;
+}
+.tag-tenki {
+  background: #e0e0e0;
+  color: var(--green);
+}
+.tag-tenki-1 {
+  background: var(--tenki-1-bg);
+  color: var(--tenki-1-fg);
+}
+.tag-tenki-2 {
+  background: var(--tenki-2-bg);
+  color: var(--tenki-2-fg);
+}
+.tag-tenki-3 {
+  background: var(--tenki-3-bg);
+  color: var(--tenki-3-fg);
+}
+.tag-tenki-4 {
+  background: var(--tenki-4-bg);
+  color: var(--tenki-4-fg);
+}
+.tag-type {
+  background: var(--badge-type-bg);
+  color: var(--badge-type-fg);
+  font-family: var(--font-mono);
+}
+.tag-tokki {
+  background: var(--badge-tokki-bg);
+  color: var(--badge-tokki-fg);
+  font-family: var(--font-mono);
+}
+.tag-nyuuin {
+  background: var(--nyuuin-bg);
+  color: var(--nyuuin-fg);
+}
+.tag-gairai {
+  background: var(--gairai-bg);
+  color: var(--gairai-fg);
+}
+.tag-sex-male {
+  background: var(--sex-male-bg);
+  color: var(--sex-male-fg);
+}
+.tag-sex-female {
+  background: var(--sex-female-bg);
+  color: var(--sex-female-fg);
+}
+.tag-utagai {
+  background: var(--utagai-bg);
+  color: var(--utagai-fg);
+}
+.tag-worpro {
+  background: var(--worpro-bg);
+  color: var(--worpro-fg);
+}
+
+.text-right {
+  text-align: right;
+}
+.text-dim {
+  color: var(--text-dim);
+}
+.text-orange {
+  color: var(--orange);
+}
+.code {
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+.num {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.item-si {
+  color: var(--color-si);
+}
+.item-iy {
+  color: var(--color-iy);
+}
+.item-to {
+  color: var(--color-to);
+}
+.item-co {
+  color: var(--color-co);
+  font-style: italic;
+}
+
+.disease-main td {
+  font-weight: 600;
+}
+.disease-worpro td {
+  font-style: italic;
+  color: var(--text-dim);
+  text-decoration: underline wavy #bbb;
+}
+.sub-code {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+.section-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--yellow);
+  padding: 3px 0;
+}
+
+/* Receipt header info table */
+.receipt-info-table th {
+  white-space: nowrap;
+  width: 1%;
+  padding-right: 8px;
+}
+.receipt-info-table td {
+  padding: 2px 6px;
+}
+.receipt-info-table .tag {
+  margin-right: 3px;
+}
+
+/* Tekiyou table */
+.tekiyou-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tekiyou-table th {
+  text-align: left;
+  font-size: 11px;
+  color: var(--text-dim);
+  padding: 2px 4px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.tekiyou-table td {
+  padding: 1px 4px;
+  font-size: 12px;
+  border-bottom: none;
+}
+.tekiyou-table .col-code {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  white-space: nowrap;
+  color: var(--text-dim);
+}
+.tekiyou-table .col-shinku {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-align: center;
+  white-space: nowrap;
+}
+.tekiyou-table .col-mark {
+  text-align: center;
+  color: #9c27b0;
+  font-weight: bold;
+  width: 20px;
+}
+.tekiyou-table .col-tensuu {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.tekiyou-table .col-kaisuu {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.tekiyou-table .appended {
+  font-style: italic;
+  color: var(--text-dim);
+  margin-left: 4px;
+}
+
+/* Tekiyou separator styles */
+.tekiyou-table .row-upper-shinku td {
+  border-top: 2px solid #9090b0;
+  padding-top: 3px;
+}
+.tekiyou-table .row-next-shinku td {
+  border-top: 1px solid var(--border);
+  padding-top: 2px;
+}
+.tekiyou-table .row-new-santei td {
+  border-top: 1px dotted #c0c0c0;
+  padding-top: 2px;
+}
+
+/* Hoken integrated table */
+.hoken-integrated-table th {
+  text-align: left;
+}
+.hoken-integrated-table .num {
+  padding-right: 4px;
+}
+.hoken-detail {
+  font-size: 11px;
+  color: var(--text-dim);
+  padding: 3px 6px;
+}
+.hoken-detail span {
+  margin-right: 10px;
+}
+
+/* UKE header */
+.uke-header {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  margin-bottom: 10px;
+  padding: 6px 10px;
+}
+
+.uke-header-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-bright);
+  margin-bottom: 2px;
+}
+
+.uke-header-detail {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.uke-header-detail span {
+  margin-right: 12px;
+}
+
+/* Shuukei table */
+.shuukei-table th,
+.shuukei-table td {
+  text-align: right;
+  padding: 2px 6px;
+  font-size: 12px;
+}
+.shuukei-table th:first-child,
+.shuukei-table td:first-child {
+  text-align: left;
+}
+.shuukei-table td {
+  font-family: var(--font-mono);
+}
