@@ -26,12 +26,23 @@ export function activate(context: vscode.ExtensionContext): void {
     if (editor) await showPreview(editor.document);
   });
 
-  const dataViewCommand = vscode.commands.registerCommand('receiptisan.dataView', async () => {
-    const editor = validateUkeEditor();
-    if (editor) await showDataView(editor.document);
-  });
+  const dataViewVerticalCommand = vscode.commands.registerCommand(
+    'receiptisan.dataViewVertical',
+    async () => {
+      const editor = validateUkeEditor();
+      if (editor) await showDataView(editor.document, 'vertical');
+    },
+  );
 
-  context.subscriptions.push(previewCommand, dataViewCommand);
+  const dataViewHorizontalCommand = vscode.commands.registerCommand(
+    'receiptisan.dataViewHorizontal',
+    async () => {
+      const editor = validateUkeEditor();
+      if (editor) await showDataView(editor.document, 'horizontal');
+    },
+  );
+
+  context.subscriptions.push(previewCommand, dataViewVerticalCommand, dataViewHorizontalCommand);
 }
 
 export function deactivate(): void {

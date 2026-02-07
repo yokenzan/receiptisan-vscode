@@ -31,8 +31,12 @@
         "title": "Receiptisan: Preview (SVG)"
       },
       {
-        "command": "receiptisan.dataView",
-        "title": "Receiptisan: Data View"
+        "command": "receiptisan.dataViewVertical",
+        "title": "Receiptisan: Data View (Vertical / 縦分割)"
+      },
+      {
+        "command": "receiptisan.dataViewHorizontal",
+        "title": "Receiptisan: Data View (Horizontal / 横分割)"
       }
     ],
     "menus": {
@@ -42,7 +46,11 @@
           "when": "editorLangId == uke"
         },
         {
-          "command": "receiptisan.dataView",
+          "command": "receiptisan.dataViewVertical",
+          "when": "editorLangId == uke"
+        },
+        {
+          "command": "receiptisan.dataViewHorizontal",
           "when": "editorLangId == uke"
         }
       ]

@@ -73,7 +73,7 @@ body {
   border-right: none;
   border-top: 1px solid var(--border);
   order: 1;
-  max-height: 30vh;
+  max-height: 264px;
   overflow-y: auto;
   padding: 0;
 }
@@ -442,4 +442,60 @@ table tr:last-child td {
 }
 .shuukei-table td {
   font-family: var(--font-mono);
+}
+
+/* Horizontal layout: nav を左サイドバーに */
+body.layout-horizontal {
+  flex-direction: row;
+}
+body.layout-horizontal #nav {
+  order: 0;
+  width: 220px;
+  max-height: none;
+  height: 100vh;
+  border-top: none;
+  border-right: 1px solid var(--border);
+  flex-shrink: 0;
+}
+body.layout-horizontal #content {
+  order: 1;
+  flex: 1;
+}
+
+/* 摘要テーブルの横スクロール */
+.tekiyou-scroll-container {
+  overflow-x: auto;
+}
+
+/* カレンダー列 */
+.tekiyou-table .col-cal {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  min-width: 18px;
+  padding: 1px 2px;
+  white-space: nowrap;
+}
+
+/* 土曜（青系） */
+.tekiyou-table .cal-sat {
+  background-color: rgba(33, 150, 243, 0.08);
+}
+.tekiyou-table th.cal-sat {
+  color: #1565c0;
+  background-color: rgba(33, 150, 243, 0.12);
+}
+
+/* 日曜（赤系） */
+.tekiyou-table .cal-sun {
+  background-color: rgba(244, 67, 54, 0.08);
+}
+.tekiyou-table th.cal-sun {
+  color: #c62828;
+  background-color: rgba(244, 67, 54, 0.12);
+}
+
+/* 5日境界 */
+.tekiyou-table .cal-5day-border {
+  border-left: 1.5px solid var(--border);
 }

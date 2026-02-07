@@ -3,6 +3,7 @@ import * as path from 'node:path';
 import type { CliError } from './cli';
 import type {
   CommentItem,
+  DailyKaisuu,
   DigitalizedReceipt,
   IyakuhinItem,
   Receipt,
@@ -67,6 +68,68 @@ function buildReceiptLabel(receipt: Receipt): string {
   const nyuugaiLabel = receipt.nyuugai === 'nyuuin' ? '入院' : '外来';
   const patientId = patient.id ?? '';
   return `No.${idPart} - ${shinryouYm}診療 ${nyuugaiLabel} ${escapeHtml(patientId)} ${escapeHtml(patient.name)}`;
+}
+
+// --- Calendar helpers ---
+
+function getDayOfWeek(year: number, month: number, day: number): number {
+  return new Date(year, month - 1, day).getDay();
+}
+
+function getDaysInMonth(year: number, month: number): number {
+  return new Date(year, month, 0).getDate();
+}
+
+function getDailyKaisuu(
+  dailyKaisuus: DailyKaisuu[] | undefined,
+  year: number,
+  month: number,
+  day: number,
+): number {
+  if (!dailyKaisuus) return 0;
+  const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+  const entry = dailyKaisuus.find((dk) => dk.date === dateStr);
+  return entry?.kaisuu ?? 0;
+}
+
+function renderCalendarHeaders(year: number, month: number): string {
+  const daysInMonth = getDaysInMonth(year, month);
+  let headers = '';
+  for (let day = 1; day <= 31; day++) {
+    const classes: string[] = ['col-cal'];
+    if (day <= daysInMonth) {
+      const dow = getDayOfWeek(year, month, day);
+      if (dow === 0) classes.push('cal-sun');
+      else if (dow === 6) classes.push('cal-sat');
+    }
+    if (day % 5 === 1 && day > 1) classes.push('cal-5day-border');
+    const display = day <= daysInMonth ? String(day) : '';
+    headers += `<th class="${classes.join(' ')}">${display}</th>`;
+  }
+  return headers;
+}
+
+function renderCalendarCells(
+  dailyKaisuus: DailyKaisuu[] | undefined,
+  isFirstInSantei: boolean,
+  year: number,
+  month: number,
+): string {
+  const daysInMonth = getDaysInMonth(year, month);
+  let cells = '';
+  for (let day = 1; day <= 31; day++) {
+    const classes: string[] = ['col-cal'];
+    if (day <= daysInMonth) {
+      const dow = getDayOfWeek(year, month, day);
+      if (dow === 0) classes.push('cal-sun');
+      else if (dow === 6) classes.push('cal-sat');
+    }
+    if (day % 5 === 1 && day > 1) classes.push('cal-5day-border');
+    const count = isFirstInSantei ? getDailyKaisuu(dailyKaisuus, year, month, day) : 0;
+    const display = count > 0 ? String(count) : '';
+    cells += `<td class="${classes.join(' ')}">${display}</td>`;
+  }
+  return cells;
 }
 
 // --- Render functions ---
@@ -309,6 +372,9 @@ function renderTekiyouCard(receipt: Receipt): string {
   const sections = receipt.tekiyou.shinryou_shikibetsu_sections;
   if (sections.length === 0) return '';
 
+  const year = receipt.shinryou_ym.year;
+  const month = receipt.shinryou_ym.month;
+
   let rows = '';
   let prevShinkuUpper = '';
 
@@ -346,6 +412,9 @@ function renderTekiyouCard(receipt: Receipt): string {
             isFirstItemInSantei,
             santei.tensuu,
             santei.kaisuu,
+            santei.daily_kaisuus,
+            year,
+            month,
           );
 
           if (isFirstItemInSantei) isFirstItemInSantei = false;
@@ -361,7 +430,7 @@ function renderTekiyouCard(receipt: Receipt): string {
   return `
 <div class="card">
   <div class="card-title">摘要欄</div>
-  <div class="card-body">
+  <div class="card-body tekiyou-scroll-container">
     <table class="tekiyou-table">
       <tr>
         <th>コード</th>
@@ -370,6 +439,7 @@ function renderTekiyouCard(receipt: Receipt): string {
         <th>明細</th>
         <th style="text-align:right">点数</th>
         <th style="text-align:right">回数</th>
+        ${renderCalendarHeaders(year, month)}
       </tr>
       ${rows}
     </table>
@@ -384,13 +454,26 @@ function renderTekiyouRow(
   isFirstInSantei: boolean,
   santeiTensuu: number,
   santeiKaisuu: number,
+  dailyKaisuus: DailyKaisuu[] | undefined,
+  year: number,
+  month: number,
 ): string {
   const rowClass = separatorClass ? ` class="${separatorClass}"` : '';
   const categoryClass = getCategoryColorClass(item.type);
   const mark = isFirstInSantei ? '<span style="color:#9c27b0;font-weight:bold">＊</span>' : '';
 
   if (item.type === 'comment') {
-    return renderCommentRow(item, rowClass, shinkuCode, mark, categoryClass);
+    return renderCommentRow(
+      item,
+      rowClass,
+      shinkuCode,
+      mark,
+      categoryClass,
+      dailyKaisuus,
+      isFirstInSantei,
+      year,
+      month,
+    );
   }
 
   return renderMedicalRow(
@@ -402,6 +485,9 @@ function renderTekiyouRow(
     santeiTensuu,
     santeiKaisuu,
     isFirstInSantei,
+    dailyKaisuus,
+    year,
+    month,
   );
 }
 
@@ -414,6 +500,9 @@ function renderMedicalRow(
   santeiTensuu: number,
   santeiKaisuu: number,
   isFirstInSantei: boolean,
+  dailyKaisuus: DailyKaisuu[] | undefined,
+  year: number,
+  month: number,
 ): string {
   const code = item.master.code;
   const name =
@@ -439,6 +528,7 @@ function renderMedicalRow(
     <td class="col-name ${categoryClass}">${escapeHtml(name)}${detailText}</td>
     <td class="col-tensuu">${tensuuDisplay}</td>
     <td class="col-kaisuu">${kaisuuDisplay}</td>
+    ${renderCalendarCells(dailyKaisuus, isFirstInSantei, year, month)}
   </tr>`;
 }
 
@@ -448,6 +538,10 @@ function renderCommentRow(
   shinkuCode: string,
   mark: string,
   categoryClass: string,
+  dailyKaisuus: DailyKaisuu[] | undefined,
+  isFirstInSantei: boolean,
+  year: number,
+  month: number,
 ): string {
   const code = item.master.code;
   const text =
@@ -465,6 +559,7 @@ function renderCommentRow(
     <td class="col-name ${categoryClass}">${escapeHtml(text)}${appended}</td>
     <td class="col-tensuu"></td>
     <td class="col-kaisuu"></td>
+    ${renderCalendarCells(dailyKaisuus, isFirstInSantei, year, month)}
   </tr>`;
 }
 
@@ -605,7 +700,9 @@ export function renderErrorHtml(error: CliError): string {
 </body></html>`;
 }
 
-export function renderDataView(data: ReceiptisanJsonOutput): string {
+export function renderDataView(data: ReceiptisanJsonOutput, layoutMode = 'vertical'): string {
+  const bodyClass = layoutMode === 'horizontal' ? ' class="layout-horizontal"' : '';
+
   let navItems = '';
   let receiptSections = '';
   let index = 0;
@@ -631,7 +728,7 @@ export function renderDataView(data: ReceiptisanJsonOutput): string {
 ${cssContent}
 </style>
 </head>
-<body>
+<body${bodyClass}>
   <div id="nav">
     <ul>${navItems}</ul>
   </div>

@@ -180,9 +180,15 @@ export interface IchirenUnit {
   santei_units: SanteiUnit[];
 }
 
+export interface DailyKaisuu {
+  date: string; // "YYYY-MM-DD" (Ruby Date#to_s 形式)
+  kaisuu: number;
+}
+
 export interface SanteiUnit {
   tensuu: number;
   kaisuu: number;
+  daily_kaisuus?: DailyKaisuu[];
   items: TekiyouItem[];
 }
 
