@@ -2,22 +2,20 @@ import * as path from 'node:path';
 import * as vscode from 'vscode';
 import { type CliError, executeWithProgress } from './cli';
 
-// Track active preview panels by file path
-const activePanels: Map<string, vscode.WebviewPanel> = new Map();
+// Single shared preview panel
+let activePanel: vscode.WebviewPanel | undefined;
 
 export async function showPreview(document: vscode.TextDocument): Promise<void> {
   const filePath = document.fileName;
   const fileName = path.basename(filePath);
 
-  // Check if panel already exists for this file
-  const existingPanel = activePanels.get(filePath);
-  if (existingPanel) {
-    existingPanel.reveal(vscode.ViewColumn.Beside);
-    await updatePanel(existingPanel, filePath);
+  if (activePanel) {
+    activePanel.title = `プレビュー: ${fileName}`;
+    activePanel.reveal(vscode.ViewColumn.Beside);
+    await updatePanel(activePanel, filePath);
     return;
   }
 
-  // Create new panel
   const panel = vscode.window.createWebviewPanel(
     'receiptisanPreview',
     `プレビュー: ${fileName}`,
@@ -28,12 +26,10 @@ export async function showPreview(document: vscode.TextDocument): Promise<void> 
     },
   );
 
-  // Track panel
-  activePanels.set(filePath, panel);
+  activePanel = panel;
 
-  // Clean up when panel is closed
   panel.onDidDispose(() => {
-    activePanels.delete(filePath);
+    activePanel = undefined;
   });
 
   await updatePanel(panel, filePath);
