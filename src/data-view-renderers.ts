@@ -1,3 +1,4 @@
+import * as crypto from 'node:crypto';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import type { CliError } from './cli';
@@ -713,7 +714,9 @@ export function renderErrorHtml(error: CliError): string {
 
   return `<!DOCTYPE html>
 <html lang="ja">
-<head><meta charset="UTF-8"><style>
+<head><meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline';">
+<style>
   body { font-family: sans-serif; padding: 20px; color: #333; background: #f5f5f5; }
   h1 { color: #c62828; }
   .stderr { background: #e8e8e8; padding: 10px; overflow: auto; max-height: 200px; color: #333; }
@@ -726,6 +729,7 @@ export function renderErrorHtml(error: CliError): string {
 }
 
 export function renderDataView(data: ReceiptisanJsonOutput, layoutMode = 'vertical'): string {
+  const nonce = crypto.randomUUID();
   const bodyClass = layoutMode === 'horizontal' ? ' class="layout-horizontal"' : '';
 
   let navItems = '';
@@ -749,6 +753,7 @@ export function renderDataView(data: ReceiptisanJsonOutput, layoutMode = 'vertic
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'nonce-${nonce}';">
 <style>
 ${cssContent}
 </style>
@@ -758,7 +763,7 @@ ${cssContent}
     <ul>${navItems}</ul>
   </div>
   <div id="content">${receiptSections}</div>
-  <script>
+  <script nonce="${nonce}">
     (function() {
       var navLinks = document.querySelectorAll('.nav-item');
       var content = document.getElementById('content');
