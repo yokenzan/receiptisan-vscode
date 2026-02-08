@@ -102,16 +102,13 @@ function getDailyKaisuu(
 function renderCalendarHeaders(year: number, month: number): string {
   const daysInMonth = getDaysInMonth(year, month);
   let headers = '';
-  for (let day = 1; day <= 31; day++) {
+  for (let day = 1; day <= daysInMonth; day++) {
     const classes: string[] = ['col-cal'];
-    if (day <= daysInMonth) {
-      const dow = getDayOfWeek(year, month, day);
-      if (dow === 0) classes.push('cal-sun');
-      else if (dow === 6) classes.push('cal-sat');
-    }
+    const dow = getDayOfWeek(year, month, day);
+    if (dow === 0) classes.push('cal-sun');
+    else if (dow === 6) classes.push('cal-sat');
     if (day % 5 === 1 && day > 1) classes.push('cal-5day-border');
-    const display = day <= daysInMonth ? String(day) : '';
-    headers += `<th class="${classes.join(' ')}">${display}</th>`;
+    headers += `<th class="${classes.join(' ')}">${day}</th>`;
   }
   return headers;
 }
@@ -124,13 +121,11 @@ function renderCalendarCells(
 ): string {
   const daysInMonth = getDaysInMonth(year, month);
   let cells = '';
-  for (let day = 1; day <= 31; day++) {
+  for (let day = 1; day <= daysInMonth; day++) {
     const classes: string[] = ['col-cal'];
-    if (day <= daysInMonth) {
-      const dow = getDayOfWeek(year, month, day);
-      if (dow === 0) classes.push('cal-sun');
-      else if (dow === 6) classes.push('cal-sat');
-    }
+    const dow = getDayOfWeek(year, month, day);
+    if (dow === 0) classes.push('cal-sun');
+    else if (dow === 6) classes.push('cal-sat');
     if (day % 5 === 1 && day > 1) classes.push('cal-5day-border');
     const count = showDailyKaisuu ? getDailyKaisuu(dailyKaisuus, year, month, day) : 0;
     const display = count > 0 ? String(count) : '';
@@ -199,27 +194,37 @@ function renderReceiptHeader(receipt: Receipt): string {
           .join(' ')
       : '<span class="text-dim">なし</span>';
 
+  const nyuuinDateCell =
+    receipt.nyuugai === 'nyuuin' && receipt.nyuuin_date
+      ? escapeHtml(formatWarekiShort(receipt.nyuuin_date.wareki))
+      : '';
+  const byoushouCell =
+    receipt.nyuugai === 'nyuuin' && receipt.byoushou_types.length > 0
+      ? receipt.byoushou_types.map((b) => escapeHtml(b.short_name)).join('、')
+      : '';
+
   return `
 <div class="card receipt-info-card">
   <div class="card-body">
     <table class="receipt-info-table">
       <tr>
-        <th>No.</th>
-        <td><strong>${receipt.id}</strong> &emsp; ${escapeHtml(formatWarekiShort(receipt.shinryou_ym.wareki))}診療</td>
+        <th colspan="4">No. <strong>${receipt.id}</strong></th>
+      </tr>
+      <tr>
+        <th>診療年月</th>
+        <td>${escapeHtml(formatWarekiShort(receipt.shinryou_ym.wareki))}診療</td>
+        <th>入外</th>
+        <td>${renderNyuugaiTag(receipt.nyuugai)}</td>
       </tr>
       <tr>
         <th>種別</th>
         <td>${typeBadges}</td>
+        ${nyuuinDateCell ? `<th>入院日</th><td>${nyuuinDateCell}</td>` : '<td></td><td></td>'}
       </tr>
       <tr>
         <th>特記事項</th>
         <td>${tokkiBadges}</td>
-      </tr>
-      <tr>
-        <th>入外</th>
-        <td>
-          ${renderNyuugaiTag(receipt.nyuugai)}${receipt.nyuugai === 'nyuuin' && receipt.nyuuin_date ? ` &emsp;${escapeHtml(formatWarekiShort(receipt.nyuuin_date.wareki))}入院` : ''}${receipt.nyuugai === 'nyuuin' && receipt.byoushou_types.length > 0 ? ` &emsp;${receipt.byoushou_types.map((b) => escapeHtml(b.short_name)).join('、')}` : ''}
-        </td>
+        ${byoushouCell ? `<th>病棟</th><td>${byoushouCell}</td>` : '<td></td><td></td>'}
       </tr>
     </table>
   </div>
