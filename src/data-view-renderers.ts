@@ -12,6 +12,7 @@ import type {
   ShoubyoumeiGroup,
   TekiyouItem,
   TokuteiKizaiItem,
+  Wareki,
 } from './types';
 
 const cssContent = fs.readFileSync(path.join(__dirname, 'data-view.css'), 'utf-8');
@@ -31,6 +32,12 @@ function escapeHtml(text: unknown): string {
 function formatNumber(n: number | null | undefined): string {
   if (n == null) return '';
   return n.toLocaleString();
+}
+
+function formatWarekiShort(wareki: Wareki): string {
+  const base = `${wareki.gengou.alphabet}${wareki.year}.${wareki.month}`;
+  if (wareki.day != null) return `${base}.${wareki.day}`;
+  return base;
 }
 
 function getTenkiColorClass(code: number | string): string {
@@ -63,8 +70,8 @@ function renderNyuugaiTag(nyuugai: string): string {
 
 function buildReceiptLabel(receipt: Receipt): string {
   const patient = receipt.patient;
-  const idPart = String(receipt.id).padStart(5, '0');
-  const shinryouYm = escapeHtml(receipt.shinryou_ym.wareki.text);
+  const idPart = String(receipt.id).padStart(4, '0');
+  const shinryouYm = escapeHtml(formatWarekiShort(receipt.shinryou_ym.wareki));
   const nyuugaiLabel = receipt.nyuugai === 'nyuuin' ? '入院' : '外来';
   const patientId = patient.id ?? '';
   return `No.${idPart} - ${shinryouYm}診療 ${nyuugaiLabel} ${escapeHtml(patientId)} ${escapeHtml(patient.name)}`;
@@ -111,7 +118,7 @@ function renderCalendarHeaders(year: number, month: number): string {
 
 function renderCalendarCells(
   dailyKaisuus: DailyKaisuu[] | undefined,
-  isFirstInSantei: boolean,
+  showDailyKaisuu: boolean,
   year: number,
   month: number,
 ): string {
@@ -125,7 +132,7 @@ function renderCalendarCells(
       else if (dow === 6) classes.push('cal-sat');
     }
     if (day % 5 === 1 && day > 1) classes.push('cal-5day-border');
-    const count = isFirstInSantei ? getDailyKaisuu(dailyKaisuus, year, month, day) : 0;
+    const count = showDailyKaisuu ? getDailyKaisuu(dailyKaisuus, year, month, day) : 0;
     const display = count > 0 ? String(count) : '';
     cells += `<td class="${classes.join(' ')}">${display}</td>`;
   }
@@ -144,7 +151,7 @@ function renderUkeHeader(dr: DigitalizedReceipt): string {
 <div class="uke-header">
   <div class="uke-header-title">${hospitalName}</div>
   <div class="uke-header-detail">
-    <span>${escapeHtml(dr.seikyuu_ym.wareki.text)}請求</span>
+    <span>${escapeHtml(formatWarekiShort(dr.seikyuu_ym.wareki))}請求</span>
     <span>${escapeHtml(dr.audit_payer.name)}</span>
     <span>${escapeHtml(dr.prefecture.name)}</span>
   </div>
@@ -161,9 +168,9 @@ function renderReceipt(receipt: Receipt, id: string): string {
   ${renderReceiptHeader(receipt)}
   ${renderPatientCard(receipt)}
   ${renderHokenCard(receipt)}
+  ${renderKyuufuCard(receipt)}
   ${renderShoubyoumeiCard(receipt.shoubyoumeis)}
   ${renderTekiyouCard(receipt)}
-  ${renderKyuufuCard(receipt)}
 </div>`;
 }
 
@@ -198,7 +205,7 @@ function renderReceiptHeader(receipt: Receipt): string {
     <table class="receipt-info-table">
       <tr>
         <th>No.</th>
-        <td><strong>${receipt.id}</strong> &emsp; ${escapeHtml(receipt.shinryou_ym.wareki.text)}診療</td>
+        <td><strong>${receipt.id}</strong> &emsp; ${escapeHtml(formatWarekiShort(receipt.shinryou_ym.wareki))}診療</td>
       </tr>
       <tr>
         <th>種別</th>
@@ -210,10 +217,10 @@ function renderReceiptHeader(receipt: Receipt): string {
       </tr>
       <tr>
         <th>入外</th>
-        <td>${renderNyuugaiTag(receipt.nyuugai)}</td>
+        <td>
+          ${renderNyuugaiTag(receipt.nyuugai)}${receipt.nyuugai === 'nyuuin' && receipt.nyuuin_date ? ` &emsp;${escapeHtml(formatWarekiShort(receipt.nyuuin_date.wareki))}入院` : ''}${receipt.nyuugai === 'nyuuin' && receipt.byoushou_types.length > 0 ? ` &emsp;${receipt.byoushou_types.map((b) => escapeHtml(b.short_name)).join('、')}` : ''}
+        </td>
       </tr>
-      ${receipt.nyuugai === 'nyuuin' && receipt.nyuuin_date ? `<tr><th>入院日</th><td>${escapeHtml(receipt.nyuuin_date.wareki.text)}</td></tr>` : ''}
-      ${receipt.nyuugai === 'nyuuin' && receipt.byoushou_types.length > 0 ? `<tr><th>病床</th><td>${receipt.byoushou_types.map((b) => escapeHtml(b.short_name)).join('、')}</td></tr>` : ''}
     </table>
   </div>
 </div>`;
@@ -236,7 +243,7 @@ function renderPatientCard(receipt: Receipt): string {
       <tr><th>患者番号</th><td>${escapeHtml(p.id)}</td></tr>
       <tr><th>氏名</th><td>${escapeHtml(p.name)}${p.name_kana ? `（${escapeHtml(p.name_kana)}）` : ''}</td></tr>
       <tr><th>性別</th><td>${sexTag}</td></tr>
-      <tr><th>生年月日</th><td>${escapeHtml(p.birth_date.wareki.text)}</td></tr>
+      <tr><th>生年月日</th><td>${escapeHtml(formatWarekiShort(p.birth_date.wareki))}</td></tr>
     </table>
   </div>
 </div>`;
@@ -263,8 +270,8 @@ function renderHokenCard(receipt: Receipt): string {
       <td>${escapeHtml(shikakuBangou)}</td>
       <td class="num">${kih ? `${kih.shinryou_jitsunissuu}日` : ''}</td>
       <td class="num">${kih ? `${formatNumber(kih.goukei_tensuu)}点` : ''}</td>
-      <td class="num">${kih?.ichibu_futankin != null ? `${formatNumber(kih.ichibu_futankin)}円` : ''}</td>
       <td class="num"></td>
+      <td class="num">${kih?.ichibu_futankin != null ? `${formatNumber(kih.ichibu_futankin)}円` : ''}</td>
     </tr>`;
 
     if (ih.kyuufu_wariai != null) detailParts.push(`給付割合: ${ih.kyuufu_wariai}%`);
@@ -280,8 +287,8 @@ function renderHokenCard(receipt: Receipt): string {
       <td>${escapeHtml(kouhi.jukyuusha_bangou)}</td>
       <td class="num">${rk ? `${rk.shinryou_jitsunissuu}日` : ''}</td>
       <td class="num">${rk ? `${formatNumber(rk.goukei_tensuu)}点` : ''}</td>
-      <td class="num">${rk?.ichibu_futankin != null ? `${formatNumber(rk.ichibu_futankin)}円` : ''}</td>
       <td class="num">${rk?.kyuufu_taishou_ichibu_futankin != null ? `(${formatNumber(rk.kyuufu_taishou_ichibu_futankin)}円)` : ''}</td>
+      <td class="num">${rk?.ichibu_futankin != null ? `${formatNumber(rk.ichibu_futankin)}円` : ''}</td>
     </tr>`;
   }
 
@@ -301,8 +308,8 @@ function renderHokenCard(receipt: Receipt): string {
         <th>資格番号</th>
         <th>実日数</th>
         <th>請求点数</th>
-        <th>負担金</th>
         <th>給付対象負担金</th>
+        <th>負担金</th>
       </tr>
       ${rows}
     </table>
@@ -336,11 +343,10 @@ function renderShoubyoumeiCard(groups: ShoubyoumeiGroup[]): string {
         ? ` <span class="text-dim">（${escapeHtml(s.comment)}）</span>`
         : '';
 
-      const rowClass = s.is_main
-        ? ' class="disease-main"'
-        : s.is_worpro
-          ? ' class="disease-worpro"'
-          : '';
+      const diseaseClasses: string[] = [];
+      if (s.is_main) diseaseClasses.push('disease-main');
+      if (s.is_worpro) diseaseClasses.push('disease-worpro');
+      const rowClass = diseaseClasses.length > 0 ? ` class="${diseaseClasses.join(' ')}"` : '';
 
       rows += `
       <tr${rowClass}>
@@ -350,7 +356,7 @@ function renderShoubyoumeiCard(groups: ShoubyoumeiGroup[]): string {
         <td>${utagaiBadge}</td>
         <td>${worproBadge}</td>
         <td>${escapeHtml(s.full_text)}${commentText}</td>
-        <td>${escapeHtml(s.start_date.wareki.text)}</td>
+        <td>${escapeHtml(formatWarekiShort(s.start_date.wareki))}</td>
         <td>${tenkiBadge}</td>
       </tr>`;
     }
@@ -388,8 +394,13 @@ function renderTekiyouCard(receipt: Receipt): string {
 
       for (const santei of ichiren.santei_units) {
         let isFirstItemInSantei = true;
+        const lastNonCommentIdx = santei.items.reduce(
+          (lastIdx, item, idx) => (item.type !== 'comment' ? idx : lastIdx),
+          -1,
+        );
 
-        for (const item of santei.items) {
+        for (let itemIdx = 0; itemIdx < santei.items.length; itemIdx++) {
+          const item = santei.items[itemIdx];
           let separatorClass = '';
           if (isFirstIchirenInSection) {
             if (shinkuUpper !== prevShinkuUpper && prevShinkuUpper !== '') {
@@ -404,12 +415,14 @@ function renderTekiyouCard(receipt: Receipt): string {
           }
 
           const showShinku = isFirstIchirenInSection && isFirstItemInSantei;
+          const isLastNonComment = itemIdx === lastNonCommentIdx;
 
           rows += renderTekiyouRow(
             item,
             separatorClass,
             showShinku ? shinkuCode : '',
             isFirstItemInSantei,
+            isLastNonComment,
             santei.tensuu,
             santei.kaisuu,
             santei.daily_kaisuus,
@@ -452,6 +465,7 @@ function renderTekiyouRow(
   separatorClass: string,
   shinkuCode: string,
   isFirstInSantei: boolean,
+  isLastNonComment: boolean,
   santeiTensuu: number,
   santeiKaisuu: number,
   dailyKaisuus: DailyKaisuu[] | undefined,
@@ -470,7 +484,7 @@ function renderTekiyouRow(
       mark,
       categoryClass,
       dailyKaisuus,
-      isFirstInSantei,
+      isLastNonComment,
       year,
       month,
     );
@@ -484,7 +498,7 @@ function renderTekiyouRow(
     categoryClass,
     santeiTensuu,
     santeiKaisuu,
-    isFirstInSantei,
+    isLastNonComment,
     dailyKaisuus,
     year,
     month,
@@ -499,7 +513,7 @@ function renderMedicalRow(
   categoryClass: string,
   santeiTensuu: number,
   santeiKaisuu: number,
-  isFirstInSantei: boolean,
+  isLastNonComment: boolean,
   dailyKaisuus: DailyKaisuu[] | undefined,
   year: number,
   month: number,
@@ -510,6 +524,9 @@ function renderMedicalRow(
       ? item.text.product_name
       : item.text.master_name;
 
+  const isUnknown = item.text.master_name.startsWith('【不明な');
+  const unknownClass = isUnknown ? ' item-unknown' : '';
+
   const detailParts: string[] = [];
   if (item.text.shiyouryou) detailParts.push(item.text.shiyouryou);
   if (item.text.unit_price) detailParts.push(item.text.unit_price);
@@ -518,17 +535,17 @@ function renderMedicalRow(
       ? ` <span class="text-dim">${escapeHtml(detailParts.join(' '))}</span>`
       : '';
 
-  const tensuuDisplay = isFirstInSantei && santeiTensuu > 0 ? formatNumber(santeiTensuu) : '';
-  const kaisuuDisplay = isFirstInSantei && santeiTensuu > 0 ? `x${santeiKaisuu}` : '';
+  const tensuuDisplay = isLastNonComment && santeiTensuu > 0 ? formatNumber(santeiTensuu) : '';
+  const kaisuuDisplay = isLastNonComment && santeiTensuu > 0 ? `x${santeiKaisuu}` : '';
 
   return `<tr${rowClass}>
     <td class="col-code">${escapeHtml(code)}</td>
     <td class="col-shinku">${escapeHtml(shinkuCode)}</td>
     <td class="col-mark">${mark}</td>
-    <td class="col-name ${categoryClass}">${escapeHtml(name)}${detailText}</td>
+    <td class="col-name ${categoryClass}${unknownClass}">${escapeHtml(name)}${detailText}</td>
     <td class="col-tensuu">${tensuuDisplay}</td>
     <td class="col-kaisuu">${kaisuuDisplay}</td>
-    ${renderCalendarCells(dailyKaisuus, isFirstInSantei, year, month)}
+    ${renderCalendarCells(dailyKaisuus, isLastNonComment, year, month)}
   </tr>`;
 }
 
@@ -539,7 +556,7 @@ function renderCommentRow(
   mark: string,
   categoryClass: string,
   dailyKaisuus: DailyKaisuu[] | undefined,
-  isFirstInSantei: boolean,
+  isLastNonComment: boolean,
   year: number,
   month: number,
 ): string {
@@ -548,18 +565,15 @@ function renderCommentRow(
     typeof item.text === 'string'
       ? item.text
       : ((item.text as { master_name?: string }).master_name ?? '');
-  const appended = item.appended_content
-    ? `<span class="appended">${escapeHtml(item.appended_content.text)}</span>`
-    : '';
 
   return `<tr${rowClass}>
     <td class="col-code">${escapeHtml(code)}</td>
     <td class="col-shinku">${escapeHtml(shinkuCode)}</td>
     <td class="col-mark">${mark}</td>
-    <td class="col-name ${categoryClass}">${escapeHtml(text)}${appended}</td>
+    <td class="col-name ${categoryClass}">${escapeHtml(text)}</td>
     <td class="col-tensuu"></td>
     <td class="col-kaisuu"></td>
-    ${renderCalendarCells(dailyKaisuus, isFirstInSantei, year, month)}
+    ${renderCalendarCells(dailyKaisuus, isLastNonComment, year, month)}
   </tr>`;
 }
 
@@ -628,54 +642,60 @@ function renderKyuufuCard(receipt: Receipt): string {
   const k = receipt.ryouyou_no_kyuufu;
   const ih = k.iryou_hoken;
 
-  const rows: string[] = [];
+  const hasIh =
+    ih &&
+    ((ih.shokuji_seikatsu_ryouyou_kaisuu != null && ih.shokuji_seikatsu_ryouyou_kaisuu > 0) ||
+      (ih.shokuji_seikatsu_ryouyou_goukei_kingaku != null &&
+        ih.shokuji_seikatsu_ryouyou_goukei_kingaku > 0) ||
+      ih.shokuji_seikatsu_ryouyou_hyoujun_futangaku > 0);
+  const hasKouhi = k.kouhi_futan_iryous.some(
+    (rk) =>
+      (rk.shokuji_seikatsu_ryouyou_kaisuu != null && rk.shokuji_seikatsu_ryouyou_kaisuu > 0) ||
+      (rk.shokuji_seikatsu_ryouyou_goukei_kingaku != null &&
+        rk.shokuji_seikatsu_ryouyou_goukei_kingaku > 0),
+  );
 
-  if (ih) {
-    if (ih.shokuji_seikatsu_ryouyou_kaisuu != null && ih.shokuji_seikatsu_ryouyou_kaisuu > 0) {
-      rows.push(
-        `<tr><th>食事・生活療養回数</th><td class="num">${formatNumber(ih.shokuji_seikatsu_ryouyou_kaisuu)}回</td></tr>`,
-      );
-    }
-    if (
-      ih.shokuji_seikatsu_ryouyou_goukei_kingaku != null &&
-      ih.shokuji_seikatsu_ryouyou_goukei_kingaku > 0
-    ) {
-      rows.push(
-        `<tr><th>食事・生活療養合計金額</th><td class="num">${formatNumber(ih.shokuji_seikatsu_ryouyou_goukei_kingaku)}円</td></tr>`,
-      );
-    }
-    if (ih.shokuji_seikatsu_ryouyou_hyoujun_futangaku > 0) {
-      rows.push(
-        `<tr><th>食事・生活療養標準負担額</th><td class="num">${formatNumber(ih.shokuji_seikatsu_ryouyou_hyoujun_futangaku)}円</td></tr>`,
-      );
-    }
+  if (!hasIh && !hasKouhi) return '';
+
+  let rows = '';
+
+  if (hasIh && ih) {
+    rows += `<tr>
+      <td>医療保険</td>
+      <td class="num">${ih.shokuji_seikatsu_ryouyou_kaisuu != null ? `${formatNumber(ih.shokuji_seikatsu_ryouyou_kaisuu)}回` : ''}</td>
+      <td class="num">${ih.shokuji_seikatsu_ryouyou_goukei_kingaku != null ? `${formatNumber(ih.shokuji_seikatsu_ryouyou_goukei_kingaku)}円` : ''}</td>
+      <td class="num">${ih.shokuji_seikatsu_ryouyou_hyoujun_futangaku > 0 ? `${formatNumber(ih.shokuji_seikatsu_ryouyou_hyoujun_futangaku)}円` : ''}</td>
+    </tr>`;
   }
 
   for (let i = 0; i < k.kouhi_futan_iryous.length; i++) {
     const rk = k.kouhi_futan_iryous[i];
-    if (rk.shokuji_seikatsu_ryouyou_kaisuu != null && rk.shokuji_seikatsu_ryouyou_kaisuu > 0) {
-      rows.push(
-        `<tr><th>公費${i + 1} 食事・生活療養回数</th><td class="num">${formatNumber(rk.shokuji_seikatsu_ryouyou_kaisuu)}回</td></tr>`,
-      );
-    }
-    if (
-      rk.shokuji_seikatsu_ryouyou_goukei_kingaku != null &&
-      rk.shokuji_seikatsu_ryouyou_goukei_kingaku > 0
-    ) {
-      rows.push(
-        `<tr><th>公費${i + 1} 食事・生活療養合計金額</th><td class="num">${formatNumber(rk.shokuji_seikatsu_ryouyou_goukei_kingaku)}円</td></tr>`,
-      );
-    }
-  }
+    const hasData =
+      (rk.shokuji_seikatsu_ryouyou_kaisuu != null && rk.shokuji_seikatsu_ryouyou_kaisuu > 0) ||
+      (rk.shokuji_seikatsu_ryouyou_goukei_kingaku != null &&
+        rk.shokuji_seikatsu_ryouyou_goukei_kingaku > 0);
+    if (!hasData) continue;
 
-  if (rows.length === 0) return '';
+    rows += `<tr>
+      <td>公費${i + 1}</td>
+      <td class="num">${rk.shokuji_seikatsu_ryouyou_kaisuu != null ? `${formatNumber(rk.shokuji_seikatsu_ryouyou_kaisuu)}回` : ''}</td>
+      <td class="num">${rk.shokuji_seikatsu_ryouyou_goukei_kingaku != null ? `${formatNumber(rk.shokuji_seikatsu_ryouyou_goukei_kingaku)}円` : ''}</td>
+      <td class="num">${rk.shokuji_seikatsu_ryouyou_hyoujun_futangaku > 0 ? `${formatNumber(rk.shokuji_seikatsu_ryouyou_hyoujun_futangaku)}円` : ''}</td>
+    </tr>`;
+  }
 
   return `
 <div class="card">
   <div class="card-title">食事・生活療養</div>
   <div class="card-body">
     <table>
-      ${rows.join('\n      ')}
+      <tr>
+        <th>区分</th>
+        <th>回数</th>
+        <th>合計金額</th>
+        <th>標準負担額</th>
+      </tr>
+      ${rows}
     </table>
   </div>
 </div>`;

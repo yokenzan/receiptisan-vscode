@@ -283,12 +283,14 @@ table tr:last-child td {
   color: var(--color-co);
   font-style: italic;
 }
+.item-unknown {
+  text-decoration: underline wavy #bbb;
+}
 
 .disease-main td {
   font-weight: 600;
 }
 .disease-worpro td {
-  font-style: italic;
   color: var(--text-dim);
   text-decoration: underline wavy #bbb;
 }
@@ -450,7 +452,7 @@ body.layout-horizontal {
 }
 body.layout-horizontal #nav {
   order: 0;
-  width: 220px;
+  width: 360px;
   max-height: none;
   height: 100vh;
   border-top: none;
