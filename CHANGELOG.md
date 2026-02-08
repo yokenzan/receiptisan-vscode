@@ -1,3 +1,16 @@
+# [1.2.0](https://github.com/yokenzan/receiptisan-vscode/compare/v1.1.0...v1.2.0) (2026-02-08)
+
+
+### Bug Fixes
+
+* allow webview fonts and keep CLI stderr ([b0e4b93](https://github.com/yokenzan/receiptisan-vscode/commit/b0e4b931def74230aad71cb2b390196e61a03510))
+* handle JSON.parse SyntaxError in data-view updatePanel ([8c7f1f8](https://github.com/yokenzan/receiptisan-vscode/commit/8c7f1f8af6562a87f83d5d745100e38e8c87ec90))
+
+
+### Features
+
+* add Content Security Policy to webview HTML outputs ([a5946ab](https://github.com/yokenzan/receiptisan-vscode/commit/a5946ab5ae159529ca5183495481b34de4e5ca17))
+
 # [1.1.0](https://github.com/yokenzan/receiptisan-vscode/compare/v1.0.0...v1.1.0) (2026-02-08)
 
 
