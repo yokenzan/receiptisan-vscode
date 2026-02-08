@@ -1,6 +1,6 @@
 import * as path from 'node:path';
 import * as vscode from 'vscode';
-import { type CliError, executeWithProgress } from './cli';
+import { type CliError, type CliResult, executeWithProgress } from './cli';
 import { renderDataView, renderErrorHtml } from './data-view-renderers';
 import type { ReceiptisanJsonOutput } from './types';
 
@@ -48,14 +48,19 @@ async function updatePanel(
   filePath: string,
   layoutMode: LayoutMode,
 ): Promise<void> {
+  let result: CliResult | undefined;
   try {
-    const result = await executeWithProgress(filePath, 'json');
+    result = await executeWithProgress(filePath, 'json');
     const data: ReceiptisanJsonOutput = JSON.parse(result.stdout);
     panel.webview.html = renderDataView(data, layoutMode);
   } catch (err) {
     const error: CliError =
       err instanceof SyntaxError
-        ? { type: 'execution_error', message: `CLIの出力を解析できませんでした: ${err.message}` }
+        ? {
+            type: 'execution_error',
+            message: `CLIの出力を解析できませんでした: ${err.message}`,
+            stderr: result?.stderr,
+          }
         : (err as CliError);
     panel.webview.html = renderErrorHtml(error);
     vscode.window.showErrorMessage(error.message);

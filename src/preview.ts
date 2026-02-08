@@ -87,7 +87,7 @@ function wrapWithZoomControls(cliHtml: string): string {
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'nonce-${nonce}'; img-src data:;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'nonce-${nonce}'; img-src data:; font-src *;">
   <style>
     body { margin: 0; padding: 0; overflow: hidden; background: #1e1e1e; }
     #zoom-toolbar {
