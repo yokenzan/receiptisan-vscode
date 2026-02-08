@@ -1,3 +1,4 @@
+import * as crypto from 'node:crypto';
 import * as path from 'node:path';
 import * as vscode from 'vscode';
 import { type CliError, executeWithProgress } from './cli';
@@ -55,6 +56,7 @@ function generateErrorHtml(error: CliError): string {
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline';">
   <style>
     body {
       font-family: sans-serif;
@@ -80,10 +82,12 @@ function generateErrorHtml(error: CliError): string {
 }
 
 function wrapWithZoomControls(cliHtml: string): string {
+  const nonce = crypto.randomUUID();
   return `<!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'nonce-${nonce}'; img-src data:;">
   <style>
     body { margin: 0; padding: 0; overflow: hidden; background: #1e1e1e; }
     #zoom-toolbar {
@@ -138,7 +142,7 @@ function wrapWithZoomControls(cliHtml: string): string {
   <div id="preview-container">
     <div id="preview-content">${cliHtml}</div>
   </div>
-  <script>
+  <script nonce="${nonce}">
     (function() {
       const STEP = 0.1;
       const MIN = 0.1;
