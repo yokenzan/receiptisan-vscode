@@ -1,3 +1,21 @@
+# [1.1.0](https://github.com/yokenzan/receiptisan-vscode/compare/v1.0.0...v1.1.0) (2026-02-08)
+
+
+### Bug Fixes
+
+* handle null fields in data view to prevent replace error ([262ce20](https://github.com/yokenzan/receiptisan-vscode/commit/262ce20a8a2695f7aa2602e61a206a4f787eef6a))
+
+
+### Features
+
+* 2-column receipt header layout and calendar day count fix ([909882d](https://github.com/yokenzan/receiptisan-vscode/commit/909882da8bc47ed6dc92704ab8274d9b2c00c64b))
+* add structured data view with receipt navigation ([b1dc8cf](https://github.com/yokenzan/receiptisan-vscode/commit/b1dc8cffec53aa0fb0a2b50fb071943ef75c59d8))
+* add vertical/horizontal layout commands and daily kaisuu calendar grid ([43f5cec](https://github.com/yokenzan/receiptisan-vscode/commit/43f5cec954dca422476ebfc74779e3e61a887cbe))
+* improve data view with vertical nav, sticky headers, and richer display ([4b8e31d](https://github.com/yokenzan/receiptisan-vscode/commit/4b8e31d1e28575f013fa0cb01a0bff0848a39a5c))
+* inline nyuuin info in receipt header and fix comment duplication ([95bb2a1](https://github.com/yokenzan/receiptisan-vscode/commit/95bb2a1bd56ba2605e29f0a8bf3961af01289a0f))
+* redesign data view with light theme, richer display, and tighter layout ([16817e6](https://github.com/yokenzan/receiptisan-vscode/commit/16817e63c862b30a5cf3cdf0bb6562fb65796587))
+* revamp data view layout and fix display issues ([8d71f04](https://github.com/yokenzan/receiptisan-vscode/commit/8d71f040488f9d180564922e1db75ce6f282d5a2))
+
 # 1.0.0 (2026-02-07)
 
 
