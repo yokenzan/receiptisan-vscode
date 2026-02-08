@@ -53,7 +53,10 @@ async function updatePanel(
     const data: ReceiptisanJsonOutput = JSON.parse(result.stdout);
     panel.webview.html = renderDataView(data, layoutMode);
   } catch (err) {
-    const error = err as CliError;
+    const error: CliError =
+      err instanceof SyntaxError
+        ? { type: 'execution_error', message: `CLIの出力を解析できませんでした: ${err.message}` }
+        : (err as CliError);
     panel.webview.html = renderErrorHtml(error);
     vscode.window.showErrorMessage(error.message);
   }
