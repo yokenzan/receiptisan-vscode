@@ -307,24 +307,134 @@ table tr:last-child td {
   padding: 3px 0;
 }
 
-/* Receipt header info table */
-.receipt-info-table th {
+/* キーバリュー型テーブル共通: 項目名列の幅統一 */
+.receipt-info-table,
+.card-patient table {
+  width: auto;
+}
+.receipt-info-table th,
+.card-patient th {
   white-space: nowrap;
-  width: 1%;
-  padding-right: 8px;
+  width: 72px;
+  min-width: 72px;
+  padding: 2px 8px 2px 6px;
 }
 .receipt-info-table td {
-  padding: 2px 6px;
+  padding: 2px 8px 2px 6px;
 }
 .receipt-info-table .tag {
   margin-right: 3px;
 }
 
+/* 情報カードの共通幅制限 */
+.receipt-info-card,
+.card-patient,
+.card-hoken,
+.card-shoubyoumei,
+.card-kyuufu {
+  max-width: 800px;
+}
+
+/* 患者情報カード */
+.card-patient td {
+  min-width: 60px;
+  max-width: 320px;
+}
+.card-patient ruby {
+  ruby-align: start;
+}
+.card-patient rt {
+  font-size: 9px;
+  color: var(--text-dim);
+  font-weight: normal;
+}
+
+/* 保険情報カード */
+.hoken-integrated-table {
+  width: auto;
+}
+.hoken-integrated-table .col-kubun {
+  min-width: 60px;
+  max-width: 80px;
+}
+.hoken-integrated-table .col-jigyousha {
+  min-width: 80px;
+  max-width: 120px;
+}
+.hoken-integrated-table .col-shikaku {
+  width: 220px;
+  min-width: 220px;
+  max-width: 220px;
+}
+.hoken-integrated-table .col-jitsunissuu {
+  min-width: 48px;
+  max-width: 80px;
+}
+.hoken-integrated-table .col-tensuu,
+.hoken-integrated-table .col-kyuufu-futankin,
+.hoken-integrated-table .col-futankin {
+  min-width: 110px;
+  max-width: 110px;
+  width: 110px;
+}
+
+/* 傷病名カード */
+.shoubyoumei-table {
+  width: auto;
+}
+.shoubyoumei-table .col-idx {
+  min-width: 24px;
+  max-width: 40px;
+}
+.shoubyoumei-table .col-code {
+  min-width: 64px;
+  max-width: 100px;
+}
+.shoubyoumei-table .col-main-badge,
+.shoubyoumei-table .col-utagai-badge,
+.shoubyoumei-table .col-worpro-badge {
+  min-width: 28px;
+  max-width: 48px;
+}
+.shoubyoumei-table .col-name {
+  min-width: 120px;
+  max-width: 400px;
+}
+.shoubyoumei-table .col-start-date {
+  min-width: 64px;
+  max-width: 100px;
+}
+.shoubyoumei-table .col-tenki {
+  min-width: 48px;
+  max-width: 80px;
+}
+
+/* 食事・生活療養カード */
+.card-kyuufu table {
+  width: auto;
+}
+.card-kyuufu th {
+  white-space: nowrap;
+}
+.card-kyuufu td {
+  min-width: 48px;
+  max-width: 160px;
+}
+
 /* Tekiyou table */
 .tekiyou-table {
-  width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
 }
+
+/* colgroup 列幅定義（table-layout: fixed 用） */
+.tekiyou-table col.col-code { width: 60px; }
+.tekiyou-table col.col-shinku { width: 24px; }
+.tekiyou-table col.col-mark { width: 18px; }
+.tekiyou-table col.col-name { width: 240px; }
+.tekiyou-table col.col-tensuu { width: 56px; }
+.tekiyou-table col.col-kaisuu { width: 36px; }
+.tekiyou-table col.col-cal { width: 18px; }
 
 .tekiyou-table th {
   text-align: left;
@@ -333,6 +443,7 @@ table tr:last-child td {
   padding: 2px 4px;
   border-bottom: 1px solid var(--border);
   white-space: nowrap;
+  overflow: hidden;
 }
 
 .tekiyou-table td {
@@ -344,6 +455,7 @@ table tr:last-child td {
   font-family: var(--font-mono);
   font-size: 11px;
   white-space: nowrap;
+  overflow: hidden;
   color: var(--text-dim);
 }
 .tekiyou-table .col-shinku {
@@ -356,7 +468,13 @@ table tr:last-child td {
   text-align: center;
   color: #9c27b0;
   font-weight: bold;
-  width: 20px;
+}
+.tekiyou-table td.col-name {
+  word-break: break-all;
+}
+/* コメント行は明細欄の文字を小さくする */
+.tekiyou-table td.col-name.item-co {
+  font-size: 11px;
 }
 .tekiyou-table .col-tensuu {
   text-align: right;
@@ -474,9 +592,9 @@ body.layout-horizontal #content {
   text-align: center;
   font-family: var(--font-mono);
   font-size: 10px;
-  min-width: 18px;
   padding: 1px 2px;
   white-space: nowrap;
+  overflow: hidden;
 }
 
 /* 土曜（青系） */
