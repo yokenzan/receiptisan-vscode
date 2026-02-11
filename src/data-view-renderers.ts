@@ -155,8 +155,9 @@ function renderUkeHeader(dr: DigitalizedReceipt): string {
 </div>`;
 }
 
-function renderReceipt(receipt: Receipt, id: string): string {
+function renderReceipt(receipt: Receipt, id: string, layoutMode: string): string {
   const headerText = buildReceiptLabel(receipt);
+  const showCalendar = layoutMode === 'horizontal';
 
   return `
 <div id="${id}" class="receipt-section">
@@ -166,7 +167,7 @@ function renderReceipt(receipt: Receipt, id: string): string {
   ${renderHokenCard(receipt)}
   ${renderKyuufuCard(receipt)}
   ${renderShoubyoumeiCard(receipt.shoubyoumeis)}
-  ${renderTekiyouCard(receipt)}
+  ${renderTekiyouCard(receipt, showCalendar)}
 </div>`;
 }
 
@@ -242,12 +243,12 @@ function renderPatientCard(receipt: Receipt): string {
         : escapeHtml(p.sex.name);
 
   return `
-<div class="card">
+<div class="card card-patient">
   <div class="card-title">患者情報</div>
   <div class="card-body">
     <table>
       <tr><th>患者番号</th><td>${escapeHtml(p.id)}</td></tr>
-      <tr><th>氏名</th><td>${escapeHtml(p.name)}${p.name_kana ? `（${escapeHtml(p.name_kana)}）` : ''}</td></tr>
+      <tr><th>氏名</th><td>${p.name_kana ? `<ruby>${escapeHtml(p.name)}<rp>（</rp><rt>${escapeHtml(p.name_kana)}</rt><rp>）</rp></ruby>` : escapeHtml(p.name)}</td></tr>
       <tr><th>性別</th><td>${sexTag}</td></tr>
       <tr><th>生年月日</th><td>${escapeHtml(formatWarekiShort(p.birth_date.wareki))}</td></tr>
     </table>
@@ -304,10 +305,19 @@ function renderHokenCard(receipt: Receipt): string {
       : '';
 
   return `
-<div class="card">
+<div class="card card-hoken">
   <div class="card-title">保険情報</div>
   <div class="card-body">
     <table class="hoken-integrated-table">
+      <colgroup>
+        <col class="col-kubun" />
+        <col class="col-jigyousha" />
+        <col class="col-shikaku" />
+        <col class="col-jitsunissuu" />
+        <col class="col-tensuu" />
+        <col class="col-kyuufu-futankin" />
+        <col class="col-futankin" />
+      </colgroup>
       <tr>
         <th>区分</th>
         <th>事業者番号</th>
@@ -369,10 +379,20 @@ function renderShoubyoumeiCard(groups: ShoubyoumeiGroup[]): string {
   }
 
   return `
-<div class="card">
+<div class="card card-shoubyoumei">
   <div class="card-title">傷病名</div>
   <div class="card-body">
-    <table>
+    <table class="shoubyoumei-table">
+      <colgroup>
+        <col class="col-idx" />
+        <col class="col-code" />
+        <col class="col-main-badge" />
+        <col class="col-utagai-badge" />
+        <col class="col-worpro-badge" />
+        <col class="col-name" />
+        <col class="col-start-date" />
+        <col class="col-tenki" />
+      </colgroup>
       <tr><th>#</th><th>コード</th><th>主</th><th>疑</th><th>ワープロ</th><th>傷病名</th><th>開始日</th><th>転帰</th></tr>
       ${rows}
     </table>
@@ -380,7 +400,7 @@ function renderShoubyoumeiCard(groups: ShoubyoumeiGroup[]): string {
 </div>`;
 }
 
-function renderTekiyouCard(receipt: Receipt): string {
+function renderTekiyouCard(receipt: Receipt, showCalendar: boolean): string {
   const sections = receipt.tekiyou.shinryou_shikibetsu_sections;
   if (sections.length === 0) return '';
 
@@ -434,6 +454,7 @@ function renderTekiyouCard(receipt: Receipt): string {
             santei.daily_kaisuus,
             year,
             month,
+            showCalendar,
           );
 
           if (isFirstItemInSantei) isFirstItemInSantei = false;
@@ -446,11 +467,29 @@ function renderTekiyouCard(receipt: Receipt): string {
     prevShinkuUpper = shinkuUpper;
   }
 
+  const daysInMonth = getDaysInMonth(year, month);
+  const calendarCols = showCalendar ? '<col class="col-cal" />'.repeat(daysInMonth) : '';
+
+  // 列幅定数（CSS の col width と一致させる）
+  const COL_W = { code: 65, shinku: 30, mark: 20, name: 300, tensuu: 56, kaisuu: 40, cal: 30 };
+  const baseWidth =
+    COL_W.code + COL_W.shinku + COL_W.mark + COL_W.name + COL_W.tensuu + COL_W.kaisuu;
+  const tableWidth = baseWidth + (showCalendar ? daysInMonth * COL_W.cal : 0);
+
   return `
 <div class="card">
   <div class="card-title">摘要欄</div>
   <div class="card-body tekiyou-scroll-container">
-    <table class="tekiyou-table">
+    <table class="tekiyou-table" style="width: ${tableWidth}px">
+      <colgroup>
+        <col class="col-code" />
+        <col class="col-shinku" />
+        <col class="col-mark" />
+        <col class="col-name" />
+        <col class="col-tensuu" />
+        <col class="col-kaisuu" />
+        ${calendarCols}
+      </colgroup>
       <tr>
         <th>コード</th>
         <th>診区</th>
@@ -458,7 +497,7 @@ function renderTekiyouCard(receipt: Receipt): string {
         <th>明細</th>
         <th style="text-align:right">点数</th>
         <th style="text-align:right">回数</th>
-        ${renderCalendarHeaders(year, month)}
+        ${showCalendar ? renderCalendarHeaders(year, month) : ''}
       </tr>
       ${rows}
     </table>
@@ -477,6 +516,7 @@ function renderTekiyouRow(
   dailyKaisuus: DailyKaisuu[] | undefined,
   year: number,
   month: number,
+  showCalendar: boolean,
 ): string {
   const rowClass = separatorClass ? ` class="${separatorClass}"` : '';
   const categoryClass = getCategoryColorClass(item.type);
@@ -493,6 +533,7 @@ function renderTekiyouRow(
       isLastNonComment,
       year,
       month,
+      showCalendar,
     );
   }
 
@@ -508,6 +549,7 @@ function renderTekiyouRow(
     dailyKaisuus,
     year,
     month,
+    showCalendar,
   );
 }
 
@@ -523,6 +565,7 @@ function renderMedicalRow(
   dailyKaisuus: DailyKaisuu[] | undefined,
   year: number,
   month: number,
+  showCalendar: boolean,
 ): string {
   const code = item.master.code;
   const name =
@@ -551,7 +594,7 @@ function renderMedicalRow(
     <td class="col-name ${categoryClass}${unknownClass}">${escapeHtml(name)}${detailText}</td>
     <td class="col-tensuu">${tensuuDisplay}</td>
     <td class="col-kaisuu">${kaisuuDisplay}</td>
-    ${renderCalendarCells(dailyKaisuus, isLastNonComment, year, month)}
+    ${showCalendar ? renderCalendarCells(dailyKaisuus, isLastNonComment, year, month) : ''}
   </tr>`;
 }
 
@@ -565,6 +608,7 @@ function renderCommentRow(
   isLastNonComment: boolean,
   year: number,
   month: number,
+  showCalendar: boolean,
 ): string {
   const code = item.master.code;
   const text =
@@ -579,7 +623,7 @@ function renderCommentRow(
     <td class="col-name ${categoryClass}">${escapeHtml(text)}</td>
     <td class="col-tensuu"></td>
     <td class="col-kaisuu"></td>
-    ${renderCalendarCells(dailyKaisuus, isLastNonComment, year, month)}
+    ${showCalendar ? renderCalendarCells(dailyKaisuus, isLastNonComment, year, month) : ''}
   </tr>`;
 }
 
@@ -691,7 +735,7 @@ function renderKyuufuCard(receipt: Receipt): string {
   }
 
   return `
-<div class="card">
+<div class="card card-kyuufu">
   <div class="card-title">食事・生活療養</div>
   <div class="card-body">
     <table>
@@ -744,7 +788,7 @@ export function renderDataView(data: ReceiptisanJsonOutput, layoutMode = 'vertic
       const label = buildReceiptLabel(receipt);
 
       navItems += `<li><a href="#${receiptId}" class="nav-item" data-target="${receiptId}">${label}</a></li>\n`;
-      receiptSections += renderReceipt(receipt, receiptId);
+      receiptSections += renderReceipt(receipt, receiptId, layoutMode);
       index++;
     }
   }
