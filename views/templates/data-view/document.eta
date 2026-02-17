@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'nonce-<%= it.nonce %>';">
+<style>
+<%~ it.cssContent %>
+</style>
+</head>
+<body<% if (it.layoutMode === 'horizontal') { %> class="layout-horizontal"<% } %>>
+  <div id="nav">
+    <ul>
+      <% for (const navItem of it.navItems) { %>
+      <li>
+        <a href="#<%= navItem.id %>" class="nav-item" data-target="<%= navItem.id %>">
+          No.<%= navItem.label.idPart %> | <%= navItem.label.shinryouYm %>診療 <%= navItem.label.nyuugaiLabel %> <%= navItem.label.patientId %> <%= navItem.label.patientName %>
+        </a>
+      </li>
+      <% } %>
+    </ul>
+  </div>
+  <div id="content">
+    <% for (const sectionHtml of it.receiptSectionsHtml) { %>
+    <%~ sectionHtml %>
+    <% } %>
+  </div>
+  <script nonce="<%= it.nonce %>">
+    (function() {
+      var navLinks = document.querySelectorAll('.nav-item');
+      var content = document.getElementById('content');
+
+      navLinks.forEach(function(link) {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          navLinks.forEach(function(l) { l.classList.remove('active'); });
+          link.classList.add('active');
+          var target = document.getElementById(link.getAttribute('data-target'));
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+
+      if (navLinks.length > 0) navLinks[0].classList.add('active');
+
+      var observer = new IntersectionObserver(function(entries) {
+        for (var i = 0; i < entries.length; i++) {
+          if (entries[i].isIntersecting) {
+            var id = entries[i].target.id;
+            navLinks.forEach(function(l) {
+              l.classList.toggle('active', l.getAttribute('data-target') === id);
+            });
+            break;
+          }
+        }
+      }, { root: content, threshold: 0.3 });
+
+      document.querySelectorAll('.receipt-section').forEach(function(el) {
+        observer.observe(el);
+      });
+    })();
+  </script>
+</body>
+</html>

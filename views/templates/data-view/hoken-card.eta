@@ -1,0 +1,43 @@
+<div class="card card-hoken">
+  <div class="card-title">保険情報</div>
+  <div class="card-body">
+    <table class="hoken-integrated-table">
+      <colgroup>
+        <col class="col-kubun" />
+        <col class="col-jigyousha" />
+        <col class="col-shikaku" />
+        <col class="col-jitsunissuu" />
+        <col class="col-tensuu" />
+        <col class="col-kyuufu-futankin" />
+        <col class="col-futankin" />
+      </colgroup>
+      <tr>
+        <th>区分</th>
+        <th>事業者番号</th>
+        <th>資格番号</th>
+        <th>実日数</th>
+        <th>請求点数</th>
+        <th>給付対象負担金</th>
+        <th>負担金</th>
+      </tr>
+      <% for (const row of it.rows) { %>
+      <tr>
+        <td><%= row.kubun %></td>
+        <td class="code"><%= row.hokenjaBangou %></td>
+        <td><%= row.shikakuBangou %></td>
+        <td class="num"><%= row.jitsunissuu %></td>
+        <td class="num"><%= row.tensuu %></td>
+        <td class="num"><%= row.kyuufuTaishouIchibuFutankin %></td>
+        <td class="num"><%= row.ichibuFutankin %></td>
+      </tr>
+      <% } %>
+    </table>
+    <% if (it.detailParts.length > 0) { %>
+    <div class="hoken-detail">
+      <% for (const detailPart of it.detailParts) { %>
+      <span><%= detailPart %></span>
+      <% } %>
+    </div>
+    <% } %>
+  </div>
+</div>

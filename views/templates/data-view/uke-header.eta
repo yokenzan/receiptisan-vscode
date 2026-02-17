@@ -1,0 +1,15 @@
+<div class="uke-header">
+  <div class="uke-header-title"><%= it.hospitalName %></div>
+  <div class="uke-header-detail">
+    <span><%= it.seikyuuYm %>請求</span>
+    <span><%= it.auditPayerName %></span>
+    <span><%= it.prefectureName %></span>
+  </div>
+  <% if (it.detailParts.length > 0) { %>
+  <div class="uke-header-detail">
+    <% for (const detailPart of it.detailParts) { %>
+    <span><%= detailPart %></span>
+    <% } %>
+  </div>
+  <% } %>
+</div>
