@@ -1,0 +1,31 @@
+<div class="card card-patient">
+  <div class="card-title">患者情報</div>
+  <div class="card-body">
+    <table>
+      <tr><th>患者番号</th><td><%= it.patientId %></td></tr>
+      <tr>
+        <th>氏名</th>
+        <td>
+          <% if (it.nameKana) { %>
+          <ruby><%= it.name %><rp>（</rp><rt><%= it.nameKana %></rt><rp>）</rp></ruby>
+          <% } else { %>
+          <%= it.name %>
+          <% } %>
+        </td>
+      </tr>
+      <tr>
+        <th>性別</th>
+        <td>
+          <% if (it.sexKind === 'male') { %>
+          <span class="tag tag-sex-male"><%= it.sexName %></span>
+          <% } else if (it.sexKind === 'female') { %>
+          <span class="tag tag-sex-female"><%= it.sexName %></span>
+          <% } else { %>
+          <%= it.sexName %>
+          <% } %>
+        </td>
+      </tr>
+      <tr><th>生年月日</th><td><%= it.birthDate %></td></tr>
+    </table>
+  </div>
+</div>

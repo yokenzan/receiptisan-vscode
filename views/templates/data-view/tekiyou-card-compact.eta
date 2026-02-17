@@ -1,0 +1,42 @@
+<div class="card">
+  <div class="card-title">摘要欄</div>
+  <div class="card-body tekiyou-scroll-container">
+    <table class="tekiyou-table tekiyou-compact" style="width: <%= it.tableWidth %>px">
+      <colgroup>
+        <col class="col-shinku" />
+        <col class="col-futan-code" />
+        <col class="col-mark" />
+        <col class="col-name" />
+        <col class="col-tensuu" />
+        <col class="col-times-sign" />
+        <col class="col-kaisuu" />
+        <% for (let i = 0; i < it.numCalCols; i++) { %>
+        <col class="col-cal" />
+        <% } %>
+      </colgroup>
+      <tr>
+        <th rowspan="2">診区</th>
+        <th rowspan="2">負担区分</th>
+        <th rowspan="2">＊</th>
+        <th rowspan="2">明細</th>
+        <th rowspan="2" style="text-align:right">点数</th>
+        <th rowspan="2" class="col-times-sign"></th>
+        <th rowspan="2" style="text-align:right">回数</th>
+        <th colspan="<%= it.numCalCols %>" class="col-cal-group">算定日</th>
+      </tr>
+      <tr>
+        <% for (const cell of it.compactCalendarHeaderCells) { %>
+        <th class="<%= cell.className %>"><%= cell.text %></th>
+        <% } %>
+        <% if (it.padCols > 0) { %>
+        <% for (let i = 0; i < it.padCols; i++) { %>
+        <th class="col-cal"></th>
+        <% } %>
+        <% } %>
+      </tr>
+      <% for (const rowHtml of it.rowsHtml) { %>
+      <%~ rowHtml %>
+      <% } %>
+    </table>
+  </div>
+</div>

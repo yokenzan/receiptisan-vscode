@@ -1,7 +1,7 @@
 {
   "name": "receiptisan-preview",
   "displayName": "Receiptisan Preview",
-  "description": "Preview RECEIPTC.UKE files (Japanese medical receipt) as SVG using receiptisan CLI",
+  "description": "Preview RECEIPTC.UKE(電子レセプトファイル) using receiptisan CLI",
   "version": "1.2.0",
   "publisher": "yokenzan",
   "license": "MIT",
@@ -12,33 +12,16 @@
   "engines": {
     "vscode": "^1.85.0"
   },
-  "categories": [
-    "Visualization",
-    "Other"
-  ],
-  "keywords": [
-    "receipt",
-    "uke",
-    "医療",
-    "レセプト",
-    "診療報酬"
-  ],
-  "activationEvents": [
-    "onLanguage:uke"
-  ],
+  "categories": ["Visualization", "Other"],
+  "keywords": ["receipt", "uke", "医療", "レセプト", "診療報酬"],
+  "activationEvents": ["onLanguage:uke"],
   "main": "./out/extension.js",
   "contributes": {
     "languages": [
       {
         "id": "uke",
-        "aliases": [
-          "UKE",
-          "Receipt"
-        ],
-        "extensions": [
-          ".UKE",
-          ".uke"
-        ],
+        "aliases": ["UKE", "レセプト"],
+        "extensions": [".UKE", ".uke"],
         "configuration": "./language-configuration.json"
       }
     ],
@@ -80,30 +63,45 @@
     "configuration": {
       "title": "Receiptisan Preview",
       "properties": {
-        "receiptisan.command": {
+        "receiptisan.executable": {
           "type": "string",
           "default": "receiptisan",
-          "description": "Command to execute receiptisan CLI (e.g., 'receiptisan', 'bundle exec ruby exe/receiptisan')",
-          "markdownDescription": "receiptisan CLIの実行コマンド（例: `receiptisan`, `bundle exec ruby exe/receiptisan`）"
+          "description": "Executable path or command name for receiptisan CLI (e.g., 'receiptisan', '/opt/bin/receiptisan').",
+          "markdownDescription": "receiptisan CLIの実行ファイル（例: `receiptisan`, `/opt/bin/receiptisan`）"
+        },
+        "receiptisan.args": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Arguments passed to receiptisan executable (e.g., ['exec','ruby','exe/receiptisan'] when executable is 'bundle').",
+          "markdownDescription": "実行ファイルに渡す引数（例: executableが`bundle`のとき `[\"exec\", \"ruby\", \"exe/receiptisan\"]`）"
         },
         "receiptisan.cwd": {
           "type": "string",
           "default": "",
           "description": "Working directory for CLI execution. Required when using 'bundle exec'. Leave empty to use default.",
           "markdownDescription": "`bundle exec` 使用時に必要な作業ディレクトリ。receiptisanリポジトリのパスを指定（例: `/home/user/receiptisan`）"
+        },
+        "receiptisan.dataView.normalizeTekiyouAscii": {
+          "type": "boolean",
+          "default": false,
+          "description": "Convert full-width ASCII characters in Tekiyou detail text to half-width in Data View.",
+          "markdownDescription": "データビューの摘要欄明細で、診療行為・特定器材・医薬品・コメント名称に含まれる全角の英数字・記号を半角に変換して表示する"
         }
       }
     }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./ && cp src/*.css out/",
+    "compile": "tsc -p ./ && node -e \"require('fs').rmSync('out/views',{recursive:true,force:true})\" && cp -r views out/views",
     "watch": "tsc -watch -p ./",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
     "pretest": "npm run compile",
-    "test": "echo 'No tests yet'"
+    "test": "node --test test/**/*.test.js"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.0",
@@ -118,9 +116,7 @@
     "typescript": "^5.6.0"
   },
   "release": {
-    "branches": [
-      "main"
-    ],
+    "branches": ["main"],
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
@@ -150,5 +146,8 @@
       ],
       "@semantic-release/git"
     ]
+  },
+  "dependencies": {
+    "eta": "^4.5.1"
   }
 }
