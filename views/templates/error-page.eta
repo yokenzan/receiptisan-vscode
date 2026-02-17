@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline';">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      padding: 20px;
+      background: #1e1e1e;
+      color: #d4d4d4;
+      line-height: 1.5;
+    }
+    h1 {
+      color: #f48771;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    .message {
+      margin-bottom: 12px;
+    }
+    pre {
+      background: #2d2d2d;
+      padding: 10px;
+      border-radius: 4px;
+      overflow: auto;
+      max-height: 280px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  </style>
+</head>
+<body>
+  <h1><%= it.title %></h1>
+  <p class="message"><%= it.message %></p>
+  <% if (it.detail) { %>
+  <pre><%= it.detail %></pre>
+  <% } %>
+</body>
+</html>

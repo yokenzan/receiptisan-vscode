@@ -1,13 +1,16 @@
 import * as path from 'node:path';
 import * as vscode from 'vscode';
-import { type CliError, type CliResult, executeWithProgress } from './cli';
-import { renderDataView, renderErrorHtml } from './data-view-renderers';
-import type { ReceiptisanJsonOutput } from './types';
+import type { CliError } from '../../cli/receiptisan-client';
+import { type LayoutMode, presentDataViewError } from './presenter';
+import { generateDataViewHtml } from './service';
 
-export type LayoutMode = 'vertical' | 'horizontal';
+export type { LayoutMode } from './presenter';
 
 const activePanels: Map<string, vscode.WebviewPanel> = new Map();
 
+/**
+ * Opens or updates a data view panel for the specified document and layout.
+ */
 export async function showDataView(
   document: vscode.TextDocument,
   layoutMode: LayoutMode,
@@ -48,21 +51,11 @@ async function updatePanel(
   filePath: string,
   layoutMode: LayoutMode,
 ): Promise<void> {
-  let result: CliResult | undefined;
   try {
-    result = await executeWithProgress(filePath, 'json');
-    const data: ReceiptisanJsonOutput = JSON.parse(result.stdout);
-    panel.webview.html = renderDataView(data, layoutMode);
+    panel.webview.html = await generateDataViewHtml(filePath, layoutMode);
   } catch (err) {
-    const error: CliError =
-      err instanceof SyntaxError
-        ? {
-            type: 'execution_error',
-            message: `CLIの出力を解析できませんでした: ${err.message}`,
-            stderr: result?.stderr,
-          }
-        : (err as CliError);
-    panel.webview.html = renderErrorHtml(error);
+    const error = err as CliError;
+    panel.webview.html = presentDataViewError(error);
     vscode.window.showErrorMessage(error.message);
   }
 }

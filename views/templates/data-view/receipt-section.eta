@@ -1,0 +1,11 @@
+<div id="<%= it.id %>" class="receipt-section">
+  <div class="receipt-header">
+    No.<%= it.headerLabel.idPart %> | <%= it.headerLabel.shinryouYm %>診療 <%= it.headerLabel.nyuugaiLabel %> <%= it.headerLabel.patientId %> <%= it.headerLabel.patientName %>
+  </div>
+  <%~ it.receiptHeaderHtml %>
+  <%~ it.patientCardHtml %>
+  <%~ it.hokenCardHtml %>
+  <%~ it.kyuufuCardHtml %>
+  <%~ it.shoubyoumeiCardHtml %>
+  <%~ it.tekiyouCardHtml %>
+</div>
