@@ -107,7 +107,7 @@ body {
 
 #nav li a {
   display: grid;
-  grid-template-columns: 68px 120px 60px minmax(0, 1fr);
+  grid-template-columns: max-content max-content max-content max-content minmax(0, 1fr);
   align-items: center;
   gap: 0;
   padding: 3px 8px;
@@ -128,10 +128,48 @@ body {
 .nav-col:last-child {
   border-right: none;
 }
-.nav-no,
-.nav-ym,
-.nav-patient-id {
+.nav-ym {
   font-family: var(--font-mono);
+}
+.nav-no,
+.nav-patient-id {
+  min-width: 7ch;
+}
+.nav-law-codes {
+  text-align: left;
+  font-family: var(--font-mono);
+}
+.nav-ym-class {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.nav-ym-class > span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.nav-class-badge {
+  font-size: 10px;
+  width: 3.6em;
+  min-width: 3.6em;
+  max-width: 3.6em;
+  justify-content: center;
+  padding: 1px 0;
+  overflow: hidden;
+}
+.nav-class-nyuuin {
+  background: var(--nyuuin-bg);
+  color: var(--nyuuin-fg);
+}
+.nav-class-gairai {
+  background: var(--gairai-bg);
+  color: var(--gairai-fg);
+}
+.nav-class-neutral {
+  background: #6d4c41;
+  color: #ffffff;
 }
 
 #nav li a:hover {
@@ -772,7 +810,7 @@ body.layout-horizontal {
 }
 body.layout-horizontal #nav {
   order: 0;
-  width: 398px;
+  width: 418px;
   max-height: none;
   height: 100vh;
   border-top: none;

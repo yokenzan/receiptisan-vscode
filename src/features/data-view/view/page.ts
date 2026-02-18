@@ -35,7 +35,10 @@ export function renderDataViewDocument(params: {
     label: {
       idPart: string;
       shinryouYm: string;
-      nyuugaiLabel: string;
+      shinryouYmWestern: string;
+      receiptClassLabel: string;
+      receiptClassKind: 'nyuuin' | 'gairai' | 'neutral';
+      lawCodesLabel: string;
       patientId: string;
       patientName: string;
     };
