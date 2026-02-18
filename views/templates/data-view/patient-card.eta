@@ -1,6 +1,7 @@
 <div class="card card-patient">
   <div class="card-title">患者情報</div>
   <div class="card-body">
+    <% const renderWarekiCompact = (value) => String(value).replace(/\(([^)]+)\)/g, '<span class="date-wareki">($1)</span>'); %>
     <table>
       <tr>
         <th>患者番号</th>
@@ -35,7 +36,14 @@
       <tr>
         <th>生年月日</th>
         <td>
-          <% if (it.birthDate === '-') { %><span class="placeholder">-</span><% } else { %><%= it.birthDate %><% } %>
+          <% if (it.birthDate === '-') { %>
+          <span class="placeholder">-</span>
+          <% } else { %>
+          <span class="date-value"><%~ renderWarekiCompact(it.birthDate) %></span>
+          <% if (it.ageYearsMonths) { %>
+          <span class="age-display"><span class="value-num"><%= it.ageYearsMonths.years %></span><span class="value-unit">歳</span><span class="value-num"><%= it.ageYearsMonths.months %></span><span class="value-unit">ヶ月</span><% if (it.isBirthMonth) { %> 🎂<% } %></span>
+          <% } %>
+          <% } %>
         </td>
       </tr>
     </table>

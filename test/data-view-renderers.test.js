@@ -7,8 +7,9 @@ const {
 } = require('../out/features/data-view/view/page.js');
 
 function wareki(alphabet, year, month, day) {
+  const baseYearMap = { M: 1868, T: 1912, S: 1926, H: 1989, R: 2019 };
   return {
-    gengou: { alphabet },
+    gengou: { alphabet, base_year: baseYearMap[alphabet] },
     year,
     month,
     ...(day != null ? { day } : {}),

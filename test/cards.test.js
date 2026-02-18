@@ -10,13 +10,19 @@ const {
 } = require('../out/features/data-view/view/cards.js');
 
 function wareki(alphabet, year, month, day) {
-  return { gengou: { alphabet }, year, month, ...(day != null ? { day } : {}) };
+  const baseYearMap = { M: 1868, T: 1912, S: 1926, H: 1989, R: 2019 };
+  return {
+    gengou: { alphabet, base_year: baseYearMap[alphabet] },
+    year,
+    month,
+    ...(day != null ? { day } : {}),
+  };
 }
 
 function createReceipt() {
   return {
     id: 1,
-    shinryou_ym: { wareki: wareki('R', 6, 1) },
+    shinryou_ym: { year: 2024, month: 1, wareki: wareki('R', 6, 1) },
     nyuugai: 'gairai',
     nyuuin_date: null,
     byoushou_types: [],
@@ -32,7 +38,7 @@ function createReceipt() {
       name: '患者A',
       name_kana: null,
       sex: { code: '1', name: '男' },
-      birth_date: { wareki: wareki('S', 60, 1, 1) },
+      birth_date: { year: 1985, month: 1, day: 1, wareki: wareki('S', 60, 1, 1) },
     },
     hokens: {
       iryou_hoken: {
@@ -87,4 +93,35 @@ test('card renderers output expected sections', () => {
 test('renderKyuufuCard returns empty when no meal/life data exists', () => {
   const receipt = createReceipt();
   assert.equal(renderKyuufuCard(receipt), '');
+});
+
+test('renderPatientCard shows legal age at end of shinryou month', () => {
+  const receipt = createReceipt();
+  receipt.shinryou_ym = { year: 2025, month: 10, wareki: wareki('R', 7, 10) };
+  receipt.patient.birth_date = { year: 2000, month: 10, day: 10, wareki: wareki('H', 12, 10, 10) };
+
+  const html = renderPatientCard(receipt);
+  assert.ok(html.includes('生年月日'));
+  assert.match(html, /2000.*\(H12\).*10\.10/s);
+  assert.match(html, /25.*歳.*0.*ヶ月.*🎂/s);
+});
+
+test('renderPatientCard handles Feb 29 birth with legal age rule', () => {
+  const receipt = createReceipt();
+  receipt.shinryou_ym = { year: 2025, month: 2, wareki: wareki('R', 7, 2) };
+  receipt.patient.birth_date = { year: 2000, month: 2, day: 29, wareki: wareki('H', 12, 2, 29) };
+
+  const html = renderPatientCard(receipt);
+  assert.match(html, /2000.*\(H12\).*02\.29/s);
+  assert.match(html, /25.*歳.*0.*ヶ月.*🎂/s);
+});
+
+test('renderPatientCard includes month-age when not anniversary month-end yet', () => {
+  const receipt = createReceipt();
+  receipt.shinryou_ym = { year: 2025, month: 9, wareki: wareki('R', 7, 9) };
+  receipt.patient.birth_date = { year: 2000, month: 10, day: 10, wareki: wareki('H', 12, 10, 10) };
+
+  const html = renderPatientCard(receipt);
+  assert.match(html, /2000.*\(H12\).*10\.10/s);
+  assert.match(html, /24.*歳.*11.*ヶ月/s);
 });

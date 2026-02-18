@@ -1,12 +1,13 @@
 <div class="card receipt-info-card">
   <div class="card-body">
+    <% const renderWarekiCompact = (value) => String(value).replace(/\(([^)]+)\)/g, '<span class="date-wareki">($1)</span>'); %>
     <table class="receipt-info-table">
       <tr>
         <th colspan="4">No. <strong><%= it.id %></strong></th>
       </tr>
       <tr>
         <th>診療年月</th>
-        <td><%= it.shinryouYm %>診療</td>
+        <td><span class="date-value"><%~ renderWarekiCompact(it.shinryouYm) %></span>診療</td>
         <th>入外</th>
         <td>
           <% if (it.nyuugai === 'nyuuin') { %>
@@ -20,11 +21,14 @@
         <th>種別</th>
         <td>
           <% for (const badge of it.typeBadges) { %>
-          <span class="tag tag-type"><%= badge.code %> <%= badge.name %></span>
+          <span class="tag tag-type receipt-chip">
+            <span class="receipt-chip-code"><%= badge.code %></span>
+            <span class="receipt-chip-name"><%= badge.name %></span>
+          </span>
           <% } %>
         </td>
         <% if (it.nyuuinDateCell) { %>
-        <th>入院日</th><td><%= it.nyuuinDateCell %></td>
+        <th>入院日</th><td><span class="date-value"><%~ renderWarekiCompact(it.nyuuinDateCell) %></span></td>
         <% } else { %>
         <td></td><td></td>
         <% } %>
@@ -34,7 +38,10 @@
         <td>
           <% if (it.tokkiJikous.length > 0) { %>
           <% for (const tokki of it.tokkiJikous) { %>
-          <span class="tag tag-tokki"><%= tokki.code %> <%= tokki.name %></span>
+          <span class="tag tag-tokki receipt-chip">
+            <span class="receipt-chip-code"><%= tokki.code %></span>
+            <span class="receipt-chip-name"><%= tokki.name %></span>
+          </span>
           <% } %>
           <% } else { %>
           <span class="text-dim">なし</span>

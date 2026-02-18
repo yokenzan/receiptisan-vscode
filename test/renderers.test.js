@@ -56,10 +56,11 @@ test('receipt meta helpers render expected labels', () => {
   const label = buildReceiptLabelViewModel({
     id: 12,
     nyuugai: 'gairai',
-    shinryou_ym: { wareki: { gengou: { alphabet: 'R' }, year: 6, month: 2 } },
+    shinryou_ym: { wareki: { gengou: { alphabet: 'R', base_year: 2019 }, year: 6, month: 2 } },
     patient: { id: 'P-9', name: '山田太郎' },
   });
   assert.equal(label.idPart, '0012');
-  assert.equal(label.nyuugaiLabel, '外来');
+  assert.equal(label.nyuugaiLabel, '外');
+  assert.equal(label.shinryouYm, '2024(R06).02');
   assert.equal(label.patientName, '山田太郎');
 });
