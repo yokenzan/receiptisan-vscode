@@ -52,7 +52,9 @@ async function updatePanel(
   try {
     result = await executeWithProgress(filePath, 'json');
     const data: ReceiptisanJsonOutput = JSON.parse(result.stdout);
-    panel.webview.html = renderDataView(data, layoutMode);
+    const config = vscode.workspace.getConfiguration('receiptisan');
+    const normalizeTekiyouAscii = config.get<boolean>('dataView.normalizeTekiyouAscii', false);
+    panel.webview.html = renderDataView(data, layoutMode, { normalizeTekiyouAscii });
   } catch (err) {
     const error: CliError =
       err instanceof SyntaxError

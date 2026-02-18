@@ -181,7 +181,7 @@ export interface IchirenUnit {
 }
 
 export interface DailyKaisuu {
-  date: string; // "YYYY-MM-DD" (Ruby Date#to_s 形式)
+  date: DateValue;
   kaisuu: number;
 }
 

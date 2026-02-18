@@ -74,6 +74,12 @@
           "default": "",
           "description": "Working directory for CLI execution. Required when using 'bundle exec'. Leave empty to use default.",
           "markdownDescription": "`bundle exec` 使用時に必要な作業ディレクトリ。receiptisanリポジトリのパスを指定（例: `/home/user/receiptisan`）"
+        },
+        "receiptisan.dataView.normalizeTekiyouAscii": {
+          "type": "boolean",
+          "default": false,
+          "description": "Convert full-width ASCII characters in Tekiyou detail text to half-width in Data View.",
+          "markdownDescription": "データビューの摘要欄明細で、全角の英数字・記号を半角に変換して表示します。"
         }
       }
     }

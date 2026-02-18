@@ -134,9 +134,7 @@ body {
 }
 
 .receipt-info-card {
-  position: sticky;
-  top: 26px;
-  z-index: 1;
+  position: static;
   background: var(--bg);
 }
 
@@ -307,23 +305,153 @@ table tr:last-child td {
   padding: 3px 0;
 }
 
-/* Receipt header info table */
-.receipt-info-table th {
+/* キーバリュー型テーブル共通: 項目名列の幅統一 */
+.receipt-info-table,
+.card-patient table {
+  width: auto;
+}
+.receipt-info-table th,
+.card-patient th {
   white-space: nowrap;
-  width: 1%;
-  padding-right: 8px;
+  width: 72px;
+  min-width: 72px;
+  padding: 2px 8px 2px 6px;
 }
 .receipt-info-table td {
-  padding: 2px 6px;
+  padding: 2px 8px 2px 6px;
 }
 .receipt-info-table .tag {
   margin-right: 3px;
 }
 
+/* 情報カードの共通幅制限 */
+.receipt-info-card,
+.card-patient,
+.card-hoken,
+.card-shoubyoumei,
+.card-kyuufu {
+  max-width: 800px;
+}
+
+/* 患者情報カード */
+.card-patient td {
+  min-width: 60px;
+  max-width: 320px;
+}
+.card-patient ruby {
+  ruby-align: start;
+}
+.card-patient rt {
+  font-size: 9px;
+  color: var(--text-dim);
+  font-weight: normal;
+}
+
+/* 保険情報カード */
+.hoken-integrated-table {
+  width: auto;
+}
+.hoken-integrated-table .col-kubun {
+  min-width: 60px;
+  max-width: 80px;
+}
+.hoken-integrated-table .col-jigyousha {
+  min-width: 80px;
+  max-width: 120px;
+}
+.hoken-integrated-table td.code {
+  text-align: right;
+}
+.hoken-integrated-table .col-shikaku {
+  width: 220px;
+  min-width: 220px;
+  max-width: 220px;
+}
+.hoken-integrated-table .col-jitsunissuu {
+  min-width: 48px;
+  max-width: 80px;
+}
+.hoken-integrated-table .col-tensuu,
+.hoken-integrated-table .col-kyuufu-futankin,
+.hoken-integrated-table .col-futankin {
+  min-width: 110px;
+  max-width: 110px;
+  width: 110px;
+}
+
+/* 傷病名カード */
+.shoubyoumei-table {
+  width: auto;
+}
+.shoubyoumei-table .col-idx {
+  min-width: 24px;
+  max-width: 40px;
+}
+.shoubyoumei-table .col-code {
+  min-width: 64px;
+  max-width: 100px;
+}
+.shoubyoumei-table .col-main-badge,
+.shoubyoumei-table .col-utagai-badge,
+.shoubyoumei-table .col-worpro-badge {
+  min-width: 28px;
+  max-width: 48px;
+}
+.shoubyoumei-table .col-name {
+  min-width: 120px;
+  max-width: 400px;
+}
+.shoubyoumei-table .col-start-date {
+  min-width: 64px;
+  max-width: 100px;
+}
+.shoubyoumei-table .col-tenki {
+  min-width: 48px;
+  max-width: 80px;
+}
+
+/* 食事・生活療養カード */
+.card-kyuufu table {
+  width: auto;
+}
+.card-kyuufu th {
+  white-space: nowrap;
+}
+.card-kyuufu td {
+  min-width: 48px;
+  max-width: 160px;
+}
+
 /* Tekiyou table */
 .tekiyou-table {
-  width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
+}
+
+/* colgroup 列幅定義（table-layout: fixed 用） */
+.tekiyou-table col.col-code {
+  width: 66px;
+}
+.tekiyou-table col.col-shinku {
+  width: 29px;
+}
+.tekiyou-table col.col-mark {
+  width: 18px;
+}
+.tekiyou-table col.col-name {
+  width: 290px;
+}
+.tekiyou-table col.col-tensuu {
+  width: 68px;
+}
+.tekiyou-table col.col-times-sign {
+  width: 14px;
+}
+.tekiyou-table col.col-kaisuu {
+  width: 36px;
+}
+.tekiyou-table col.col-cal {
+  width: 20px;
 }
 
 .tekiyou-table th {
@@ -333,6 +461,7 @@ table tr:last-child td {
   padding: 2px 4px;
   border-bottom: 1px solid var(--border);
   white-space: nowrap;
+  overflow: hidden;
 }
 
 .tekiyou-table td {
@@ -344,6 +473,7 @@ table tr:last-child td {
   font-family: var(--font-mono);
   font-size: 11px;
   white-space: nowrap;
+  overflow: hidden;
   color: var(--text-dim);
 }
 .tekiyou-table .col-shinku {
@@ -356,7 +486,19 @@ table tr:last-child td {
   text-align: center;
   color: #9c27b0;
   font-weight: bold;
-  width: 20px;
+}
+.tekiyou-table td.col-name {
+  word-break: break-all;
+}
+.tekiyou-table .tekiyou-paren-compact {
+  display: inline-block;
+  font-size: 0.9em;
+  transform: scaleX(0.9);
+  transform-origin: left center;
+}
+/* コメント行は明細欄の文字を小さくする */
+.tekiyou-table td.col-name.item-co {
+  font-size: 11px;
 }
 .tekiyou-table .col-tensuu {
   text-align: right;
@@ -370,10 +512,58 @@ table tr:last-child td {
   font-size: 12px;
   white-space: nowrap;
 }
+.tekiyou-table .col-times-sign {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+  white-space: nowrap;
+  padding-left: 0;
+  padding-right: 0;
+}
 .tekiyou-table .appended {
   font-style: italic;
   color: var(--text-dim);
   margin-left: 4px;
+}
+
+/* 負担区分列（horizontal: 分割列） */
+.tekiyou-table col.col-futan {
+  width: 20px;
+}
+
+/* 負担区分列（compact: コード表示） */
+.tekiyou-table col.col-futan-code {
+  width: 24px;
+}
+.tekiyou-table .col-futan-code {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  white-space: nowrap;
+  color: var(--text-dim);
+}
+.tekiyou-table .col-futan {
+  text-align: center;
+  font-size: 9px;
+  white-space: nowrap;
+  padding: 1px 1px;
+  color: var(--text-dim);
+}
+.tekiyou-table th.col-futan {
+  font-size: 9px;
+  padding: 2px 1px;
+}
+.tekiyou-table td.col-futan.futan-inactive {
+  background-color: rgba(0, 0, 0, 0.04);
+  color: #ddd;
+}
+.tekiyou-table th.col-futan.futan-inactive {
+  background-color: transparent;
+  color: var(--text-dim);
+}
+.tekiyou-table td.col-futan {
+  font-size: 9px;
 }
 
 /* Tekiyou separator styles */
@@ -452,7 +642,7 @@ body.layout-horizontal {
 }
 body.layout-horizontal #nav {
   order: 0;
-  width: 360px;
+  width: 288px;
   max-height: none;
   height: 100vh;
   border-top: none;
@@ -462,6 +652,7 @@ body.layout-horizontal #nav {
 body.layout-horizontal #content {
   order: 1;
   flex: 1;
+  overflow: auto;
 }
 
 /* 摘要テーブルの横スクロール */
@@ -473,10 +664,15 @@ body.layout-horizontal #content {
 .tekiyou-table .col-cal {
   text-align: center;
   font-family: var(--font-mono);
-  font-size: 10px;
-  min-width: 18px;
-  padding: 1px 2px;
+  font-size: 11px;
+  padding: 1px 1px;
   white-space: nowrap;
+  overflow: hidden;
+}
+
+/* 回数列と1日列の境界 */
+.tekiyou-table .cal-month-start {
+  border-left: 1.5px solid var(--border);
 }
 
 /* 土曜（青系） */
@@ -485,7 +681,7 @@ body.layout-horizontal #content {
 }
 .tekiyou-table th.cal-sat {
   color: #1565c0;
-  background-color: rgba(33, 150, 243, 0.12);
+  background-color: transparent;
 }
 
 /* 日曜（赤系） */
@@ -494,10 +690,34 @@ body.layout-horizontal #content {
 }
 .tekiyou-table th.cal-sun {
   color: #c62828;
-  background-color: rgba(244, 67, 54, 0.12);
+  background-color: transparent;
 }
 
 /* 5日境界 */
 .tekiyou-table .cal-5day-border {
   border-left: 1.5px solid var(--border);
+}
+
+/* 火曜・木曜 */
+.tekiyou-table .cal-tue-thu {
+  background-color: rgba(120, 120, 120, 0.08);
+}
+.tekiyou-table th.cal-tue-thu {
+  background-color: transparent;
+}
+
+/* 負担区分の左右外枠（保の左、公4の右） */
+.tekiyou-table .futan-outer-left {
+  border-left: 1px solid var(--border);
+}
+.tekiyou-table .futan-outer-right {
+  border-right: 1px solid var(--border);
+}
+
+/* Compact calendar (vertical split) */
+.tekiyou-compact .col-cal-group {
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-dim);
+  border-bottom: 1px solid var(--border);
 }
