@@ -10,29 +10,17 @@
         <col class="col-tensuu" />
         <col class="col-times-sign" />
         <col class="col-kaisuu" />
-        <% for (let i = 0; i < it.numCalCols; i++) { %>
-        <col class="col-cal" />
-        <% } %>
+        <col class="col-santei-days" />
       </colgroup>
       <tr>
-        <th rowspan="2">診区</th>
-        <th rowspan="2">負担区分</th>
-        <th rowspan="2">＊</th>
-        <th rowspan="2">明細</th>
-        <th rowspan="2" style="text-align:right">点数</th>
-        <th rowspan="2" class="col-times-sign"></th>
-        <th rowspan="2" style="text-align:right">回数</th>
-        <th colspan="<%= it.numCalCols %>" class="col-cal-group">算定日</th>
-      </tr>
-      <tr>
-        <% for (const cell of it.compactCalendarHeaderCells) { %>
-        <th class="<%= cell.className %>"><%= cell.text %></th>
-        <% } %>
-        <% if (it.padCols > 0) { %>
-        <% for (let i = 0; i < it.padCols; i++) { %>
-        <th class="col-cal"></th>
-        <% } %>
-        <% } %>
+        <th>診区</th>
+        <th>負担区分</th>
+        <th>＊</th>
+        <th>明細</th>
+        <th style="text-align:right">点数</th>
+        <th class="col-times-sign"></th>
+        <th style="text-align:right">回数</th>
+        <th>算定日</th>
       </tr>
       <% for (const rowHtml of it.rowsHtml) { %>
       <%~ rowHtml %>

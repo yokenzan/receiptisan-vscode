@@ -5,6 +5,7 @@ const {
   buildCalendarHeaderCells,
   buildCompactCalendarHeaderCells,
   buildFutanDataCells,
+  formatSanteiDays,
 } = require('../out/features/data-view/view/tekiyou-table.js');
 const { getTenkiColorClass } = require('../out/features/data-view/view/receipt-meta.js');
 const {
@@ -29,6 +30,23 @@ test('buildCompactCalendarHeaderCells renders only active days', () => {
 test('buildFutanDataCells maps marks by code', () => {
   const cells = buildFutanDataCells('1', true, [true, true, true, true, true]);
   assert.equal(cells.filter((cell) => cell.active).length, 1);
+});
+
+test('formatSanteiDays groups consecutive dates as ranges', () => {
+  const text = formatSanteiDays(
+    [
+      { date: { year: 2024, month: 1, day: 1 }, kaisuu: 1 },
+      { date: { year: 2024, month: 1, day: 2 }, kaisuu: 1 },
+      { date: { year: 2024, month: 1, day: 3 }, kaisuu: 1 },
+      { date: { year: 2024, month: 1, day: 5 }, kaisuu: 1 },
+      { date: { year: 2024, month: 1, day: 6 }, kaisuu: 1 },
+      { date: { year: 2024, month: 1, day: 6 }, kaisuu: 1 },
+      { date: { year: 2024, month: 1, day: 9 }, kaisuu: 0 },
+    ],
+    2024,
+    1,
+  );
+  assert.equal(text, '1~3, 5~6');
 });
 
 test('receipt meta helpers render expected labels', () => {

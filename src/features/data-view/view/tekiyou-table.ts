@@ -157,6 +157,44 @@ export function buildCompactCalendarDataCells(
 }
 
 /**
+ * Formats active treatment days as compact ranges (e.g. 1~5, 8, 12~14).
+ */
+export function formatSanteiDays(
+  dailyKaisuus: DailyKaisuu[] | undefined,
+  year: number,
+  month: number,
+): string {
+  if (!dailyKaisuus || dailyKaisuus.length === 0) return '';
+
+  const daySet = new Set<number>();
+  for (const entry of dailyKaisuus) {
+    if (entry.kaisuu <= 0) continue;
+    if (entry.date.year !== year || entry.date.month !== month) continue;
+    daySet.add(entry.date.day);
+  }
+  const days = Array.from(daySet).sort((a, b) => a - b);
+  if (days.length === 0) return '';
+
+  const parts: string[] = [];
+  let start = days[0];
+  let prev = days[0];
+
+  for (let i = 1; i < days.length; i++) {
+    const day = days[i];
+    if (day === prev + 1) {
+      prev = day;
+      continue;
+    }
+    parts.push(start === prev ? String(start) : `${start}~${prev}`);
+    start = day;
+    prev = day;
+  }
+
+  parts.push(start === prev ? String(start) : `${start}~${prev}`);
+  return parts.join(', ');
+}
+
+/**
  * Builds header cells for futan slot columns.
  */
 export function buildFutanHeaderCells(futanSlots: boolean[]): TableCellViewModel[] {
