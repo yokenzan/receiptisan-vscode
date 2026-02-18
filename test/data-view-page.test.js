@@ -16,8 +16,11 @@ test('renderDataViewDocument embeds nonce and layout class', () => {
         id: 'r1',
         label: {
           idPart: '0001',
-          shinryouYm: 'R6.1',
-          nyuugaiLabel: '外来',
+          shinryouYm: '2024(R06).01',
+          shinryouYmWestern: '2024.01',
+          receiptClassLabel: '高外７',
+          receiptClassKind: 'gairai',
+          lawCodesLabel: '065483----',
           patientId: 'P-1',
           patientName: 'n',
         },
