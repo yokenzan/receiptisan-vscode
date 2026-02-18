@@ -8,6 +8,7 @@
 </style>
 </head>
 <body<% if (it.layoutMode === 'horizontal') { %> class="layout-horizontal"<% } %>>
+  <% const renderWarekiCompact = (value) => String(value).replace(/\(([^)]+)\)/g, '<span class="date-wareki">($1)</span>'); %>
   <button id="nav-show-button" type="button" aria-controls="nav" aria-label="レセプト一覧を表示">開</button>
 
   <div id="nav">
@@ -19,7 +20,10 @@
       <% for (const navItem of it.navItems) { %>
       <li>
         <a href="#<%= navItem.id %>" class="nav-item" data-target="<%= navItem.id %>">
-          No.<%= navItem.label.idPart %> | <%= navItem.label.shinryouYm %>診療 <%= navItem.label.nyuugaiLabel %> <%= navItem.label.patientId %> <%= navItem.label.patientName %>
+          <span class="nav-col nav-no">No.<%= navItem.label.idPart %></span>
+          <span class="nav-col nav-ym-nyuugai"><%~ renderWarekiCompact(navItem.label.shinryouYm) %> <%= navItem.label.nyuugaiLabel %></span>
+          <span class="nav-col nav-patient-id"><%= navItem.label.patientId %></span>
+          <span class="nav-col nav-patient-name"><%= navItem.label.patientName %></span>
         </a>
       </li>
       <% } %>

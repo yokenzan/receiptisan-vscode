@@ -19,7 +19,7 @@ export function buildReceiptLabelViewModel(receipt: Receipt): ReceiptLabelViewMo
   return {
     idPart: String(receipt.id).padStart(4, '0'),
     shinryouYm: formatWarekiShort(receipt.shinryou_ym.wareki),
-    nyuugaiLabel: receipt.nyuugai === 'nyuuin' ? '入院' : '外来',
+    nyuugaiLabel: receipt.nyuugai === 'nyuuin' ? '入' : '外',
     patientId,
     patientName,
   };

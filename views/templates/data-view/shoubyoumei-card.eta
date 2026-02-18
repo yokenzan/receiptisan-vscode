@@ -1,6 +1,7 @@
 <div class="card card-shoubyoumei">
   <div class="card-title">傷病名</div>
   <div class="card-body">
+    <% const renderWarekiCompact = (value) => String(value).replace(/\(([^)]+)\)/g, '<span class="date-wareki">($1)</span>'); %>
     <table class="shoubyoumei-table">
       <colgroup>
         <col class="col-idx" />
@@ -29,7 +30,7 @@
           <%= row.fullText %>
           <% if (row.comment) { %> <span class="text-dim">（<%= row.comment %>）</span><% } %>
         </td>
-        <td><%= row.startDate %></td>
+        <td><span class="date-value"><%~ renderWarekiCompact(row.startDate) %></span></td>
         <td><span class="tag <%= row.tenkiClass %>"><%= row.tenkiName %></span></td>
       </tr>
       <% } %>
