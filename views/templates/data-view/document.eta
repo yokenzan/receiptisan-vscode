@@ -8,7 +8,13 @@
 </style>
 </head>
 <body<% if (it.layoutMode === 'horizontal') { %> class="layout-horizontal"<% } %>>
+  <button id="nav-show-button" type="button" aria-controls="nav" aria-label="レセプト一覧を表示">開</button>
+
   <div id="nav">
+    <div id="nav-header">
+      <span id="nav-title">レセプト一覧</span>
+      <button id="nav-hide-button" type="button" aria-controls="nav" aria-label="レセプト一覧を閉じる">閉</button>
+    </div>
     <ul>
       <% for (const navItem of it.navItems) { %>
       <li>
@@ -19,15 +25,32 @@
       <% } %>
     </ul>
   </div>
+
   <div id="content">
     <% for (const sectionHtml of it.receiptSectionsHtml) { %>
     <%~ sectionHtml %>
     <% } %>
   </div>
+
   <script nonce="<%= it.nonce %>">
     (function() {
       var navLinks = document.querySelectorAll('.nav-item');
       var content = document.getElementById('content');
+      var navShowButton = document.getElementById('nav-show-button');
+      var navHideButton = document.getElementById('nav-hide-button');
+      var LS_KEY_HIDDEN = 'receiptisan:dataView:navHidden';
+
+      function applyNavHidden(hidden) {
+        document.body.classList.toggle('nav-hidden', hidden);
+        navShowButton.style.display = hidden ? 'inline-flex' : 'none';
+        navShowButton.setAttribute('aria-expanded', hidden ? 'false' : 'true');
+        navHideButton.setAttribute('aria-expanded', hidden ? 'false' : 'true');
+        navShowButton.setAttribute('aria-label', 'レセプト一覧を表示');
+        navHideButton.setAttribute('aria-label', 'レセプト一覧を閉じる');
+        try {
+          localStorage.setItem(LS_KEY_HIDDEN, hidden ? '1' : '0');
+        } catch (_) {}
+      }
 
       navLinks.forEach(function(link) {
         link.addEventListener('click', function(e) {
@@ -40,6 +63,18 @@
       });
 
       if (navLinks.length > 0) navLinks[0].classList.add('active');
+
+      try {
+        applyNavHidden(localStorage.getItem(LS_KEY_HIDDEN) === '1');
+      } catch (_) {}
+
+      navShowButton.addEventListener('click', function() {
+        applyNavHidden(false);
+      });
+
+      navHideButton.addEventListener('click', function() {
+        applyNavHidden(true);
+      });
 
       var observer = new IntersectionObserver(function(entries) {
         for (var i = 0; i < entries.length; i++) {

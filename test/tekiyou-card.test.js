@@ -51,5 +51,5 @@ test('renderTekiyouCard vertical uses compact calendar table', () => {
   const html = renderTekiyouCard(receipt(), false, { normalizeTekiyouAscii: false });
   assert.ok(html.includes('class="tekiyou-table tekiyou-compact"'));
   assert.ok(html.includes('算定日'));
-  assert.match(html, /<th class="col-cal[^"]*">2<\/th>/);
+  assert.match(html, /\b2, 15\b/);
 });

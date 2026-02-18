@@ -20,7 +20,5 @@
   <td class="col-tensuu"><%= it.tensuuDisplay %></td>
   <td class="col-times-sign"><%= it.timesSignDisplay %></td>
   <td class="col-kaisuu"><%= it.kaisuuDisplay %></td>
-  <% for (const cell of it.calendarCells) { %>
-  <td class="<%= cell.className %>"><%= cell.text %></td>
-  <% } %>
+  <td class="col-santei-days"><%= it.santeiDaysDisplay %></td>
 </tr>

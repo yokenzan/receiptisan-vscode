@@ -1,4 +1,4 @@
-import { collectActiveDays, getDaysInMonth } from '../../../domain/tekiyou-utils';
+import { getDaysInMonth } from '../../../domain/tekiyou-utils';
 import { resolveSeparatorClass } from '../../../domain/tekiyou/row-policy';
 import { findLastNonCommentIndex } from '../../../domain/tekiyou/row-utils';
 import type {
@@ -14,19 +14,16 @@ import { renderTemplate } from '../../../template/eta-renderer';
 import {
   buildCalendarDataCells,
   buildCalendarHeaderCells,
-  buildCompactCalendarDataCells,
-  buildCompactCalendarHeaderCells,
   buildFutanDataCells,
   buildFutanHeaderCells,
   formatNumber,
+  formatSanteiDays,
   formatTokuteiKizaiUnitPrice,
 } from './tekiyou-table';
 import { splitParentheticalSegments } from './tekiyou-text';
 
 interface TekiyouLayout {
   mode: 'horizontal' | 'compact';
-  activeDays: number[];
-  minCalCols: number;
   year: number;
   month: number;
   futanSlots: boolean[];
@@ -71,8 +68,6 @@ export function renderTekiyouCard(
 
   const year = receipt.shinryou_ym.year;
   const month = receipt.shinryou_ym.month;
-  const activeDays = collectActiveDays(sections);
-  const MIN_CAL_COLS = 2;
   const futanSlots: boolean[] = [
     receipt.hokens.iryou_hoken != null,
     receipt.hokens.kouhi_futan_iryous.length >= 1,
@@ -84,8 +79,6 @@ export function renderTekiyouCard(
   const layout: TekiyouLayout = showCalendar
     ? {
         mode: 'horizontal',
-        activeDays,
-        minCalCols: 0,
         year,
         month,
         futanSlots,
@@ -93,8 +86,6 @@ export function renderTekiyouCard(
       }
     : {
         mode: 'compact',
-        activeDays,
-        minCalCols: MIN_CAL_COLS,
         year,
         month,
         futanSlots,
@@ -130,6 +121,9 @@ export function renderTekiyouCard(
 
           const showShinku = isFirstIchirenInSection && isFirstItemInSantei;
           const isLastNonComment = itemIdx === lastNonCommentIdx;
+          const lastDailyIndex =
+            lastNonCommentIdx >= 0 ? lastNonCommentIdx : santei.items.length - 1;
+          const showSanteiDaily = itemIdx === lastDailyIndex;
 
           rows.push(
             renderTekiyouRow(
@@ -138,6 +132,7 @@ export function renderTekiyouCard(
               showShinku ? shinkuCode : '',
               isFirstItemInSantei,
               isLastNonComment,
+              showSanteiDaily,
               santei.tensuu,
               santei.kaisuu,
               santei.daily_kaisuus,
@@ -177,7 +172,7 @@ export function renderTekiyouCard(
     tensuu: 68,
     timesSign: 14,
     kaisuu: 36,
-    cal: 20,
+    santeiDays: 180,
   };
 
   if (layout.mode === 'horizontal') {
@@ -204,7 +199,6 @@ export function renderTekiyouCard(
     });
   }
 
-  const numCalCols = Math.max(activeDays.length, layout.minCalCols);
   const baseWidth =
     COL_W_C.shinku +
     COL_W_C.futanCode +
@@ -212,15 +206,12 @@ export function renderTekiyouCard(
     COL_W_C.name +
     COL_W_C.tensuu +
     COL_W_C.timesSign +
-    COL_W_C.kaisuu;
-  const tableWidth = baseWidth + numCalCols * COL_W_C.cal;
-  const padCols = numCalCols - activeDays.length;
+    COL_W_C.kaisuu +
+    COL_W_C.santeiDays;
+  const tableWidth = baseWidth;
 
   return renderTemplate('data-view/tekiyou-card-compact.eta', {
     tableWidth,
-    numCalCols,
-    compactCalendarHeaderCells: buildCompactCalendarHeaderCells(activeDays, year, month),
-    padCols,
     rowsHtml: rows,
   });
 }
@@ -234,6 +225,7 @@ function renderTekiyouRow(
   shinkuCode: string,
   isFirstInSantei: boolean,
   isLastNonComment: boolean,
+  showSanteiDaily: boolean,
   santeiTensuu: number,
   santeiKaisuu: number,
   dailyKaisuus: DailyKaisuu[] | undefined,
@@ -253,6 +245,7 @@ function renderTekiyouRow(
       categoryClass,
       dailyKaisuus,
       isLastNonComment,
+      showSanteiDaily,
       layout,
       futanKubun,
       showFutanKubun,
@@ -268,6 +261,7 @@ function renderTekiyouRow(
     santeiTensuu,
     santeiKaisuu,
     isLastNonComment,
+    showSanteiDaily,
     dailyKaisuus,
     layout,
     futanKubun,
@@ -287,6 +281,7 @@ function renderMedicalRow(
   santeiTensuu: number,
   santeiKaisuu: number,
   isLastNonComment: boolean,
+  showSanteiDaily: boolean,
   dailyKaisuus: DailyKaisuu[] | undefined,
   layout: TekiyouLayout,
   futanKubun: string,
@@ -321,15 +316,12 @@ function renderMedicalRow(
 
   const calendarCells =
     layout.mode === 'horizontal'
-      ? buildCalendarDataCells(dailyKaisuus, isLastNonComment, layout.year, layout.month)
-      : buildCompactCalendarDataCells(
-          dailyKaisuus,
-          isLastNonComment,
-          layout.activeDays,
-          layout.minCalCols,
-          layout.year,
-          layout.month,
-        );
+      ? buildCalendarDataCells(dailyKaisuus, showSanteiDaily, layout.year, layout.month)
+      : [];
+  const santeiDaysDisplay =
+    layout.mode === 'compact' && showSanteiDaily
+      ? formatSanteiDays(dailyKaisuus, layout.year, layout.month)
+      : '';
 
   if (layout.mode === 'compact') {
     return renderTemplate('data-view/tekiyou-row-compact.eta', {
@@ -344,7 +336,7 @@ function renderMedicalRow(
       tensuuDisplay,
       timesSignDisplay,
       kaisuuDisplay,
-      calendarCells,
+      santeiDaysDisplay,
     });
   }
 
@@ -376,6 +368,7 @@ function renderCommentRow(
   categoryClass: string,
   dailyKaisuus: DailyKaisuu[] | undefined,
   isLastNonComment: boolean,
+  showSanteiDaily: boolean,
   layout: TekiyouLayout,
   futanKubun: string,
   showFutanKubun: boolean,
@@ -389,15 +382,12 @@ function renderCommentRow(
 
   const calendarCells =
     layout.mode === 'horizontal'
-      ? buildCalendarDataCells(dailyKaisuus, isLastNonComment, layout.year, layout.month)
-      : buildCompactCalendarDataCells(
-          dailyKaisuus,
-          isLastNonComment,
-          layout.activeDays,
-          layout.minCalCols,
-          layout.year,
-          layout.month,
-        );
+      ? buildCalendarDataCells(dailyKaisuus, showSanteiDaily, layout.year, layout.month)
+      : [];
+  const santeiDaysDisplay =
+    layout.mode === 'compact' && showSanteiDaily
+      ? formatSanteiDays(dailyKaisuus, layout.year, layout.month)
+      : '';
 
   if (layout.mode === 'compact') {
     return renderTemplate('data-view/tekiyou-row-compact.eta', {
@@ -412,7 +402,7 @@ function renderCommentRow(
       tensuuDisplay: '',
       timesSignDisplay: '',
       kaisuuDisplay: '',
-      calendarCells,
+      santeiDaysDisplay,
     });
   }
 
