@@ -38,7 +38,6 @@
       var content = document.getElementById('content');
       var navShowButton = document.getElementById('nav-show-button');
       var navHideButton = document.getElementById('nav-hide-button');
-      var LS_KEY_HIDDEN = 'receiptisan:dataView:navHidden';
 
       function applyNavHidden(hidden) {
         document.body.classList.toggle('nav-hidden', hidden);
@@ -47,9 +46,6 @@
         navHideButton.setAttribute('aria-expanded', hidden ? 'false' : 'true');
         navShowButton.setAttribute('aria-label', 'レセプト一覧を表示');
         navHideButton.setAttribute('aria-label', 'レセプト一覧を閉じる');
-        try {
-          localStorage.setItem(LS_KEY_HIDDEN, hidden ? '1' : '0');
-        } catch (_) {}
       }
 
       navLinks.forEach(function(link) {
@@ -64,9 +60,7 @@
 
       if (navLinks.length > 0) navLinks[0].classList.add('active');
 
-      try {
-        applyNavHidden(localStorage.getItem(LS_KEY_HIDDEN) === '1');
-      } catch (_) {}
+      applyNavHidden(false);
 
       navShowButton.addEventListener('click', function() {
         applyNavHidden(false);

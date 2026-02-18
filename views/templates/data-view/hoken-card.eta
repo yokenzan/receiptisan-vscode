@@ -17,7 +17,7 @@
         <th>資格番号</th>
         <th>実日数</th>
         <th>請求点数</th>
-        <th>給付対象負担金</th>
+        <th>給付対象額</th>
         <th>負担金</th>
       </tr>
       <% for (const row of it.rows) { %>
@@ -27,8 +27,12 @@
         <td><%= row.shikakuBangou %></td>
         <td class="num"><%= row.jitsunissuu %></td>
         <td class="num"><%= row.tensuu %></td>
-        <td class="num"><%= row.kyuufuTaishouIchibuFutankin %></td>
-        <td class="num"><%= row.ichibuFutankin %></td>
+        <td class="num">
+          <% if (row.kyuufuTaishouIchibuFutankin === '-') { %><span class="placeholder">-</span><% } else { %><%= row.kyuufuTaishouIchibuFutankin %><% } %>
+        </td>
+        <td class="num">
+          <% if (row.ichibuFutankin === '-') { %><span class="placeholder">-</span><% } else { %><%= row.ichibuFutankin %><% } %>
+        </td>
       </tr>
       <% } %>
     </table>
