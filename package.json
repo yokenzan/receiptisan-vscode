@@ -126,7 +126,7 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./ && node -e \"require('fs').rmSync('out/views',{recursive:true,force:true})\" && cp -r views out/views",
+    "compile": "tsc -p ./ && node -e \"const fs=require('fs'); fs.rmSync('out/views',{recursive:true,force:true}); fs.mkdirSync('out/vendor',{recursive:true}); fs.copyFileSync('node_modules/eta/dist/index.cjs','out/vendor/eta.cjs')\" && cp -r views out/views",
     "watch": "tsc -watch -p ./",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
@@ -163,7 +163,7 @@
       [
         "@semantic-release/exec",
         {
-          "prepareCmd": "vsce package"
+          "prepareCmd": "vsce package --no-dependencies"
         }
       ],
       [
