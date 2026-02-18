@@ -44,7 +44,7 @@
           </span>
           <% } %>
           <% } else { %>
-          <span class="text-dim">なし</span>
+          <span class="placeholder">-</span>
           <% } %>
         </td>
         <% if (it.byoushouCell) { %>
