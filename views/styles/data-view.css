@@ -320,6 +320,11 @@ table tr:last-child td {
 .text-dim {
   color: var(--text-dim);
 }
+.placeholder {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif;
+  color: var(--text-dim);
+  font-style: normal;
+}
 .text-orange {
   color: var(--orange);
 }
