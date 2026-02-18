@@ -120,8 +120,7 @@ test('renderDataViewPage vertical renders compact layout with active day header'
 
   assert.ok(html.includes('class="tekiyou-table tekiyou-compact"'));
   assert.ok(html.includes('算定日'));
-  assert.match(html, /<th class="col-cal[^"]*">2<\/th>/);
-  assert.match(html, /<th class="col-cal[^"]*">15<\/th>/);
+  assert.match(html, /\b2, 15\b/);
 });
 
 test('renderDataViewPage does not leak ruby object inspection strings in output', () => {
