@@ -41,7 +41,7 @@
           <% } else { %>
           <span class="date-value"><%~ renderWarekiCompact(it.birthDate) %></span>
           <% if (it.ageYearsMonths) { %>
-          <span class="age-display"><span class="value-num"><%= it.ageYearsMonths.years %></span><span class="value-unit">歳</span><span class="value-num"><%= it.ageYearsMonths.months %></span><span class="value-unit">ヶ月</span><% if (it.isBirthMonth) { %> 🎂<% } %></span>
+          <span class="age-display"><span class="value-num"><%= it.ageYearsMonths.years %></span><span class="value-unit">歳</span><span class="value-num"><%= it.ageYearsMonths.months %></span><span class="value-unit">ヶ月</span><% if (it.isBirthMonth) { %>🎂<% } %></span>
           <% } %>
           <% } %>
         </td>
