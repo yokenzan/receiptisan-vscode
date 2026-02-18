@@ -2,7 +2,7 @@
   "name": "receiptisan-preview",
   "displayName": "Receiptisan Preview",
   "description": "Preview RECEIPTC.UKE(電子レセプトファイル) using receiptisan CLI",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "publisher": "yokenzan",
   "license": "MIT",
   "repository": {
@@ -12,16 +12,33 @@
   "engines": {
     "vscode": "^1.85.0"
   },
-  "categories": ["Visualization", "Other"],
-  "keywords": ["receipt", "uke", "医療", "レセプト", "診療報酬"],
-  "activationEvents": ["onLanguage:uke"],
+  "categories": [
+    "Visualization",
+    "Other"
+  ],
+  "keywords": [
+    "receipt",
+    "uke",
+    "医療",
+    "レセプト",
+    "診療報酬"
+  ],
+  "activationEvents": [
+    "onLanguage:uke"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "languages": [
       {
         "id": "uke",
-        "aliases": ["UKE", "レセプト"],
-        "extensions": [".UKE", ".uke"],
+        "aliases": [
+          "UKE",
+          "レセプト"
+        ],
+        "extensions": [
+          ".UKE",
+          ".uke"
+        ],
         "configuration": "./language-configuration.json"
       }
     ],
@@ -116,7 +133,9 @@
     "typescript": "^5.6.0"
   },
   "release": {
-    "branches": ["main"],
+    "branches": [
+      "main"
+    ],
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",

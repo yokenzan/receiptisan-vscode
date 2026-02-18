@@ -1,3 +1,22 @@
+# [1.3.0](https://github.com/yokenzan/receiptisan-vscode/compare/v1.2.0...v1.3.0) (2026-02-18)
+
+
+### Bug Fixes
+
+* **ci:** run Node tests from test directory ([383b245](https://github.com/yokenzan/receiptisan-vscode/commit/383b24506482d91a35b3b513dd121fdbcb3c19b8))
+* **ci:** use Node 20 compatible test file pattern ([13f5afa](https://github.com/yokenzan/receiptisan-vscode/commit/13f5afa00cc50b25e6b73fae80913d5252073a48))
+* **data-view:** align receipt header and placeholder labels ([dbe72ec](https://github.com/yokenzan/receiptisan-vscode/commit/dbe72ec1fd65c7740119f8abbb43116d189782a3))
+* **data-view:** refine sticky behavior and tekiyou table rendering ([3cba426](https://github.com/yokenzan/receiptisan-vscode/commit/3cba426582998f2bc2ef1746c61351b896f2c15e))
+
+
+### Features
+
+* **data-view:** refine receipt list labels and law code display ([db98c38](https://github.com/yokenzan/receiptisan-vscode/commit/db98c38f2c426aa8d8fb59022734a812de0b0ee0))
+* improve Data View layout with column width constraints and calendar control ([782d28d](https://github.com/yokenzan/receiptisan-vscode/commit/782d28dc950c3c2608766180814ce2fb2256ae54))
+* improve data-view toggle UI and compact santei-day display ([4e13d17](https://github.com/yokenzan/receiptisan-vscode/commit/4e13d17a0c8de5c62f466a7b8ac114cae48786ca))
+* refine data-view date and badge presentation ([de4cbe3](https://github.com/yokenzan/receiptisan-vscode/commit/de4cbe3790522f83e85bc98ce04a30561f807946))
+* refine data-view nav toggle and placeholder rendering ([bc90258](https://github.com/yokenzan/receiptisan-vscode/commit/bc9025858381945d3f2f56f62eada2d846518afe))
+
 # [1.2.0](https://github.com/yokenzan/receiptisan-vscode/compare/v1.1.0...v1.2.0) (2026-02-08)
 
 
