@@ -12,10 +12,10 @@ interface HokenRowViewModel {
   kubun: string;
   hokenjaBangou: string;
   shikakuBangou: string;
-  jitsunissuu: string;
-  tensuu: string;
-  kyuufuTaishouIchibuFutankin: string;
-  ichibuFutankin: string;
+  jitsunissuu: UnitValue | null;
+  tensuu: UnitValue | null;
+  kyuufuTaishouIchibuFutankin: UnitValue | null;
+  ichibuFutankin: UnitValue | null;
 }
 
 interface ShoubyoumeiRowViewModel {
@@ -33,9 +33,56 @@ interface ShoubyoumeiRowViewModel {
   tenkiName: string;
 }
 
+interface UnitValue {
+  value: string;
+  unit: string;
+  prefix?: string;
+  suffix?: string;
+}
+
 function fallbackDash(value: string | null | undefined): string {
   if (value == null) return '-';
   return value.trim().length > 0 ? value : '-';
+}
+
+function endOfMonthDate(year: number, month: number): Date {
+  return new Date(year, month, 0);
+}
+
+function makeUnitValue(
+  n: number | null | undefined,
+  unit: string,
+  options?: { prefix?: string; suffix?: string },
+): UnitValue | null {
+  if (n == null) return null;
+  return {
+    value: formatNumber(n),
+    unit,
+    prefix: options?.prefix,
+    suffix: options?.suffix,
+  };
+}
+
+function calculateLegalAgeYearsMonthsAt(
+  birth: { year: number; month: number; day: number },
+  asOf: Date,
+): { years: number; months: number } {
+  // 民法143条の前日満了ルールに合わせ、判定日を1日進めて「経過月数」を計算する。
+  const reference = new Date(asOf.getTime());
+  reference.setDate(reference.getDate() + 1);
+
+  const refYear = reference.getFullYear();
+  const refMonth = reference.getMonth() + 1;
+  const refDay = reference.getDate();
+
+  let totalMonths = (refYear - birth.year) * 12 + (refMonth - birth.month);
+  if (refDay < birth.day) totalMonths -= 1;
+  if (totalMonths < 0) totalMonths = 0;
+
+  return {
+    years: Math.floor(totalMonths / 12),
+    months: totalMonths % 12,
+  };
 }
 
 /**
@@ -100,6 +147,19 @@ export function renderPatientCard(receipt: Receipt): string {
   const p = receipt.patient;
   const sexKind =
     String(p.sex.code) === '1' ? 'male' : String(p.sex.code) === '2' ? 'female' : 'other';
+  const birthDate = p.birth_date?.wareki ? formatWarekiShort(p.birth_date.wareki) : '-';
+  const asOf = endOfMonthDate(receipt.shinryou_ym.year, receipt.shinryou_ym.month);
+  const ageYearsMonths = p.birth_date
+    ? calculateLegalAgeYearsMonthsAt(
+        {
+          year: p.birth_date.year,
+          month: p.birth_date.month,
+          day: p.birth_date.day,
+        },
+        asOf,
+      )
+    : null;
+  const isBirthMonth = p.birth_date ? p.birth_date.month === receipt.shinryou_ym.month : false;
 
   return renderTemplate('data-view/patient-card.eta', {
     patientId: fallbackDash(p.id),
@@ -107,7 +167,9 @@ export function renderPatientCard(receipt: Receipt): string {
     nameKana: p.name_kana,
     sexName: p.sex.name,
     sexKind,
-    birthDate: p.birth_date?.wareki ? formatWarekiShort(p.birth_date.wareki) : '-',
+    birthDate,
+    ageYearsMonths,
+    isBirthMonth,
   });
 }
 
@@ -132,13 +194,13 @@ export function renderHokenCard(receipt: Receipt): string {
       kubun: '医療保険',
       hokenjaBangou: ih.hokenja_bangou,
       shikakuBangou: shikakuParts.join('・'),
-      jitsunissuu: kih ? `${kih.shinryou_jitsunissuu}日` : '',
-      tensuu: kih ? `${formatNumber(kih.goukei_tensuu)}点` : '',
-      kyuufuTaishouIchibuFutankin:
-        kih?.kyuufu_taishou_ichibu_futankin != null
-          ? `(${formatNumber(kih.kyuufu_taishou_ichibu_futankin)}円)`
-          : '-',
-      ichibuFutankin: kih?.ichibu_futankin != null ? `${formatNumber(kih.ichibu_futankin)}円` : '-',
+      jitsunissuu: makeUnitValue(kih?.shinryou_jitsunissuu, '日'),
+      tensuu: makeUnitValue(kih?.goukei_tensuu, '点'),
+      kyuufuTaishouIchibuFutankin: makeUnitValue(kih?.kyuufu_taishou_ichibu_futankin, '円', {
+        prefix: '(',
+        suffix: ')',
+      }),
+      ichibuFutankin: makeUnitValue(kih?.ichibu_futankin, '円'),
     });
 
     if (ih.kyuufu_wariai != null) detailParts.push(`給付割合: ${ih.kyuufu_wariai}%`);
@@ -152,13 +214,13 @@ export function renderHokenCard(receipt: Receipt): string {
       kubun: `公費${i + 1}`,
       hokenjaBangou: kouhi.futansha_bangou,
       shikakuBangou: kouhi.jukyuusha_bangou,
-      jitsunissuu: rk ? `${rk.shinryou_jitsunissuu}日` : '',
-      tensuu: rk ? `${formatNumber(rk.goukei_tensuu)}点` : '',
-      kyuufuTaishouIchibuFutankin:
-        rk?.kyuufu_taishou_ichibu_futankin != null
-          ? `(${formatNumber(rk.kyuufu_taishou_ichibu_futankin)}円)`
-          : '-',
-      ichibuFutankin: rk?.ichibu_futankin != null ? `${formatNumber(rk.ichibu_futankin)}円` : '-',
+      jitsunissuu: makeUnitValue(rk?.shinryou_jitsunissuu, '日'),
+      tensuu: makeUnitValue(rk?.goukei_tensuu, '点'),
+      kyuufuTaishouIchibuFutankin: makeUnitValue(rk?.kyuufu_taishou_ichibu_futankin, '円', {
+        prefix: '(',
+        suffix: ')',
+      }),
+      ichibuFutankin: makeUnitValue(rk?.ichibu_futankin, '円'),
     });
   }
 
@@ -228,26 +290,22 @@ export function renderKyuufuCard(receipt: Receipt): string {
 
   const rows: Array<{
     kubun: string;
-    kaisuu: string;
-    goukeiKingaku: string;
-    hyoujunFutangaku: string;
+    kaisuu: UnitValue | null;
+    goukeiKingaku: UnitValue | null;
+    hyoujunFutangaku: UnitValue | null;
   }> = [];
 
   if (hasIh && ih) {
     rows.push({
       kubun: '医療保険',
-      kaisuu:
-        ih.shokuji_seikatsu_ryouyou_kaisuu != null
-          ? `${formatNumber(ih.shokuji_seikatsu_ryouyou_kaisuu)}回`
-          : '',
-      goukeiKingaku:
-        ih.shokuji_seikatsu_ryouyou_goukei_kingaku != null
-          ? `${formatNumber(ih.shokuji_seikatsu_ryouyou_goukei_kingaku)}円`
-          : '',
-      hyoujunFutangaku:
+      kaisuu: makeUnitValue(ih.shokuji_seikatsu_ryouyou_kaisuu, '回'),
+      goukeiKingaku: makeUnitValue(ih.shokuji_seikatsu_ryouyou_goukei_kingaku, '円'),
+      hyoujunFutangaku: makeUnitValue(
         ih.shokuji_seikatsu_ryouyou_hyoujun_futangaku > 0
-          ? `${formatNumber(ih.shokuji_seikatsu_ryouyou_hyoujun_futangaku)}円`
-          : '',
+          ? ih.shokuji_seikatsu_ryouyou_hyoujun_futangaku
+          : null,
+        '円',
+      ),
     });
   }
 
@@ -261,18 +319,14 @@ export function renderKyuufuCard(receipt: Receipt): string {
 
     rows.push({
       kubun: `公費${i + 1}`,
-      kaisuu:
-        rk.shokuji_seikatsu_ryouyou_kaisuu != null
-          ? `${formatNumber(rk.shokuji_seikatsu_ryouyou_kaisuu)}回`
-          : '',
-      goukeiKingaku:
-        rk.shokuji_seikatsu_ryouyou_goukei_kingaku != null
-          ? `${formatNumber(rk.shokuji_seikatsu_ryouyou_goukei_kingaku)}円`
-          : '',
-      hyoujunFutangaku:
+      kaisuu: makeUnitValue(rk.shokuji_seikatsu_ryouyou_kaisuu, '回'),
+      goukeiKingaku: makeUnitValue(rk.shokuji_seikatsu_ryouyou_goukei_kingaku, '円'),
+      hyoujunFutangaku: makeUnitValue(
         rk.shokuji_seikatsu_ryouyou_hyoujun_futangaku > 0
-          ? `${formatNumber(rk.shokuji_seikatsu_ryouyou_hyoujun_futangaku)}円`
-          : '',
+          ? rk.shokuji_seikatsu_ryouyou_hyoujun_futangaku
+          : null,
+        '円',
+      ),
     });
   }
 

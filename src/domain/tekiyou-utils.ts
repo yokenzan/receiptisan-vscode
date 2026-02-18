@@ -62,13 +62,21 @@ export function toHalfWidthAscii(text: string): string {
  * Formats wareki object into short compact string.
  */
 export function formatWarekiShort(wareki: {
-  gengou: { alphabet: string };
+  gengou: { alphabet: string; base_year?: number };
   year: number;
   month: number;
   day?: number;
 }): string {
-  const base = `${wareki.gengou.alphabet}${wareki.year}.${wareki.month}`;
-  return wareki.day != null ? `${base}.${wareki.day}` : base;
+  const westernYear =
+    typeof wareki.gengou.base_year === 'number' ? wareki.gengou.base_year + wareki.year - 1 : null;
+  const yy = String(wareki.year).padStart(2, '0');
+  const mm = String(wareki.month).padStart(2, '0');
+  const yearPart =
+    westernYear == null
+      ? `${wareki.gengou.alphabet}${yy}`
+      : `${westernYear}(${wareki.gengou.alphabet}${yy})`;
+  const base = `${yearPart}.${mm}`;
+  return wareki.day != null ? `${base}.${String(wareki.day).padStart(2, '0')}` : base;
 }
 
 /**
