@@ -76,6 +76,25 @@ body {
   max-height: 264px;
   overflow-y: auto;
   padding: 0;
+  background: var(--bg-card);
+}
+
+#nav-header {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-card);
+}
+
+#nav-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-bright);
 }
 
 #nav ul {
@@ -87,15 +106,70 @@ body {
 }
 
 #nav li a {
-  display: block;
-  padding: 3px 10px;
+  display: grid;
+  grid-template-columns: max-content max-content max-content max-content minmax(0, 1fr);
+  align-items: center;
+  gap: 0;
+  padding: 3px 8px;
   color: var(--text);
   text-decoration: none;
   font-size: 12px;
+  border-left: 2px solid transparent;
+}
+
+.nav-col {
+  min-width: 0;
+  padding: 0 6px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border-left: 2px solid transparent;
+  border-right: 1px solid var(--border);
+}
+.nav-col:last-child {
+  border-right: none;
+}
+.nav-ym {
+  font-family: var(--font-mono);
+}
+.nav-no,
+.nav-patient-id {
+  min-width: 7ch;
+}
+.nav-law-codes {
+  text-align: left;
+  font-family: var(--font-mono);
+}
+.nav-ym-class {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.nav-ym-class > span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.nav-class-badge {
+  font-size: 10px;
+  width: 3.6em;
+  min-width: 3.6em;
+  max-width: 3.6em;
+  justify-content: center;
+  padding: 1px 0;
+  overflow: hidden;
+}
+.nav-class-nyuuin {
+  background: var(--nyuuin-bg);
+  color: var(--nyuuin-fg);
+}
+.nav-class-gairai {
+  background: var(--gairai-bg);
+  color: var(--gairai-fg);
+}
+.nav-class-neutral {
+  background: #6d4c41;
+  color: #ffffff;
 }
 
 #nav li a:hover {
@@ -113,6 +187,52 @@ body {
   flex: 1;
   overflow-y: auto;
   padding: 8px 12px;
+  min-height: 0;
+}
+
+#nav-show-button,
+#nav-hide-button {
+  border: 1px solid #8aa0b8;
+  background: #f7fbff;
+  color: #1f3f60;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 2.4em;
+  text-align: center;
+}
+
+#nav-hide-button {
+  padding: 2px 8px;
+}
+
+#nav-show-button {
+  position: fixed;
+  left: 12px;
+  bottom: 12px;
+  z-index: 20;
+  padding: 4px 8px;
+  display: none;
+}
+
+#nav-show-button:hover,
+#nav-hide-button:hover {
+  background: #e6f1fb;
+}
+
+body.layout-horizontal #nav-show-button {
+  top: 8px;
+  bottom: auto;
+}
+
+body.layout-horizontal.nav-hidden #content {
+  padding-left: 52px;
+}
+
+body.nav-hidden #nav,
+body.nav-hidden #nav {
+  display: none;
 }
 
 .receipt-section {
@@ -182,11 +302,15 @@ table tr:last-child td {
 }
 
 .tag {
-  display: inline-block;
-  padding: 1px 5px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.6em;
+  padding: 1px 6px;
   border-radius: 3px;
   font-size: 11px;
+  line-height: 1.2;
   white-space: nowrap;
+  vertical-align: middle;
 }
 
 .tag-main {
@@ -255,6 +379,11 @@ table tr:last-child td {
 .text-dim {
   color: var(--text-dim);
 }
+.placeholder {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif;
+  color: var(--text-dim);
+  font-style: normal;
+}
 .text-orange {
   color: var(--orange);
 }
@@ -266,6 +395,33 @@ table tr:last-child td {
   text-align: right;
   font-family: var(--font-mono);
   font-size: 12px;
+}
+.unit-cell {
+  text-align: right;
+  white-space: nowrap;
+}
+.value-num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+.value-unit,
+.value-affix {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif;
+  font-size: 90%;
+}
+.date-value {
+  font-family: inherit;
+  font-variant-numeric: normal;
+}
+.date-wareki {
+  font-size: 90%;
+}
+.age-display {
+  margin-left: 0.55em;
+}
+.age-display .value-num {
+  font-family: inherit;
+  font-variant-numeric: normal;
 }
 
 .item-si {
@@ -323,6 +479,19 @@ table tr:last-child td {
 .receipt-info-table .tag {
   margin-right: 3px;
 }
+.receipt-info-table tr > td:first-of-type,
+.card-patient tr > td {
+  min-width: 320px;
+}
+.receipt-chip {
+  gap: 4px;
+}
+.receipt-chip-code {
+  display: inline-block;
+  width: 2ch;
+  text-align: right;
+  font-family: var(--font-mono);
+}
 
 /* 情報カードの共通幅制限 */
 .receipt-info-card,
@@ -335,7 +504,6 @@ table tr:last-child td {
 
 /* 患者情報カード */
 .card-patient td {
-  min-width: 60px;
   max-width: 320px;
 }
 .card-patient ruby {
@@ -642,12 +810,11 @@ body.layout-horizontal {
 }
 body.layout-horizontal #nav {
   order: 0;
-  width: 288px;
+  width: 418px;
   max-height: none;
   height: 100vh;
   border-top: none;
   border-right: 1px solid var(--border);
-  flex-shrink: 0;
 }
 body.layout-horizontal #content {
   order: 1;
@@ -715,9 +882,14 @@ body.layout-horizontal #content {
 }
 
 /* Compact calendar (vertical split) */
-.tekiyou-compact .col-cal-group {
-  text-align: center;
+.tekiyou-compact .col-santei-days {
+  width: 180px;
+  min-width: 180px;
+  font-family: var(--font-mono);
   font-size: 11px;
   color: var(--text-dim);
-  border-bottom: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

@@ -1,0 +1,51 @@
+<div class="card card-patient">
+  <div class="card-title">患者情報</div>
+  <div class="card-body">
+    <% const renderWarekiCompact = (value) => String(value).replace(/\(([^)]+)\)/g, '<span class="date-wareki">($1)</span>'); %>
+    <table>
+      <tr>
+        <th>患者番号</th>
+        <td>
+          <% if (it.patientId === '-') { %><span class="placeholder">-</span><% } else { %><%= it.patientId %><% } %>
+        </td>
+      </tr>
+      <tr>
+        <th>氏名</th>
+        <td>
+          <% if (it.name === '-') { %>
+          <span class="placeholder">-</span>
+          <% } else if (it.nameKana) { %>
+          <ruby><%= it.name %><rp>（</rp><rt><%= it.nameKana %></rt><rp>）</rp></ruby>
+          <% } else { %>
+          <%= it.name %>
+          <% } %>
+        </td>
+      </tr>
+      <tr>
+        <th>性別</th>
+        <td>
+          <% if (it.sexKind === 'male') { %>
+          <span class="tag tag-sex-male"><%= it.sexName %></span>
+          <% } else if (it.sexKind === 'female') { %>
+          <span class="tag tag-sex-female"><%= it.sexName %></span>
+          <% } else { %>
+          <%= it.sexName %>
+          <% } %>
+        </td>
+      </tr>
+      <tr>
+        <th>生年月日</th>
+        <td>
+          <% if (it.birthDate === '-') { %>
+          <span class="placeholder">-</span>
+          <% } else { %>
+          <span class="date-value"><%~ renderWarekiCompact(it.birthDate) %></span>
+          <% if (it.ageYearsMonths) { %>
+          <span class="age-display"><span class="value-num"><%= it.ageYearsMonths.years %></span><span class="value-unit">歳</span><span class="value-num"><%= it.ageYearsMonths.months %></span><span class="value-unit">ヶ月</span><% if (it.isBirthMonth) { %>🎂<% } %></span>
+          <% } %>
+          <% } %>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

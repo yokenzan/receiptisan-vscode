@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head><meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline';">
+<style>
+  body { font-family: sans-serif; padding: 20px; color: #333; background: #f5f5f5; }
+  h1 { color: #c62828; }
+  .stderr { background: #e8e8e8; padding: 10px; overflow: auto; max-height: 200px; color: #333; }
+</style></head>
+<body>
+  <h1>データ取得エラー</h1>
+  <p><%= it.message %></p>
+  <% if (it.stderr) { %>
+  <pre class="stderr"><%= it.stderr %></pre>
+  <% } %>
+</body></html>

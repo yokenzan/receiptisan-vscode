@@ -1,0 +1,24 @@
+<tr<% if (it.rowClass) { %> class="<%= it.rowClass %>"<% } %>>
+  <td class="col-shinku"><%= it.shinkuCode %></td>
+  <td class="col-futan-code"><%= it.futanCodeDisplay %></td>
+  <td class="col-mark"><% if (it.isFirstInSantei) { %><span style="color:#9c27b0;font-weight:bold">＊</span><% } %></td>
+  <td class="col-name <%= it.categoryClass %><%= it.unknownClass %>">
+    <% for (const segment of it.nameSegments) { %>
+      <% if (segment.inParen) { %><span class="tekiyou-paren-compact"><%= segment.text %></span><% } else { %><%= segment.text %><% } %>
+    <% } %>
+    <% if (it.detailSegments.length > 0) { %>
+      <span class="text-dim">
+        <% for (let i = 0; i < it.detailSegments.length; i++) { %>
+          <% if (i > 0) { %> <% } %>
+          <% for (const segment of it.detailSegments[i]) { %>
+            <% if (segment.inParen) { %><span class="tekiyou-paren-compact"><%= segment.text %></span><% } else { %><%= segment.text %><% } %>
+          <% } %>
+        <% } %>
+      </span>
+    <% } %>
+  </td>
+  <td class="col-tensuu"><%= it.tensuuDisplay %></td>
+  <td class="col-times-sign"><%= it.timesSignDisplay %></td>
+  <td class="col-kaisuu"><%= it.kaisuuDisplay %></td>
+  <td class="col-santei-days"><%= it.santeiDaysDisplay %></td>
+</tr>
