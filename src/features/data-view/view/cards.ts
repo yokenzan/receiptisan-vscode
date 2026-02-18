@@ -33,6 +33,11 @@ interface ShoubyoumeiRowViewModel {
   tenkiName: string;
 }
 
+function fallbackDash(value: string | null | undefined): string {
+  if (value == null) return '-';
+  return value.trim().length > 0 ? value : '-';
+}
+
 /**
  * Renders top-level UKE header card.
  */
@@ -97,12 +102,12 @@ export function renderPatientCard(receipt: Receipt): string {
     String(p.sex.code) === '1' ? 'male' : String(p.sex.code) === '2' ? 'female' : 'other';
 
   return renderTemplate('data-view/patient-card.eta', {
-    patientId: p.id ?? '',
-    name: p.name,
+    patientId: fallbackDash(p.id),
+    name: fallbackDash(p.name),
     nameKana: p.name_kana,
     sexName: p.sex.name,
     sexKind,
-    birthDate: formatWarekiShort(p.birth_date.wareki),
+    birthDate: p.birth_date?.wareki ? formatWarekiShort(p.birth_date.wareki) : '-',
   });
 }
 
@@ -129,8 +134,11 @@ export function renderHokenCard(receipt: Receipt): string {
       shikakuBangou: shikakuParts.join('・'),
       jitsunissuu: kih ? `${kih.shinryou_jitsunissuu}日` : '',
       tensuu: kih ? `${formatNumber(kih.goukei_tensuu)}点` : '',
-      kyuufuTaishouIchibuFutankin: '',
-      ichibuFutankin: kih?.ichibu_futankin != null ? `${formatNumber(kih.ichibu_futankin)}円` : '',
+      kyuufuTaishouIchibuFutankin:
+        kih?.kyuufu_taishou_ichibu_futankin != null
+          ? `(${formatNumber(kih.kyuufu_taishou_ichibu_futankin)}円)`
+          : '-',
+      ichibuFutankin: kih?.ichibu_futankin != null ? `${formatNumber(kih.ichibu_futankin)}円` : '-',
     });
 
     if (ih.kyuufu_wariai != null) detailParts.push(`給付割合: ${ih.kyuufu_wariai}%`);
@@ -149,8 +157,8 @@ export function renderHokenCard(receipt: Receipt): string {
       kyuufuTaishouIchibuFutankin:
         rk?.kyuufu_taishou_ichibu_futankin != null
           ? `(${formatNumber(rk.kyuufu_taishou_ichibu_futankin)}円)`
-          : '',
-      ichibuFutankin: rk?.ichibu_futankin != null ? `${formatNumber(rk.ichibu_futankin)}円` : '',
+          : '-',
+      ichibuFutankin: rk?.ichibu_futankin != null ? `${formatNumber(rk.ichibu_futankin)}円` : '-',
     });
   }
 
