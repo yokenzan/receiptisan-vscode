@@ -2,8 +2,10 @@ import { renderTemplate } from '../../../template/eta-renderer';
 import type { DataViewReceiptViewModel } from '../view-model';
 import {
   renderHokenCard,
+  renderHokenKyuufuCardHorizontal,
   renderKyuufuCard,
   renderPatientCard,
+  renderPatientReceiptCardHorizontal,
   renderReceiptHeader,
   renderShoubyoumeiCard,
 } from './cards';
@@ -17,14 +19,19 @@ export function renderReceiptSection(
   options: DataViewRenderOptions,
 ): string {
   const receipt = receiptViewModel.receipt;
+  const isHorizontal = receiptViewModel.showCalendar;
 
   return renderTemplate('data-view/receipt-section.eta', {
     id: receiptViewModel.id,
     headerLabel: receiptViewModel.label,
-    receiptHeaderHtml: renderReceiptHeader(receipt),
-    patientCardHtml: renderPatientCard(receipt),
-    hokenCardHtml: renderHokenCard(receipt),
-    kyuufuCardHtml: renderKyuufuCard(receipt),
+    receiptHeaderHtml: isHorizontal ? '' : renderReceiptHeader(receipt),
+    patientCardHtml: isHorizontal
+      ? renderPatientReceiptCardHorizontal(receipt)
+      : renderPatientCard(receipt),
+    hokenCardHtml: isHorizontal
+      ? renderHokenKyuufuCardHorizontal(receipt)
+      : renderHokenCard(receipt),
+    kyuufuCardHtml: isHorizontal ? '' : renderKyuufuCard(receipt),
     shoubyoumeiCardHtml: renderShoubyoumeiCard(receipt.shoubyoumeis),
     tekiyouCardHtml: renderTekiyouCard(receipt, receiptViewModel.showCalendar, options),
   });

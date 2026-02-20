@@ -1,0 +1,99 @@
+<div class="card card-hoken-kyuufu-horizontal">
+  <div class="card-title">療養の給付</div>
+  <div class="card-body">
+    <% if (it.shikakuRows.length > 0) { %>
+    <div class="hoken-shikaku-detail">
+      <% for (const row of it.shikakuRows) { %>
+      <span><%= row.kubun %> 資格番号: <%= row.shikakuBangou %></span>
+      <% } %>
+    </div>
+    <% } %>
+
+    <table class="hoken-kyuufu-table">
+      <colgroup>
+        <col class="col-kubun" />
+        <col class="col-hokenja" />
+        <col class="col-jitsunissuu" />
+        <col class="col-tensuu" />
+        <col class="col-kyuufu-futankin" />
+        <col class="col-ichibu-futankin" />
+        <% if (it.showMealLifeColumns) { %>
+        <col class="col-kaisuu" />
+        <col class="col-seikyuu-kingaku" />
+        <col class="col-hyoujun-futankin" />
+        <% } %>
+      </colgroup>
+      <tr>
+        <th>区分</th>
+        <th>事業者番号</th>
+        <th>実日数</th>
+        <th>請求点数</th>
+        <th>給付対象額</th>
+        <th class="<%= it.showMealLifeColumns ? 'sep-after-hoken' : '' %>">負担金額</th>
+        <% if (it.showMealLifeColumns) { %>
+        <th>回数</th>
+        <th>請求金額</th>
+        <th>標準負担金額</th>
+        <% } %>
+      </tr>
+      <% for (const row of it.rows) { %>
+      <tr>
+        <td><%= row.kubun %></td>
+        <td class="code">
+          <% if (row.hokenjaBangou) { %><%= row.hokenjaBangou %><% } else { %><span class="placeholder">-</span><% } %>
+        </td>
+        <td class="unit-cell">
+          <% if (row.jitsunissuu) { %>
+          <span class="value-num"><%= row.jitsunissuu.value %></span><span class="value-unit"><%= row.jitsunissuu.unit %></span>
+          <% } else { %>
+          <span class="placeholder">-</span>
+          <% } %>
+        </td>
+        <td class="unit-cell">
+          <% if (row.tensuu) { %>
+          <span class="value-num"><%= row.tensuu.value %></span><span class="value-unit"><%= row.tensuu.unit %></span>
+          <% } else { %>
+          <span class="placeholder">-</span>
+          <% } %>
+        </td>
+        <td class="unit-cell">
+          <% if (!row.kyuufuTaishouIchibuFutankin) { %>
+          <span class="placeholder">-</span>
+          <% } else { %>
+          <span class="value-paren-compact">
+          <% if (row.kyuufuTaishouIchibuFutankin.prefix) { %><span class="value-affix"><%= row.kyuufuTaishouIchibuFutankin.prefix %></span><% } %>
+          <span class="value-num"><%= row.kyuufuTaishouIchibuFutankin.value %></span><span class="value-unit"><%= row.kyuufuTaishouIchibuFutankin.unit %></span>
+          <% if (row.kyuufuTaishouIchibuFutankin.suffix) { %><span class="value-affix"><%= row.kyuufuTaishouIchibuFutankin.suffix %></span><% } %>
+          </span>
+          <% } %>
+        </td>
+        <td class="unit-cell <%= it.showMealLifeColumns ? 'sep-after-hoken' : '' %>">
+          <% if (!row.ichibuFutankin) { %>
+          <span class="placeholder">-</span>
+          <% } else { %>
+          <span class="value-num"><%= row.ichibuFutankin.value %></span><span class="value-unit"><%= row.ichibuFutankin.unit %></span>
+          <% } %>
+        </td>
+        <% if (it.showMealLifeColumns) { %>
+        <td class="unit-cell">
+          <% if (row.kaisuu) { %><span class="value-num"><%= row.kaisuu.value %></span><span class="value-unit"><%= row.kaisuu.unit %></span><% } else { %><span class="placeholder">-</span><% } %>
+        </td>
+        <td class="unit-cell">
+          <% if (row.goukeiKingaku) { %><span class="value-num"><%= row.goukeiKingaku.value %></span><span class="value-unit"><%= row.goukeiKingaku.unit %></span><% } else { %><span class="placeholder">-</span><% } %>
+        </td>
+        <td class="unit-cell">
+          <% if (row.hyoujunFutangaku) { %><span class="value-num"><%= row.hyoujunFutangaku.value %></span><span class="value-unit"><%= row.hyoujunFutangaku.unit %></span><% } else { %><span class="placeholder">-</span><% } %>
+        </td>
+        <% } %>
+      </tr>
+      <% } %>
+    </table>
+    <% if (it.detailParts.length > 0) { %>
+    <div class="hoken-detail">
+      <% for (const detailPart of it.detailParts) { %>
+      <span><%= detailPart %></span>
+      <% } %>
+    </div>
+    <% } %>
+  </div>
+</div>
