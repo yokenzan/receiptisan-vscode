@@ -6,6 +6,7 @@ import { buildDataViewModel } from '../view-model';
 import { renderUkeHeader } from './cards';
 import { renderReceiptSection } from './receipt-section';
 import type { DataViewRenderOptions } from './tekiyou';
+import { buildThemeScript } from './theme-script';
 
 /**
  * Renders standalone data view error document.
@@ -37,7 +38,7 @@ export function renderDataViewDocument(params: {
     };
   }>;
   receiptSectionsHtml: string[];
-  defaultTheme: DataViewTheme;
+  themeScript: string;
 }): string {
   return renderTemplate('data-view/document.eta', params);
 }
@@ -67,6 +68,6 @@ export function renderDataViewPage(
     layoutMode,
     navItems: viewModel.navItems,
     receiptSectionsHtml,
-    defaultTheme,
+    themeScript: buildThemeScript(defaultTheme),
   });
 }
