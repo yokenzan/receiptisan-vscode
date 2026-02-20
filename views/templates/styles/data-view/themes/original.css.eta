@@ -1,0 +1,89 @@
+body.theme-original {
+  --bg: #f5f5f5;
+  --bg-card: #ffffff;
+  --bg-hover: #e8eaed;
+  --bg-muted: #ffffff;
+  --border: #d0d4d8;
+  --border-strong: #d0d4d8;
+  --text: #333333;
+  --text-dim: #777777;
+  --text-bright: #111111;
+  --accent: #0066cc;
+  --accent-dim: #004d99;
+  --green: #2e7d32;
+  --orange: #c75000;
+  --yellow: #7a6b00;
+  --color-si: #333333;
+  --color-iy: #1a5fb4;
+  --color-to: #1b7742;
+  --color-co: #8a6d00;
+  --control-border: #8aa0b8;
+  --control-bg: #f7fbff;
+  --control-hover-bg: #e6f1fb;
+  --control-fg: #1f3f60;
+}
+
+body.theme-original #nav {
+  border-top-color: var(--border);
+}
+body.theme-original #nav-header {
+  border-bottom-color: var(--border);
+}
+body.theme-original #nav li a {
+  border-left-width: 2px;
+}
+body.theme-original .nav-col {
+  border-right-color: var(--border);
+}
+body.theme-original #nav li a.active {
+  background: var(--bg-hover);
+}
+body.theme-original .receipt-header {
+  border-bottom-width: 1px;
+  border-bottom-color: var(--border);
+}
+body.theme-original .card {
+  border-color: var(--border);
+}
+body.theme-original .card-title {
+  border-bottom-color: var(--border);
+  background: transparent;
+}
+body.theme-original table th {
+  color: var(--text-dim);
+  border-bottom-color: var(--border);
+  background: transparent;
+}
+body.theme-original table th + th,
+body.theme-original table td + td {
+  border-left: none;
+}
+body.theme-original .tekiyou-table th {
+  color: var(--text-dim);
+  border-bottom-color: var(--border);
+  background: transparent;
+}
+body.theme-original .tekiyou-table td {
+  border-bottom: none;
+}
+body.theme-original .tekiyou-table .row-upper-shinku td {
+  border-top-color: #9090b0;
+}
+body.theme-original .tekiyou-table .row-next-shinku td {
+  border-top-color: var(--border);
+}
+body.theme-original .tekiyou-table .row-new-santei td {
+  border-top-color: #c0c0c0;
+}
+body.theme-original .uke-header {
+  border-color: var(--border);
+}
+body.theme-original .tekiyou-table .cal-sat {
+  background-color: rgba(33, 150, 243, 0.08);
+}
+body.theme-original .tekiyou-table .cal-sun {
+  background-color: rgba(244, 67, 54, 0.08);
+}
+body.theme-original .tekiyou-table .cal-tue-thu {
+  background-color: rgba(120, 120, 120, 0.08);
+}

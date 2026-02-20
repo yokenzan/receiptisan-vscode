@@ -1,0 +1,4 @@
+body.theme-light .shoubyoumei-table th + th,
+body.theme-light .shoubyoumei-table td + td {
+  border-left: none;
+}

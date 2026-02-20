@@ -9,6 +9,7 @@
 </head>
 <body<% if (it.layoutMode === 'horizontal') { %> class="layout-horizontal"<% } %>>
   <button id="nav-show-button" type="button" aria-controls="nav" aria-label="レセプト一覧を表示">開</button>
+  <button id="theme-toggle-button" type="button" aria-label="テーマ切替">L</button>
 
   <div id="nav">
     <div id="nav-header">
@@ -68,7 +69,6 @@
       });
 
       if (navLinks.length > 0) navLinks[0].classList.add('active');
-
       applyNavHidden(false);
 
       navShowButton.addEventListener('click', function() {
@@ -95,6 +95,9 @@
         observer.observe(el);
       });
     })();
+  </script>
+  <script nonce="<%= it.nonce %>">
+    <%~ it.themeScript %>
   </script>
 </body>
 </html>
