@@ -1,8 +1,6 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.0/schema.json",
-  "organizeImports": {
-    "enabled": true
-  },
+  "$schema": "https://biomejs.dev/schemas/2.4.3/schema.json",
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "linter": {
     "enabled": true,
     "rules": {
@@ -22,6 +20,13 @@
     }
   },
   "files": {
-    "ignore": ["out", "node_modules", "*.vsix", "receiptisan", "recediff"]
+    "includes": [
+      "**",
+      "!**/out",
+      "!**/node_modules",
+      "!**/*.vsix",
+      "!**/receiptisan",
+      "!**/recediff"
+    ]
   }
 }

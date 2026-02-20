@@ -1,17 +1,10 @@
 import * as crypto from 'node:crypto';
-import * as fs from 'node:fs';
-import * as path from 'node:path';
 import type { ReceiptisanJsonOutput } from '../../../shared/receiptisan-json-types';
 import { renderTemplate } from '../../../template/eta-renderer';
 import { buildDataViewModel } from '../view-model';
 import { renderUkeHeader } from './cards';
 import { renderReceiptSection } from './receipt-section';
 import type { DataViewRenderOptions } from './tekiyou';
-
-const cssContent = fs.readFileSync(
-  path.join(__dirname, '..', '..', '..', 'views', 'styles', 'data-view.css'),
-  'utf-8',
-);
 
 /**
  * Renders standalone data view error document.
@@ -28,7 +21,6 @@ export function renderDataViewErrorHtml(error: { message: string; stderr?: strin
  */
 export function renderDataViewDocument(params: {
   nonce: string;
-  cssContent: string;
   layoutMode: string;
   navItems: Array<{
     id: string;
@@ -69,7 +61,6 @@ export function renderDataViewPage(
 
   return renderDataViewDocument({
     nonce,
-    cssContent,
     layoutMode,
     navItems: viewModel.navItems,
     receiptSectionsHtml,

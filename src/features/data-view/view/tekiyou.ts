@@ -1,6 +1,6 @@
-import { getDaysInMonth } from '../../../domain/tekiyou-utils';
 import { resolveSeparatorClass } from '../../../domain/tekiyou/row-policy';
 import { findLastNonCommentIndex } from '../../../domain/tekiyou/row-utils';
+import { getDaysInMonth } from '../../../domain/tekiyou-utils';
 import type {
   CommentItem,
   DailyKaisuu,
@@ -244,7 +244,6 @@ function renderTekiyouRow(
       isFirstInSantei,
       categoryClass,
       dailyKaisuus,
-      isLastNonComment,
       showSanteiDaily,
       layout,
       futanKubun,
@@ -367,7 +366,6 @@ function renderCommentRow(
   isFirstInSantei: boolean,
   categoryClass: string,
   dailyKaisuus: DailyKaisuu[] | undefined,
-  isLastNonComment: boolean,
   showSanteiDaily: boolean,
   layout: TekiyouLayout,
   futanKubun: string,
