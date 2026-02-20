@@ -1,6 +1,6 @@
-import { getDaysInMonth } from '../../../domain/tekiyou-utils';
 import { resolveSeparatorClass } from '../../../domain/tekiyou/row-policy';
 import { findLastNonCommentIndex } from '../../../domain/tekiyou/row-utils';
+import { getDaysInMonth } from '../../../domain/tekiyou-utils';
 import type {
   CommentItem,
   DailyKaisuu,

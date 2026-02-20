@@ -110,7 +110,7 @@ test('renderDataViewPage horizontal renders full month calendar columns', () => 
     normalizeTekiyouAscii: false,
   });
 
-  const headers = html.match(/<th class="col-cal[^\"]*">/g) ?? [];
+  const headers = html.match(/<th class="col-cal[^"]*">/g) ?? [];
   assert.equal(headers.length, 31);
   assert.ok(html.includes('class="tekiyou-table"'));
   assert.ok(html.includes('class="col-futan'));
