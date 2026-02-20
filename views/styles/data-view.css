@@ -49,6 +49,7 @@
   --worpro-fg: #ffffff;
 
   --font-mono: "SF Mono", "Cascadia Code", "Consolas", "Courier New", monospace;
+  --hoken-shared-width: 666px; /* 634px の +5% 相当 */
 }
 
 * {
@@ -415,6 +416,7 @@ table tr:last-child > * {
 }
 .date-wareki {
   font-size: 90%;
+  color: var(--text-dim);
 }
 .age-display {
   margin-left: 0.55em;
@@ -497,9 +499,25 @@ table tr:last-child > * {
 .receipt-info-card,
 .card-patient,
 .card-hoken,
+.card-patient-receipt-horizontal,
+.card-hoken-kyuufu-horizontal,
 .card-shoubyoumei,
 .card-kyuufu {
   max-width: 800px;
+}
+
+.card-patient-receipt-horizontal,
+.card-hoken-kyuufu-horizontal {
+  width: fit-content;
+  max-width: 1200px;
+}
+
+.card-patient-receipt-horizontal .card-body {
+  width: var(--hoken-shared-width);
+}
+
+.card-hoken-kyuufu-horizontal .card-body {
+  width: auto;
 }
 
 /* 患者情報カード */
@@ -513,6 +531,40 @@ table tr:last-child > * {
   font-size: 9px;
   color: var(--text-dim);
   font-weight: normal;
+}
+
+.card-horizontal-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  width: 100%;
+}
+.card-horizontal-pane {
+  min-width: 0;
+}
+.card-pane-title {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.card-patient-receipt-horizontal table {
+  width: 100%;
+}
+.card-patient-receipt-horizontal th {
+  white-space: nowrap;
+}
+.card-patient-receipt-horizontal .patient-info-table td {
+  max-width: 320px;
+  text-align: left;
+}
+.card-patient-receipt-horizontal .name-kana-inline {
+  display: inline-block;
+  color: var(--text-dim);
+  font-size: 10px;
+  margin-left: 0.25em;
+  transform: scaleX(0.9);
+  transform-origin: left center;
 }
 
 /* 保険情報カード */
@@ -764,6 +816,52 @@ table tr:last-child > * {
   margin-right: 10px;
 }
 
+.hoken-kyuufu-table th {
+  white-space: nowrap;
+}
+.hoken-kyuufu-table {
+  width: auto;
+}
+.hoken-kyuufu-table td {
+  min-width: 44px;
+}
+.hoken-kyuufu-table th.sep-after-hoken,
+.hoken-kyuufu-table td.sep-after-hoken {
+  border-right: 1px solid var(--border);
+}
+.hoken-kyuufu-table .col-kubun {
+  width: 70px;
+}
+.hoken-kyuufu-table .col-hokenja {
+  width: 81px;
+}
+.hoken-kyuufu-table .col-jitsunissuu {
+  width: 46px;
+}
+.hoken-kyuufu-table .col-tensuu,
+.hoken-kyuufu-table .col-kyuufu-futankin,
+.hoken-kyuufu-table .col-ichibu-futankin,
+.hoken-kyuufu-table .col-seikyuu-kingaku,
+.hoken-kyuufu-table .col-hyoujun-futankin {
+  width: 88px;
+}
+.hoken-kyuufu-table .col-kaisuu {
+  width: 46px;
+}
+.hoken-kyuufu-table .value-paren-compact {
+  display: inline-block;
+  transform: scaleX(0.9);
+  transform-origin: right center;
+}
+.hoken-shikaku-detail {
+  font-size: 11px;
+  color: var(--text-dim);
+  padding: 0 6px 4px 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+}
+
 /* UKE header */
 .uke-header {
   background: var(--bg-card);
@@ -820,6 +918,18 @@ body.layout-horizontal #content {
   order: 1;
   flex: 1;
   overflow: auto;
+}
+
+@media (max-width: 1100px) {
+  .card-patient-receipt-horizontal .card-body {
+    width: auto;
+  }
+  .card-hoken-kyuufu-horizontal .card-body {
+    width: auto;
+  }
+  .card-horizontal-columns {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* 摘要テーブルの横スクロール */
