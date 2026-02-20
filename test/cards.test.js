@@ -4,7 +4,9 @@ const test = require('node:test');
 const {
   renderReceiptHeader,
   renderPatientCard,
+  renderPatientReceiptCardHorizontal,
   renderHokenCard,
+  renderHokenKyuufuCardHorizontal,
   renderShoubyoumeiCard,
   renderKyuufuCard,
 } = require('../out/features/data-view/view/cards.js');
@@ -124,4 +126,42 @@ test('renderPatientCard includes month-age when not anniversary month-end yet', 
   const html = renderPatientCard(receipt);
   assert.match(html, /2000.*\(H12\).*10\.10/s);
   assert.match(html, /24.*歳.*11.*ヶ月/s);
+});
+
+test('renderPatientReceiptCardHorizontal combines patient and receipt header', () => {
+  const receipt = createReceipt();
+  const html = renderPatientReceiptCardHorizontal(receipt);
+  assert.ok(!html.includes('患者情報・レセプトヘッダー'));
+  assert.ok(html.includes('No.'));
+  assert.ok(html.includes('診療年月'));
+  assert.ok(html.includes('患者番号'));
+});
+
+test('renderHokenKyuufuCardHorizontal combines hoken and kyuufu by kubun', () => {
+  const receipt = createReceipt();
+  receipt.nyuugai = 'nyuuin';
+  receipt.ryouyou_no_kyuufu.iryou_hoken.shokuji_seikatsu_ryouyou_kaisuu = 2;
+  receipt.ryouyou_no_kyuufu.iryou_hoken.shokuji_seikatsu_ryouyou_goukei_kingaku = 1234;
+  receipt.ryouyou_no_kyuufu.iryou_hoken.shokuji_seikatsu_ryouyou_hyoujun_futangaku = 600;
+
+  const html = renderHokenKyuufuCardHorizontal(receipt);
+  assert.ok(html.includes('療養の給付'));
+  assert.ok(html.includes('医療保険'));
+  assert.ok(html.includes('請求点数'));
+  assert.ok(html.includes('標準負担金額'));
+  assert.ok(html.includes('請求金額'));
+  assert.ok(html.includes('資格番号:'));
+});
+
+test('renderHokenKyuufuCardHorizontal hides meal/life columns for gairai', () => {
+  const receipt = createReceipt();
+  receipt.nyuugai = 'gairai';
+  receipt.ryouyou_no_kyuufu.iryou_hoken.shokuji_seikatsu_ryouyou_kaisuu = 2;
+  receipt.ryouyou_no_kyuufu.iryou_hoken.shokuji_seikatsu_ryouyou_goukei_kingaku = 1234;
+  receipt.ryouyou_no_kyuufu.iryou_hoken.shokuji_seikatsu_ryouyou_hyoujun_futangaku = 600;
+
+  const html = renderHokenKyuufuCardHorizontal(receipt);
+  assert.ok(!html.includes('回数'));
+  assert.ok(!html.includes('請求金額'));
+  assert.ok(!html.includes('標準負担金額'));
 });
