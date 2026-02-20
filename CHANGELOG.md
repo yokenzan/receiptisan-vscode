@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/yokenzan/receiptisan-vscode/compare/v1.3.1...v1.3.2) (2026-02-20)
+
+
+### Bug Fixes
+
+* correct data-view style include paths ([ea52f58](https://github.com/yokenzan/receiptisan-vscode/commit/ea52f586645634b8705993fb1243e9f420651de1))
+
 ## [1.3.1](https://github.com/yokenzan/receiptisan-vscode/compare/v1.3.0...v1.3.1) (2026-02-20)
 
 
