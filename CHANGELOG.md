@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/yokenzan/receiptisan-vscode/compare/v1.3.0...v1.3.1) (2026-02-20)
+
+
+### Bug Fixes
+
+* remove bottom border from all last-row cells ([2f1f822](https://github.com/yokenzan/receiptisan-vscode/commit/2f1f822159b1b1ecb75ca77d3c870ee20e8527bc))
+
 # [1.3.0](https://github.com/yokenzan/receiptisan-vscode/compare/v1.2.0...v1.3.0) (2026-02-18)
 
 
