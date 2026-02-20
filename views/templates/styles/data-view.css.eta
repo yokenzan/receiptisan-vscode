@@ -107,7 +107,7 @@ body {
 
 #nav li a {
   display: grid;
-  grid-template-columns: max-content max-content max-content max-content minmax(0, 1fr);
+  grid-template-columns: 8ch minmax(0, 14.4ch) 12ch 10ch minmax(0, 1fr);
   align-items: center;
   gap: 0;
   padding: 3px 8px;
@@ -124,6 +124,9 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   border-right: 1px solid var(--border);
+}
+.nav-col:first-child {
+  padding-left: 0;
 }
 .nav-col:last-child {
   border-right: none;
