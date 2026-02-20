@@ -1,6 +1,7 @@
 import * as crypto from 'node:crypto';
 import type { ReceiptisanJsonOutput } from '../../../shared/receiptisan-json-types';
 import { renderTemplate } from '../../../template/eta-renderer';
+import type { DataViewTheme } from '../theme';
 import { buildDataViewModel } from '../view-model';
 import { renderUkeHeader } from './cards';
 import { renderReceiptSection } from './receipt-section';
@@ -36,6 +37,7 @@ export function renderDataViewDocument(params: {
     };
   }>;
   receiptSectionsHtml: string[];
+  defaultTheme: DataViewTheme;
 }): string {
   return renderTemplate('data-view/document.eta', params);
 }
@@ -47,6 +49,7 @@ export function renderDataViewPage(
   data: ReceiptisanJsonOutput,
   layoutMode: 'vertical' | 'horizontal' = 'vertical',
   options: DataViewRenderOptions = {},
+  defaultTheme: DataViewTheme = 'auto',
 ): string {
   const nonce = crypto.randomUUID();
   const viewModel = buildDataViewModel(data, layoutMode);
@@ -64,5 +67,6 @@ export function renderDataViewPage(
     layoutMode,
     navItems: viewModel.navItems,
     receiptSectionsHtml,
+    defaultTheme,
   });
 }

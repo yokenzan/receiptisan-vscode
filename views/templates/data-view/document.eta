@@ -9,6 +9,7 @@
 </head>
 <body<% if (it.layoutMode === 'horizontal') { %> class="layout-horizontal"<% } %>>
   <button id="nav-show-button" type="button" aria-controls="nav" aria-label="レセプト一覧を表示">開</button>
+  <button id="theme-toggle-button" type="button" aria-label="テーマ切替">L</button>
 
   <div id="nav">
     <div id="nav-header">
@@ -47,6 +48,24 @@
       var content = document.getElementById('content');
       var navShowButton = document.getElementById('nav-show-button');
       var navHideButton = document.getElementById('nav-hide-button');
+      var themeToggleButton = document.getElementById('theme-toggle-button');
+      var THEME_KEY = 'receiptisan.dataView.theme';
+      var configuredTheme = '<%= it.defaultTheme %>';
+      var THEMES = ['light', 'dark', 'original', 'classic', 'classic-modern'];
+      var THEME_LABELS = {
+        light: 'L',
+        dark: 'D',
+        original: 'O',
+        classic: 'C',
+        'classic-modern': 'CM',
+      };
+      var THEME_NAMES = {
+        light: 'ライト',
+        dark: 'ダーク',
+        original: 'オリジナル',
+        classic: 'クラシック',
+        'classic-modern': 'クラシック(モダン)',
+      };
 
       function applyNavHidden(hidden) {
         document.body.classList.toggle('nav-hidden', hidden);
@@ -55,6 +74,42 @@
         navHideButton.setAttribute('aria-expanded', hidden ? 'false' : 'true');
         navShowButton.setAttribute('aria-label', 'レセプト一覧を表示');
         navHideButton.setAttribute('aria-label', 'レセプト一覧を閉じる');
+      }
+
+      function applyTheme(theme) {
+        var normalizedTheme = THEMES.indexOf(theme) >= 0 ? theme : 'light';
+        document.body.classList.remove(
+          'theme-light',
+          'theme-dark',
+          'theme-original',
+          'theme-classic',
+          'theme-classic-modern',
+        );
+        document.body.classList.add('theme-' + normalizedTheme);
+        var nextTheme = getNextTheme(normalizedTheme);
+        themeToggleButton.textContent = THEME_LABELS[normalizedTheme];
+        themeToggleButton.setAttribute(
+          'aria-label',
+          'テーマ切替（現在: ' + THEME_NAMES[normalizedTheme] + ' / 次: ' + THEME_NAMES[nextTheme] + '）',
+        );
+      }
+
+      function getNextTheme(theme) {
+        var idx = THEMES.indexOf(theme);
+        if (idx < 0) return THEMES[0];
+        return THEMES[(idx + 1) % THEMES.length];
+      }
+
+      function getInitialTheme() {
+        if (THEMES.indexOf(configuredTheme) >= 0) return configuredTheme;
+        try {
+          var storedTheme = localStorage.getItem(THEME_KEY);
+          if (THEMES.indexOf(storedTheme) >= 0) return storedTheme;
+        } catch (_e) {}
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
       }
 
       navLinks.forEach(function(link) {
@@ -69,7 +124,27 @@
 
       if (navLinks.length > 0) navLinks[0].classList.add('active');
 
+      applyTheme(getInitialTheme());
       applyNavHidden(false);
+
+      if (configuredTheme === 'auto') {
+        themeToggleButton.addEventListener('click', function() {
+          var currentTheme = 'light';
+          for (var i = 0; i < THEMES.length; i++) {
+            if (document.body.classList.contains('theme-' + THEMES[i])) {
+              currentTheme = THEMES[i];
+              break;
+            }
+          }
+          var nextTheme = getNextTheme(currentTheme);
+          applyTheme(nextTheme);
+          try {
+            localStorage.setItem(THEME_KEY, nextTheme);
+          } catch (_e) {}
+        });
+      } else {
+        themeToggleButton.style.display = 'none';
+      }
 
       navShowButton.addEventListener('click', function() {
         applyNavHidden(false);
