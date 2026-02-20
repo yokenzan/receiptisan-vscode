@@ -297,7 +297,7 @@ table td {
   font-size: 12px;
 }
 
-table tr:last-child td {
+table tr:last-child > * {
   border-bottom: none;
 }
 
