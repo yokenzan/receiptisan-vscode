@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'nonce-<%= it.nonce %>';">
 <style>
-<%~ include('styles/data-view.css.eta') %>
+<%~ include('../styles/data-view.css.eta') %>
 </style>
 </head>
 <body<% if (it.layoutMode === 'horizontal') { %> class="layout-horizontal"<% } %>>

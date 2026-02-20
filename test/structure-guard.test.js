@@ -11,5 +11,6 @@ test('view assets are not stored under src', () => {
   assert.equal(fs.existsSync(repoPath('src/templates')), false);
   assert.equal(fs.existsSync(repoPath('src/data-view.css')), false);
   assert.equal(fs.existsSync(repoPath('views/templates')), true);
-  assert.equal(fs.existsSync(repoPath('views/styles/data-view.css')), true);
+  assert.equal(fs.existsSync(repoPath('views/styles/data-view.css')), false);
+  assert.equal(fs.existsSync(repoPath('views/templates/styles/data-view.css.eta')), true);
 });
