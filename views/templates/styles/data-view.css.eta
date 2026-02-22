@@ -1065,5 +1065,4 @@ body.layout-horizontal #content {
 <%~ include('data-view/themes/dark.css.eta') %>
 <%~ include('data-view/themes/original.css.eta') %>
 <%~ include('data-view/themes/classic-shared.css.eta') %>
-<%~ include('data-view/themes/classic.css.eta') %>
 <%~ include('data-view/themes/classic-modern.css.eta') %>
