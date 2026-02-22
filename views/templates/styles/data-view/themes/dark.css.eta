@@ -1,0 +1,39 @@
+body.theme-dark {
+  --bg: #11161c;
+  --bg-card: #171e27;
+  --bg-hover: #243446;
+  --bg-muted: #202b38;
+  --border: #435264;
+  --border-strong: #617288;
+  --text: #d7e3f0;
+  --text-dim: #a8b9ca;
+  --text-bright: #f2f7fd;
+  --accent: #65a9ff;
+  --accent-dim: #3b84e2;
+  --green: #81cf90;
+  --orange: #ffb37d;
+  --yellow: #d4c67b;
+  --color-si: #e2e8f0;
+  --color-iy: #8ec0ff;
+  --color-to: #95ddb7;
+  --color-co: #f2db89;
+  --control-border: #6f8298;
+  --control-bg: #213244;
+  --control-hover-bg: #2c445a;
+  --control-fg: #d9e8f8;
+}
+
+body.theme-dark .tekiyou-table th + th,
+body.theme-dark .tekiyou-table td + td {
+  border-left: none;
+}
+
+body.theme-dark .tekiyou-table td {
+  border-bottom: none;
+}
+
+body.theme-dark .tekiyou-table .row-upper-shinku td,
+body.theme-dark .tekiyou-table .row-next-shinku td,
+body.theme-dark .tekiyou-table .row-new-santei td {
+  border-top: none;
+}

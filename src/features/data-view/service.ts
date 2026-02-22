@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { type CliError, type CliResult, executeWithProgress } from '../../cli/receiptisan-client';
 import type { ReceiptisanJsonOutput } from '../../shared/receiptisan-json-types';
 import { type LayoutMode, presentDataView } from './presenter';
+import type { DataViewTheme } from './theme';
 
 /**
  * Generates data-view HTML for one UKE file.
@@ -17,7 +18,8 @@ export async function generateDataViewHtml(
     const data: ReceiptisanJsonOutput = JSON.parse(result.stdout);
     const config = vscode.workspace.getConfiguration('receiptisan');
     const normalizeTekiyouAscii = config.get<boolean>('dataView.normalizeTekiyouAscii', false);
-    return presentDataView(data, layoutMode, normalizeTekiyouAscii);
+    const theme = config.get<DataViewTheme>('dataView.theme', 'auto');
+    return presentDataView(data, layoutMode, normalizeTekiyouAscii, theme);
   } catch (err) {
     const error: CliError =
       err instanceof SyntaxError

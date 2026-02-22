@@ -1,16 +1,18 @@
 :root {
-  --bg: #f5f5f5;
+  --bg: #eef1f4;
   --bg-card: #ffffff;
-  --bg-hover: #e8eaed;
-  --border: #d0d4d8;
-  --text: #333333;
-  --text-dim: #777777;
-  --text-bright: #111111;
-  --accent: #0066cc;
-  --accent-dim: #004d99;
-  --green: #2e7d32;
-  --orange: #c75000;
-  --yellow: #7a6b00;
+  --bg-hover: #dbe7f6;
+  --bg-muted: #f3f6fa;
+  --border: #b5bec8;
+  --border-strong: #8c97a4;
+  --text: #1f2933;
+  --text-dim: #4f5d6b;
+  --text-bright: #0f1720;
+  --accent: #0057b8;
+  --accent-dim: #003f85;
+  --green: #1f6f2d;
+  --orange: #a94300;
+  --yellow: #6a5f00;
 
   --color-si: #333333;
   --color-iy: #1a5fb4;
@@ -47,6 +49,10 @@
   --utagai-fg: #ffffff;
   --worpro-bg: #7b1fa2;
   --worpro-fg: #ffffff;
+  --control-border: #8aa0b8;
+  --control-bg: #f7fbff;
+  --control-hover-bg: #e6f1fb;
+  --control-fg: #1f3f60;
 
   --font-mono: "SF Mono", "Cascadia Code", "Consolas", "Courier New", monospace;
   --hoken-shared-width: 666px; /* 634px の +5% 相当 */
@@ -72,7 +78,7 @@ body {
   width: 100%;
   min-width: unset;
   border-right: none;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--border-strong);
   order: 1;
   max-height: 264px;
   overflow-y: auto;
@@ -88,7 +94,7 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 6px 8px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--border-strong);
   background: var(--bg-card);
 }
 
@@ -115,7 +121,7 @@ body {
   color: var(--text);
   text-decoration: none;
   font-size: 12px;
-  border-left: 2px solid transparent;
+  border-left: 3px solid transparent;
 }
 
 .nav-col {
@@ -124,7 +130,7 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border-right: 1px solid var(--border);
+  border-right: 1px solid var(--border-strong);
 }
 .nav-col:first-child {
   padding-left: 0;
@@ -181,7 +187,7 @@ body {
 }
 
 #nav li a.active {
-  background: var(--bg-hover);
+  background: #cfe0f4;
   border-left-color: var(--accent);
   color: var(--text-bright);
 }
@@ -196,9 +202,9 @@ body {
 
 #nav-show-button,
 #nav-hide-button {
-  border: 1px solid #8aa0b8;
-  background: #f7fbff;
-  color: #1f3f60;
+  border: 1px solid var(--control-border);
+  background: var(--control-bg);
+  color: var(--control-fg);
   border-radius: 4px;
   font-size: 12px;
   font-weight: 600;
@@ -222,7 +228,28 @@ body {
 
 #nav-show-button:hover,
 #nav-hide-button:hover {
-  background: #e6f1fb;
+  background: var(--control-hover-bg);
+}
+
+#theme-toggle-button {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  z-index: 20;
+  border: 1px solid var(--control-border);
+  background: var(--control-bg);
+  color: var(--control-fg);
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 2.6em;
+  padding: 4px 8px;
+  text-align: center;
+}
+
+#theme-toggle-button:hover {
+  background: var(--control-hover-bg);
 }
 
 body.layout-horizontal #nav-show-button {
@@ -249,7 +276,7 @@ body.nav-hidden #nav {
   font-weight: 600;
   color: var(--text-bright);
   padding-bottom: 4px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 2px solid var(--border-strong);
   margin-bottom: 6px;
   position: sticky;
   top: 0;
@@ -264,7 +291,7 @@ body.nav-hidden #nav {
 
 .card {
   background: var(--bg-card);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   border-radius: 3px;
   margin-bottom: 6px;
 }
@@ -274,7 +301,8 @@ body.nav-hidden #nav {
   font-weight: 600;
   color: var(--accent);
   padding: 4px 8px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--border-strong);
+  background: var(--bg-muted);
 }
 
 .card-body {
@@ -289,9 +317,10 @@ table {
 table th {
   text-align: left;
   font-size: 11px;
-  color: var(--text-dim);
+  color: var(--text);
   padding: 2px 6px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--border-strong);
+  background: var(--bg-muted);
   white-space: nowrap;
 }
 
@@ -299,6 +328,11 @@ table td {
   padding: 2px 6px;
   border-bottom: 1px solid var(--border);
   font-size: 12px;
+}
+
+table th + th,
+table td + td {
+  border-left: 1px solid var(--border);
 }
 
 table tr:last-child > * {
@@ -680,9 +714,10 @@ table tr:last-child > * {
 .tekiyou-table th {
   text-align: left;
   font-size: 11px;
-  color: var(--text-dim);
+  color: var(--text);
   padding: 2px 4px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--border-strong);
+  background: var(--bg-muted);
   white-space: nowrap;
   overflow: hidden;
 }
@@ -690,7 +725,7 @@ table tr:last-child > * {
 .tekiyou-table td {
   padding: 1px 4px;
   font-size: 12px;
-  border-bottom: none;
+  border-bottom: 1px solid #e0e5eb;
 }
 .tekiyou-table .col-code {
   font-family: var(--font-mono);
@@ -791,15 +826,15 @@ table tr:last-child > * {
 
 /* Tekiyou separator styles */
 .tekiyou-table .row-upper-shinku td {
-  border-top: 2px solid #9090b0;
+  border-top: 2px solid #6f7d90;
   padding-top: 3px;
 }
 .tekiyou-table .row-next-shinku td {
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--border-strong);
   padding-top: 2px;
 }
 .tekiyou-table .row-new-santei td {
-  border-top: 1px dotted #c0c0c0;
+  border-top: 1px dotted #8f99a5;
   padding-top: 2px;
 }
 
@@ -868,7 +903,7 @@ table tr:last-child > * {
 /* UKE header */
 .uke-header {
   background: var(--bg-card);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   border-radius: 3px;
   margin-bottom: 10px;
   padding: 6px 10px;
@@ -957,7 +992,7 @@ body.layout-horizontal #content {
 
 /* 土曜（青系） */
 .tekiyou-table .cal-sat {
-  background-color: rgba(33, 150, 243, 0.08);
+  background-color: rgba(33, 150, 243, 0.14);
 }
 .tekiyou-table th.cal-sat {
   color: #1565c0;
@@ -966,7 +1001,7 @@ body.layout-horizontal #content {
 
 /* 日曜（赤系） */
 .tekiyou-table .cal-sun {
-  background-color: rgba(244, 67, 54, 0.08);
+  background-color: rgba(244, 67, 54, 0.14);
 }
 .tekiyou-table th.cal-sun {
   color: #c62828;
@@ -980,7 +1015,7 @@ body.layout-horizontal #content {
 
 /* 火曜・木曜 */
 .tekiyou-table .cal-tue-thu {
-  background-color: rgba(120, 120, 120, 0.08);
+  background-color: rgba(120, 120, 120, 0.12);
 }
 .tekiyou-table th.cal-tue-thu {
   background-color: transparent;
@@ -1006,3 +1041,10 @@ body.layout-horizontal #content {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+<%~ include('data-view/themes/light.css.eta') %>
+<%~ include('data-view/themes/dark.css.eta') %>
+<%~ include('data-view/themes/original.css.eta') %>
+<%~ include('data-view/themes/classic-shared.css.eta') %>
+<%~ include('data-view/themes/classic.css.eta') %>
+<%~ include('data-view/themes/classic-modern.css.eta') %>

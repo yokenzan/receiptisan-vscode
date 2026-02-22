@@ -2,7 +2,7 @@
   "name": "receiptisan-vscode",
   "displayName": "Receiptisan VS Code",
   "description": "Preview RECEIPTC.UKE(電子レセプトファイル) using receiptisan CLI",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "publisher": "yokenzan",
   "license": "MIT",
   "repository": {
@@ -106,6 +106,20 @@
           "default": false,
           "description": "Convert full-width ASCII characters in Tekiyou detail text to half-width in Data View.",
           "markdownDescription": "データビューの摘要欄明細で、診療行為・特定器材・医薬品・コメント名称に含まれる全角の英数字・記号を半角に変換して表示する"
+        },
+        "receiptisan.dataView.theme": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "light",
+            "dark",
+            "original",
+            "classic",
+            "classic-modern"
+          ],
+          "default": "auto",
+          "description": "Default theme for Data View. Auto uses saved toggle (if any) or system preference.",
+          "markdownDescription": "データビューの既定テーマ。`auto` は保存済みの切替（なければOS設定）を使います。`light` / `dark` / `original` / `classic` / `classic-modern` を指定すると固定表示になります。"
         }
       }
     }
