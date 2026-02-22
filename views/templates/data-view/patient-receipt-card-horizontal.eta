@@ -1,0 +1,102 @@
+<div class="card card-patient-receipt-horizontal">
+  <div class="card-body">
+    <% const renderWarekiCompact = (value) => String(value).replace(/\(([^)]+)\)/g, '<span class="date-wareki">($1)</span>'); %>
+    <div class="card-horizontal-columns">
+      <div class="card-horizontal-pane">
+        <table class="receipt-info-table">
+          <tr>
+            <th>No.</th>
+            <td><strong><%= it.receiptHeader.id %></strong></td>
+          </tr>
+          <tr>
+            <th>診療年月</th>
+            <td>
+              <span class="date-value"><%~ renderWarekiCompact(it.receiptHeader.shinryouYm) %></span>診療
+            </td>
+          </tr>
+          <tr>
+            <th>種別</th>
+            <td>
+              <% for (const badge of it.receiptHeader.typeBadges) { %>
+              <span class="tag tag-type receipt-chip">
+                <span class="receipt-chip-code"><%= badge.code %></span>
+                <span class="receipt-chip-name"><%= badge.name %></span>
+              </span>
+              <% } %>
+            </td>
+          </tr>
+          <tr>
+            <th>特記事項</th>
+            <td>
+              <% if (it.receiptHeader.tokkiJikous.length > 0) { %>
+              <% for (const tokki of it.receiptHeader.tokkiJikous) { %>
+              <span class="tag tag-tokki receipt-chip">
+                <span class="receipt-chip-code"><%= tokki.code %></span>
+                <span class="receipt-chip-name"><%= tokki.name %></span>
+              </span>
+              <% } %>
+              <% } else { %>
+              <span class="placeholder">-</span>
+              <% } %>
+            </td>
+          </tr>
+          <% if (it.receiptHeader.nyuuinDateCell) { %>
+          <tr>
+            <th>入院日</th>
+            <td>
+              <span class="date-value"><%~ renderWarekiCompact(it.receiptHeader.nyuuinDateCell) %></span>
+            </td>
+          </tr>
+          <% } %>
+        </table>
+      </div>
+      <div class="card-horizontal-pane">
+        <table class="patient-info-table">
+          <tr>
+            <th>患者番号</th>
+            <td>
+              <% if (it.patient.patientId === '-') { %><span class="placeholder">-</span><% } else { %><%= it.patient.patientId %><% } %>
+            </td>
+          </tr>
+          <tr>
+            <th>氏名</th>
+            <td>
+              <% if (it.patient.name === '-') { %>
+              <span class="placeholder">-</span>
+              <% } else if (it.patient.nameKana) { %>
+              <span><%= it.patient.name %></span><span class="name-kana-inline">(<%= it.patient.nameKana %>)</span>
+              <% } else { %>
+              <%= it.patient.name %>
+              <% } %>
+            </td>
+          </tr>
+          <tr>
+            <th>性別</th>
+            <td>
+              <% if (it.patient.sexKind === 'male') { %>
+              <span class="tag tag-sex-male"><%= it.patient.sexName %></span>
+              <% } else if (it.patient.sexKind === 'female') { %>
+              <span class="tag tag-sex-female"><%= it.patient.sexName %></span>
+              <% } else { %>
+              <%= it.patient.sexName %>
+              <% } %>
+            </td>
+          </tr>
+          <tr>
+            <th>生年月日</th>
+            <td>
+              <% if (it.patient.birthDate === '-') { %>
+              <span class="placeholder">-</span>
+              <% } else { %>
+              <span class="date-value"><%~ renderWarekiCompact(it.patient.birthDate) %></span>
+              <% if (it.patient.ageYearsMonths) { %>
+              <span class="age-display"><span class="value-num"><%= it.patient.ageYearsMonths.years %></span><span class="value-unit">歳</span><span class="value-num"><%= it.patient.ageYearsMonths.months %></span><span class="value-unit">ヶ月</span><% if (it.patient.isBirthMonth) { %>🎂<% } %></span>
+              <% } %>
+              <% } %>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

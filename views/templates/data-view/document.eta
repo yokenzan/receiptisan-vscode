@@ -16,25 +16,27 @@
       <span id="nav-title">レセプト一覧</span>
       <button id="nav-hide-button" type="button" aria-controls="nav" aria-label="レセプト一覧を閉じる">閉</button>
     </div>
-    <ul>
-      <% for (const navItem of it.navItems) { %>
-      <li>
-        <a href="#<%= navItem.id %>" class="nav-item" data-target="<%= navItem.id %>">
-          <span class="nav-col nav-no">No.<%= navItem.label.idPart %></span>
-          <span class="nav-col nav-ym-class">
+    <table id="nav-table">
+      <tbody>
+        <% for (const navItem of it.navItems) { %>
+        <tr class="nav-item" data-target="<%= navItem.id %>">
+          <td class="nav-col nav-no">No.<%= navItem.label.idPart %></td>
+          <td class="nav-col nav-ym-class">
             <span><%= navItem.label.shinryouYmWestern %></span>
             <% if (navItem.label.receiptClassLabel) { %>
             <span class="tag nav-class-badge nav-class-<%= navItem.label.receiptClassKind %>"><%= navItem.label.receiptClassLabel %></span>
             <% } %>
-          </span>
-          <span class="nav-col nav-law-codes"><%= navItem.label.lawCodesLabel || '-' %></span>
-          <span class="nav-col nav-patient-id"><%= navItem.label.patientId %></span>
-          <span class="nav-col nav-patient-name"><%= navItem.label.patientName %></span>
-        </a>
-      </li>
-      <% } %>
-    </ul>
+          </td>
+          <td class="nav-col nav-law-codes"><%= navItem.label.lawCodesLabel || '-' %></td>
+          <td class="nav-col nav-patient-id"><%= navItem.label.patientId %></td>
+          <td class="nav-col nav-patient-name"><%= navItem.label.patientName %></td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
   </div>
+
+  <div id="nav-resize-handle"></div>
 
   <div id="content">
     <% for (const sectionHtml of it.receiptSectionsHtml) { %>
@@ -64,7 +66,7 @@
           navLinks.forEach(function(l) { l.classList.remove('active'); });
           link.classList.add('active');
           var target = document.getElementById(link.getAttribute('data-target'));
-          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          if (target) target.scrollIntoView({ block: 'start' });
         });
       });
 
@@ -98,6 +100,69 @@
   </script>
   <script nonce="<%= it.nonce %>">
     <%~ it.themeScript %>
+  </script>
+  <script nonce="<%= it.nonce %>">
+    (function() {
+      var vscodeApi = acquireVsCodeApi();
+      var handle = document.getElementById('nav-resize-handle');
+      var nav = document.getElementById('nav');
+      var isHorizontal = document.body.classList.contains('layout-horizontal');
+      var stateKey = isHorizontal ? 'navWidth' : 'navHeight';
+      var minSize = isHorizontal ? 200 : 100;
+      var maxRatio = 0.7;
+
+      // 保存済みサイズを復元
+      var savedState = vscodeApi.getState() || {};
+      if (savedState[stateKey]) {
+        if (isHorizontal) {
+          nav.style.width = savedState[stateKey] + 'px';
+        } else {
+          nav.style.maxHeight = savedState[stateKey] + 'px';
+        }
+      }
+
+      handle.addEventListener('mousedown', function(e) {
+        e.preventDefault();
+        document.body.classList.add('nav-resizing');
+        handle.classList.add('dragging');
+
+        var onMouseMove = function(e) {
+          var maxSize;
+          var newSize;
+          if (isHorizontal) {
+            maxSize = window.innerWidth * maxRatio;
+            newSize = e.clientX;
+          } else {
+            maxSize = window.innerHeight * maxRatio;
+            newSize = window.innerHeight - e.clientY;
+          }
+          newSize = Math.max(minSize, Math.min(maxSize, newSize));
+          if (isHorizontal) {
+            nav.style.width = newSize + 'px';
+          } else {
+            nav.style.maxHeight = newSize + 'px';
+          }
+        };
+
+        var onMouseUp = function() {
+          document.body.classList.remove('nav-resizing');
+          handle.classList.remove('dragging');
+          document.removeEventListener('mousemove', onMouseMove);
+          document.removeEventListener('mouseup', onMouseUp);
+
+          // サイズを保存
+          var currentSize = isHorizontal
+            ? parseInt(nav.style.width, 10)
+            : parseInt(nav.style.maxHeight, 10);
+          var state = vscodeApi.getState() || {};
+          state[stateKey] = currentSize;
+          vscodeApi.setState(state);
+        };
+
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+      });
+    })();
   </script>
 </body>
 </html>

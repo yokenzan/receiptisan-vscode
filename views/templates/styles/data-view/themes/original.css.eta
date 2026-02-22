@@ -29,13 +29,13 @@ body.theme-original #nav {
 body.theme-original #nav-header {
   border-bottom-color: var(--border);
 }
-body.theme-original #nav li a {
+body.theme-original #nav-table tr {
   border-left-width: 2px;
 }
 body.theme-original .nav-col {
   border-right-color: var(--border);
 }
-body.theme-original #nav li a.active {
+body.theme-original #nav-table tr.active {
   background: var(--bg-hover);
 }
 body.theme-original .receipt-header {
@@ -78,12 +78,12 @@ body.theme-original .tekiyou-table .row-new-santei td {
 body.theme-original .uke-header {
   border-color: var(--border);
 }
-body.theme-original .tekiyou-table .cal-sat {
+body.theme-original .tekiyou-table td.cal-sat {
   background-color: rgba(33, 150, 243, 0.08);
 }
-body.theme-original .tekiyou-table .cal-sun {
+body.theme-original .tekiyou-table td.cal-sun {
   background-color: rgba(244, 67, 54, 0.08);
 }
-body.theme-original .tekiyou-table .cal-tue-thu {
+body.theme-original .tekiyou-table td.cal-tue-thu {
   background-color: rgba(120, 120, 120, 0.08);
 }

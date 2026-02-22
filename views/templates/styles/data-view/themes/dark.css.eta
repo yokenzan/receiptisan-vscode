@@ -23,17 +23,24 @@ body.theme-dark {
   --control-fg: #d9e8f8;
 }
 
-body.theme-dark .tekiyou-table th + th,
-body.theme-dark .tekiyou-table td + td {
+body.theme-dark #nav-table tr.active {
+  background: #1a3a5c;
+}
+
+body.theme-dark .shoubyoumei-table th + th,
+body.theme-dark .shoubyoumei-table td + td {
   border-left: none;
 }
 
 body.theme-dark .tekiyou-table td {
-  border-bottom: none;
+  border-bottom: 1px solid #2a3545;
 }
-
-body.theme-dark .tekiyou-table .row-upper-shinku td,
-body.theme-dark .tekiyou-table .row-next-shinku td,
+body.theme-dark .tekiyou-table .row-upper-shinku td {
+  border-top: 2px solid #617288;
+}
+body.theme-dark .tekiyou-table .row-next-shinku td {
+  border-top: 1px solid var(--border-strong);
+}
 body.theme-dark .tekiyou-table .row-new-santei td {
-  border-top: none;
+  border-top: 1px dotted #536578;
 }
