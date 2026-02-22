@@ -1,3 +1,16 @@
+# [1.5.0](https://github.com/yokenzan/receiptisan-vscode/compare/v1.4.0...v1.5.0) (2026-02-22)
+
+
+### Bug Fixes
+
+* **data-view:** use '__' placeholder for missing law codes ([5f67863](https://github.com/yokenzan/receiptisan-vscode/commit/5f67863a56d4509de06d5ce1656ebcb14bb66694))
+
+
+### Features
+
+* **data-view:** convert nav list to table and add resizable pane ([7fb83ab](https://github.com/yokenzan/receiptisan-vscode/commit/7fb83ab0f61379bfffebd72f32bdebf148d03e6f))
+* **data-view:** merge cards for horizontal split ([7bbc7fa](https://github.com/yokenzan/receiptisan-vscode/commit/7bbc7fa5024da48fa6f3cd02ea44e8f071aca82d))
+
 # [1.4.0](https://github.com/yokenzan/receiptisan-vscode/compare/v1.3.2...v1.4.0) (2026-02-22)
 
 
