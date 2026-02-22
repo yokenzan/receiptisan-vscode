@@ -72,7 +72,7 @@ test('receipt meta helpers render expected labels', () => {
   assert.equal(label.idPart, '0012');
   assert.equal(label.receiptClassLabel, '高外７');
   assert.equal(label.receiptClassKind, 'gairai');
-  assert.equal(label.lawCodesLabel, '01--------');
+  assert.equal(label.lawCodesLabel, '01________');
   assert.equal(label.shinryouYm, '2024(R06).02');
   assert.equal(label.shinryouYmWestern, '2024.02');
   assert.equal(label.patientName, '山田太郎');
