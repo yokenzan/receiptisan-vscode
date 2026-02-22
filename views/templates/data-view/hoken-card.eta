@@ -1,6 +1,5 @@
-<div class="card card-hoken">
-  <div class="card-title">保険情報</div>
-  <div class="card-body">
+<section class="data-section data-section-hoken" data-section="hoken">
+  <h3 class="section-title">保険情報</h3>
     <table class="hoken-integrated-table">
       <colgroup>
         <col class="col-kubun" />
@@ -61,5 +60,4 @@
       <% } %>
     </div>
     <% } %>
-  </div>
-</div>
+</section>

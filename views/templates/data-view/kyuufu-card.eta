@@ -1,6 +1,5 @@
-<div class="card card-kyuufu">
-  <div class="card-title">食事・生活療養</div>
-  <div class="card-body">
+<section class="data-section data-section-kyuufu" data-section="kyuufu">
+  <h3 class="section-title">食事・生活療養</h3>
     <table>
       <tr>
         <th>区分</th>
@@ -23,5 +22,4 @@
       </tr>
       <% } %>
     </table>
-  </div>
-</div>
+</section>
