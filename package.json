@@ -125,8 +125,10 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "npm run build",
     "compile": "tsc -p ./ && node -e \"require('fs').rmSync('out/views',{recursive:true,force:true})\" && cp -r views out/views",
+    "clean": "node -e \"require('fs').rmSync('out',{recursive:true,force:true})\"",
+    "build": "npm run clean && npm run compile",
     "watch": "tsc -watch -p ./",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
