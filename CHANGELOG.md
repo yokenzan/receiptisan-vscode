@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/yokenzan/receiptisan-vscode/compare/v1.3.2...v1.4.0) (2026-02-22)
+
+
+### Features
+
+* **data-view:** add configurable multi-theme UI and styles ([9d74bfb](https://github.com/yokenzan/receiptisan-vscode/commit/9d74bfbdab08ff5f1b31f698cf2b8ae3d6bf6b53))
+
 ## [1.3.2](https://github.com/yokenzan/receiptisan-vscode/compare/v1.3.1...v1.3.2) (2026-02-20)
 
 
