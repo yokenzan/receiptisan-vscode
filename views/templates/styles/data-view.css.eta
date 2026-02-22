@@ -2,7 +2,7 @@
   --bg: #eef1f4;
   --bg-card: #ffffff;
   --bg-hover: #dbe7f6;
-  --bg-muted: #f3f6fa;
+  --bg-muted: #dae2ed;
   --border: #b5bec8;
   --border-strong: #8c97a4;
   --text: #1f2933;
@@ -493,7 +493,7 @@ table tr:last-child > * {
   font-style: italic;
 }
 .item-unknown {
-  text-decoration: underline wavy #bbb;
+  text-decoration: underline wavy #e07040;
 }
 
 .disease-main td {
@@ -501,7 +501,7 @@ table tr:last-child > * {
 }
 .disease-worpro td {
   color: var(--text-dim);
-  text-decoration: underline wavy #bbb;
+  text-decoration: underline wavy #e07040;
 }
 .sub-code {
   font-family: var(--font-mono);
@@ -700,6 +700,10 @@ table tr:last-child > * {
   border-collapse: collapse;
   table-layout: fixed;
 }
+.tekiyou-table th + th,
+.tekiyou-table td + td {
+  border-left: none;
+}
 
 /* colgroup 列幅定義（table-layout: fixed 用） */
 .tekiyou-table col.col-code {
@@ -827,13 +831,13 @@ table tr:last-child > * {
 .tekiyou-table th.col-futan {
   font-size: 9px;
   padding: 2px 1px;
+  color: var(--text);
 }
 .tekiyou-table td.col-futan.futan-inactive {
   background-color: rgba(0, 0, 0, 0.04);
   color: #ddd;
 }
 .tekiyou-table th.col-futan.futan-inactive {
-  background-color: transparent;
   color: var(--text-dim);
 }
 .tekiyou-table td.col-futan {
@@ -1010,21 +1014,19 @@ body.layout-horizontal #content {
 }
 
 /* 土曜（青系） */
-.tekiyou-table .cal-sat {
+.tekiyou-table td.cal-sat {
   background-color: rgba(33, 150, 243, 0.14);
 }
 .tekiyou-table th.cal-sat {
   color: #1565c0;
-  background-color: transparent;
 }
 
 /* 日曜（赤系） */
-.tekiyou-table .cal-sun {
+.tekiyou-table td.cal-sun {
   background-color: rgba(244, 67, 54, 0.14);
 }
 .tekiyou-table th.cal-sun {
   color: #c62828;
-  background-color: transparent;
 }
 
 /* 5日境界 */
@@ -1033,11 +1035,8 @@ body.layout-horizontal #content {
 }
 
 /* 火曜・木曜 */
-.tekiyou-table .cal-tue-thu {
+.tekiyou-table td.cal-tue-thu {
   background-color: rgba(120, 120, 120, 0.12);
-}
-.tekiyou-table th.cal-tue-thu {
-  background-color: transparent;
 }
 
 /* 負担区分の左右外枠（保の左、公4の右） */
