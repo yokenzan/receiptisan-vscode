@@ -1,6 +1,5 @@
-<div class="card card-hoken-kyuufu-horizontal">
-  <div class="card-title">療養の給付</div>
-  <div class="card-body">
+<section class="data-section data-section-hoken-kyuufu-horizontal" data-section="hoken">
+  <h3 class="section-title">療養の給付</h3>
     <% if (it.shikakuRows.length > 0) { %>
     <div class="hoken-shikaku-detail">
       <% for (const row of it.shikakuRows) { %>
@@ -95,5 +94,4 @@
       <% } %>
     </div>
     <% } %>
-  </div>
-</div>
+</section>
