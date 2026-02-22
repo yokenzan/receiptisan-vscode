@@ -29,13 +29,13 @@ body.theme-original #nav {
 body.theme-original #nav-header {
   border-bottom-color: var(--border);
 }
-body.theme-original #nav li a {
+body.theme-original #nav-table tr {
   border-left-width: 2px;
 }
 body.theme-original .nav-col {
   border-right-color: var(--border);
 }
-body.theme-original #nav li a.active {
+body.theme-original #nav-table tr.active {
   background: var(--bg-hover);
 }
 body.theme-original .receipt-header {

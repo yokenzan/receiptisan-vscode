@@ -78,8 +78,8 @@ body {
   width: 100%;
   min-width: unset;
   border-right: none;
-  border-top: 1px solid var(--border-strong);
-  order: 1;
+  border-top: none;
+  order: 2;
   max-height: 264px;
   overflow-y: auto;
   padding: 0;
@@ -104,46 +104,38 @@ body {
   color: var(--text-bright);
 }
 
-#nav ul {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  padding: 0;
+#nav-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
 }
 
-#nav li a {
-  display: grid;
-  grid-template-columns: 8ch minmax(0, 14.4ch) 12ch 10ch minmax(0, 1fr);
-  align-items: center;
-  gap: 0;
-  padding: 3px 8px;
+#nav-table tr {
+  cursor: pointer;
   color: var(--text);
-  text-decoration: none;
   font-size: 12px;
   border-left: 3px solid transparent;
 }
 
 .nav-col {
-  min-width: 0;
-  padding: 0 6px;
+  padding: 3px 6px;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   border-right: 1px solid var(--border-strong);
 }
 .nav-col:first-child {
-  padding-left: 0;
+  padding-left: 5px;
 }
 .nav-col:last-child {
   border-right: none;
 }
+.nav-patient-name {
+  width: 100%;
+  max-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .nav-ym {
   font-family: var(--font-mono);
-}
-.nav-no,
-.nav-patient-id {
-  min-width: 7ch;
 }
 .nav-law-codes {
   text-align: left;
@@ -153,12 +145,6 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-width: 0;
-}
-.nav-ym-class > span:first-child {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 .nav-class-badge {
   font-size: 10px;
@@ -182,11 +168,11 @@ body {
   color: #ffffff;
 }
 
-#nav li a:hover {
+#nav-table tr:hover {
   background: var(--bg-hover);
 }
 
-#nav li a.active {
+#nav-table tr.active {
   background: #cfe0f4;
   border-left-color: var(--accent);
   color: var(--text-bright);
@@ -264,6 +250,36 @@ body.layout-horizontal.nav-hidden #content {
 body.nav-hidden #nav,
 body.nav-hidden #nav {
   display: none;
+}
+
+/* nav リサイズハンドル */
+#nav-resize-handle {
+  order: 1;
+  flex-shrink: 0;
+  width: 100%;
+  height: 5px;
+  cursor: row-resize;
+  background: transparent;
+  border-top: 1px solid var(--border-strong);
+  transition: background 0.15s;
+}
+#nav-resize-handle:hover,
+#nav-resize-handle.dragging {
+  background: var(--accent);
+}
+body.nav-hidden #nav-resize-handle {
+  display: none;
+}
+body.layout-horizontal #nav-resize-handle {
+  order: 0;
+  width: 5px;
+  height: 100%;
+  cursor: col-resize;
+  border-top: none;
+  border-left: 1px solid var(--border-strong);
+}
+body.nav-resizing {
+  user-select: none;
 }
 
 .receipt-section {
@@ -950,10 +966,13 @@ body.layout-horizontal #nav {
   max-height: none;
   height: 100vh;
   border-top: none;
-  border-right: 1px solid var(--border);
+  border-right: none;
+}
+body.layout-horizontal #nav-resize-handle {
+  order: 1;
 }
 body.layout-horizontal #content {
-  order: 1;
+  order: 2;
   flex: 1;
   overflow: auto;
 }
