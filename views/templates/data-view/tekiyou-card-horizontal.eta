@@ -1,6 +1,6 @@
-<div class="card">
-  <div class="card-title">摘要欄</div>
-  <div class="card-body tekiyou-scroll-container">
+<section class="data-section data-section-tekiyou" data-section="tekiyou">
+  <h3 class="section-title">摘要欄</h3>
+  <div class="tekiyou-scroll-container">
     <table class="tekiyou-table" style="width: <%= it.tableWidth %>px">
       <colgroup>
         <col class="col-code" />
@@ -37,4 +37,4 @@
       <% } %>
     </table>
   </div>
-</div>
+</section>
