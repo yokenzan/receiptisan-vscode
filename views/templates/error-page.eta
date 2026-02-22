@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline';">
+  <style>
+<%~ include('styles/error-page.css.eta') %>
+  </style>
+</head>
+<body>
+  <h1><%= it.title %></h1>
+  <p class="message"><%= it.message %></p>
+  <% if (it.detail) { %>
+  <pre><%= it.detail %></pre>
+  <% } %>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<div class="card card-kyuufu">
+  <div class="card-title">食事・生活療養</div>
+  <div class="card-body">
+    <table>
+      <tr>
+        <th>区分</th>
+        <th>回数</th>
+        <th>合計金額</th>
+        <th>標準負担額</th>
+      </tr>
+      <% for (const row of it.rows) { %>
+      <tr>
+        <td><%= row.kubun %></td>
+        <td class="unit-cell">
+          <% if (row.kaisuu) { %><span class="value-num"><%= row.kaisuu.value %></span><span class="value-unit"><%= row.kaisuu.unit %></span><% } %>
+        </td>
+        <td class="unit-cell">
+          <% if (row.goukeiKingaku) { %><span class="value-num"><%= row.goukeiKingaku.value %></span><span class="value-unit"><%= row.goukeiKingaku.unit %></span><% } %>
+        </td>
+        <td class="unit-cell">
+          <% if (row.hyoujunFutangaku) { %><span class="value-num"><%= row.hyoujunFutangaku.value %></span><span class="value-unit"><%= row.hyoujunFutangaku.unit %></span><% } %>
+        </td>
+      </tr>
+      <% } %>
+    </table>
+  </div>
+</div>

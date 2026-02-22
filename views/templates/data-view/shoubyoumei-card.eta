@@ -1,0 +1,39 @@
+<div class="card card-shoubyoumei">
+  <div class="card-title">傷病名</div>
+  <div class="card-body">
+    <% const renderWarekiCompact = (value) => String(value).replace(/\(([^)]+)\)/g, '<span class="date-wareki">($1)</span>'); %>
+    <table class="shoubyoumei-table">
+      <colgroup>
+        <col class="col-idx" />
+        <col class="col-code" />
+        <col class="col-main-badge" />
+        <col class="col-utagai-badge" />
+        <col class="col-worpro-badge" />
+        <col class="col-name" />
+        <col class="col-start-date" />
+        <col class="col-tenki" />
+      </colgroup>
+      <tr><th>#</th><th>コード</th><th>主</th><th>疑</th><th>ワープロ</th><th>傷病名</th><th>開始日</th><th>転帰</th></tr>
+      <% for (const row of it.rows) { %>
+      <tr<% if (row.rowClass) { %> class="<%= row.rowClass %>"<% } %>>
+        <td><%= row.index %></td>
+        <td class="code">
+          <%= row.code %>
+          <% if (row.shuushokugoCodes.length > 0) { %>
+          <br/><span class="sub-code"><%= row.shuushokugoCodes.join(' ') %></span>
+          <% } %>
+        </td>
+        <td><% if (row.isMain) { %><span class="tag tag-main">主</span><% } %></td>
+        <td><% if (row.isUtagai) { %><span class="tag tag-utagai">疑</span><% } %></td>
+        <td><% if (row.isWorpro) { %><span class="tag tag-worpro">未</span><% } %></td>
+        <td>
+          <%= row.fullText %>
+          <% if (row.comment) { %> <span class="text-dim">（<%= row.comment %>）</span><% } %>
+        </td>
+        <td><span class="date-value"><%~ renderWarekiCompact(row.startDate) %></span></td>
+        <td><span class="tag <%= row.tenkiClass %>"><%= row.tenkiName %></span></td>
+      </tr>
+      <% } %>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+<div class="card">
+  <div class="card-title">摘要欄</div>
+  <div class="card-body tekiyou-scroll-container">
+    <table class="tekiyou-table tekiyou-compact" style="width: <%= it.tableWidth %>px">
+      <colgroup>
+        <col class="col-shinku" />
+        <col class="col-futan-code" />
+        <col class="col-mark" />
+        <col class="col-name" />
+        <col class="col-tensuu" />
+        <col class="col-times-sign" />
+        <col class="col-kaisuu" />
+        <col class="col-santei-days" />
+      </colgroup>
+      <tr>
+        <th>診区</th>
+        <th>負担区分</th>
+        <th>＊</th>
+        <th>明細</th>
+        <th style="text-align:right">点数</th>
+        <th class="col-times-sign"></th>
+        <th style="text-align:right">回数</th>
+        <th>算定日</th>
+      </tr>
+      <% for (const rowHtml of it.rowsHtml) { %>
+      <%~ rowHtml %>
+      <% } %>
+    </table>
+  </div>
+</div>

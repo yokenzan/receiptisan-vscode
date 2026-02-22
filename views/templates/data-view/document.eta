@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'nonce-<%= it.nonce %>';">
+<style>
+<%~ include('../styles/data-view.css.eta') %>
+</style>
+</head>
+<body<% if (it.layoutMode === 'horizontal') { %> class="layout-horizontal"<% } %>>
+  <button id="nav-show-button" type="button" aria-controls="nav" aria-label="レセプト一覧を表示">開</button>
+  <button id="theme-toggle-button" type="button" aria-label="テーマ切替">L</button>
+
+  <div id="nav">
+    <div id="nav-header">
+      <span id="nav-title">レセプト一覧</span>
+      <button id="nav-hide-button" type="button" aria-controls="nav" aria-label="レセプト一覧を閉じる">閉</button>
+    </div>
+    <ul>
+      <% for (const navItem of it.navItems) { %>
+      <li>
+        <a href="#<%= navItem.id %>" class="nav-item" data-target="<%= navItem.id %>">
+          <span class="nav-col nav-no">No.<%= navItem.label.idPart %></span>
+          <span class="nav-col nav-ym-class">
+            <span><%= navItem.label.shinryouYmWestern %></span>
+            <% if (navItem.label.receiptClassLabel) { %>
+            <span class="tag nav-class-badge nav-class-<%= navItem.label.receiptClassKind %>"><%= navItem.label.receiptClassLabel %></span>
+            <% } %>
+          </span>
+          <span class="nav-col nav-law-codes"><%= navItem.label.lawCodesLabel || '-' %></span>
+          <span class="nav-col nav-patient-id"><%= navItem.label.patientId %></span>
+          <span class="nav-col nav-patient-name"><%= navItem.label.patientName %></span>
+        </a>
+      </li>
+      <% } %>
+    </ul>
+  </div>
+
+  <div id="content">
+    <% for (const sectionHtml of it.receiptSectionsHtml) { %>
+    <%~ sectionHtml %>
+    <% } %>
+  </div>
+
+  <script nonce="<%= it.nonce %>">
+    (function() {
+      var navLinks = document.querySelectorAll('.nav-item');
+      var content = document.getElementById('content');
+      var navShowButton = document.getElementById('nav-show-button');
+      var navHideButton = document.getElementById('nav-hide-button');
+
+      function applyNavHidden(hidden) {
+        document.body.classList.toggle('nav-hidden', hidden);
+        navShowButton.style.display = hidden ? 'inline-flex' : 'none';
+        navShowButton.setAttribute('aria-expanded', hidden ? 'false' : 'true');
+        navHideButton.setAttribute('aria-expanded', hidden ? 'false' : 'true');
+        navShowButton.setAttribute('aria-label', 'レセプト一覧を表示');
+        navHideButton.setAttribute('aria-label', 'レセプト一覧を閉じる');
+      }
+
+      navLinks.forEach(function(link) {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          navLinks.forEach(function(l) { l.classList.remove('active'); });
+          link.classList.add('active');
+          var target = document.getElementById(link.getAttribute('data-target'));
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+
+      if (navLinks.length > 0) navLinks[0].classList.add('active');
+      applyNavHidden(false);
+
+      navShowButton.addEventListener('click', function() {
+        applyNavHidden(false);
+      });
+
+      navHideButton.addEventListener('click', function() {
+        applyNavHidden(true);
+      });
+
+      var observer = new IntersectionObserver(function(entries) {
+        for (var i = 0; i < entries.length; i++) {
+          if (entries[i].isIntersecting) {
+            var id = entries[i].target.id;
+            navLinks.forEach(function(l) {
+              l.classList.toggle('active', l.getAttribute('data-target') === id);
+            });
+            break;
+          }
+        }
+      }, { root: content, threshold: 0.3 });
+
+      document.querySelectorAll('.receipt-section').forEach(function(el) {
+        observer.observe(el);
+      });
+    })();
+  </script>
+  <script nonce="<%= it.nonce %>">
+    <%~ it.themeScript %>
+  </script>
+</body>
+</html>

@@ -48,7 +48,8 @@ Visual Studio Code Marketplaceで「Receiptisan Preview」を検索してイン�
 
 | 設定項目 | 説明 | デフォルト値 |
 |---------|------|-------------|
-| `receiptisan.command` | receiptisan CLIの実行コマンド | `receiptisan` |
+| `receiptisan.executable` | receiptisan CLIの実行ファイル | `receiptisan` |
+| `receiptisan.args` | 実行ファイルに渡す引数配列 | `[]` |
 | `receiptisan.cwd` | CLI実行時の作業ディレクトリ | (なし) |
 
 ### 設定例
@@ -61,7 +62,8 @@ Visual Studio Code Marketplaceで「Receiptisan Preview」を検索してイン�
 
 ```json
 {
-  "receiptisan.command": "bundle exec ruby exe/receiptisan",
+  "receiptisan.executable": "bundle",
+  "receiptisan.args": ["exec", "ruby", "exe/receiptisan"],
   "receiptisan.cwd": "/path/to/receiptisan"
 }
 ```

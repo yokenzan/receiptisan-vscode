@@ -1,34 +1,54 @@
 import * as vscode from 'vscode';
 import { createUkeInlayHintsProvider } from './inlay-hints';
-import { showPreview } from './preview';
+import { showDataView } from './features/data-view/command';
+import { showPreview } from './features/preview/command';
 
+/**
+ * Returns the active editor when it is a UKE document.
+ * @throws {Error} If there is no active editor or the language is not UKE.
+ */
+function currentUkeEditor(): vscode.TextEditor {
+  const editor = vscode.window.activeTextEditor;
+  if (!editor) throw new Error('No active editor');
+  if (editor.document.languageId !== 'uke') throw new Error('Active editor is not a UKE file');
+  return editor;
+}
+
+/**
+ * Activates the extension and registers preview/data view commands.
+ */
 export function activate(context: vscode.ExtensionContext): void {
-  console.log('receiptisan-preview is now active');
-
   const previewCommand = vscode.commands.registerCommand('receiptisan.preview', async () => {
-    const editor = vscode.window.activeTextEditor;
-
-    if (!editor) {
-      vscode.window.showErrorMessage('プレビューするUKEファイルを開いてください');
-      return;
-    }
-
-    if (editor.document.languageId !== 'uke') {
-      vscode.window.showErrorMessage('UKEファイルのみプレビューできます');
-      return;
-    }
-
-    await showPreview(editor.document);
+    await showPreview(currentUkeEditor().document);
   });
 
   const inlayHintsProvider = vscode.languages.registerInlayHintsProvider(
     'uke',
     createUkeInlayHintsProvider(),
   );
+  const dataViewVerticalCommand = vscode.commands.registerCommand(
+    'receiptisan.dataViewVertical',
+    async () => {
+      await showDataView(currentUkeEditor().document, 'vertical');
+    },
+  );
 
-  context.subscriptions.push(previewCommand, inlayHintsProvider);
+  const dataViewHorizontalCommand = vscode.commands.registerCommand(
+    'receiptisan.dataViewHorizontal',
+    async () => {
+      await showDataView(currentUkeEditor().document, 'horizontal');
+    },
+  );
+
+  context.subscriptions.push(
+    previewCommand,
+    dataViewVerticalCommand,
+    dataViewHorizontalCommand,
+    inlayHintsProvider,
+  );
 }
 
-export function deactivate(): void {
-  // Cleanup if needed
-}
+/**
+ * VS Code extension deactivation hook.
+ */
+export function deactivate(): void {}
