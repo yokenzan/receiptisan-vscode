@@ -1,4 +1,3 @@
-body.theme-classic,
 body.theme-classic-modern {
   --bg: #c0c0c0;
   --bg-card: #ffffff;
@@ -24,9 +23,6 @@ body.theme-classic-modern {
   --control-fg: #000000;
 }
 
-body.theme-classic #nav-show-button,
-body.theme-classic #nav-hide-button,
-body.theme-classic #theme-toggle-button,
 body.theme-classic-modern #nav-show-button,
 body.theme-classic-modern #nav-hide-button,
 body.theme-classic-modern #theme-toggle-button {
@@ -34,37 +30,28 @@ body.theme-classic-modern #theme-toggle-button {
   border-radius: 0;
   box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #808080;
 }
-body.theme-classic #nav-show-button:hover,
-body.theme-classic #nav-hide-button:hover,
-body.theme-classic #theme-toggle-button:hover,
 body.theme-classic-modern #nav-show-button:hover,
 body.theme-classic-modern #nav-hide-button:hover,
 body.theme-classic-modern #theme-toggle-button:hover {
   background: #d9d9d9;
 }
-body.theme-classic #nav li a.active,
-body.theme-classic-modern #nav li a.active {
+body.theme-classic-modern #nav-table tr.active {
   background: #000080;
   color: #ffffff;
 }
-body.theme-classic .card,
-body.theme-classic .uke-header,
 body.theme-classic-modern .card,
 body.theme-classic-modern .uke-header {
   border: 1px solid #000000;
   border-radius: 0;
   box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #808080;
 }
-body.theme-classic .card-title,
 body.theme-classic-modern .card-title {
   background: #000080;
   color: #ffffff;
 }
-body.theme-classic table th,
 body.theme-classic-modern table th {
   background: #e8e8e8;
 }
-body.theme-classic .tag,
 body.theme-classic-modern .tag {
   border: 1px solid #000000;
   border-radius: 0;

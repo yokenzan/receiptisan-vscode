@@ -31,7 +31,7 @@ function resolveLawCodes(receipt: Receipt): string {
   const codes: string[] = [];
   for (const candidate of candidates) {
     const code = toLawCode2(candidate);
-    codes.push(code || '--');
+    codes.push(code || '__');
   }
   return codes.join('');
 }
