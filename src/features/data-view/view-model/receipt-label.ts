@@ -55,7 +55,7 @@ export function buildReceiptLabelViewModel(receipt: Receipt): ReceiptLabelViewMo
 
   return {
     idPart: String(receipt.id).padStart(4, '0'),
-    shinryouYm: formatWarekiShort(receipt.shinryou_ym.wareki),
+    shinryouYm: formatWarekiShort(receipt.shinryou_ym.wareki, receipt.shinryou_ym.year),
     shinryouYmWestern,
     receiptClassLabel,
     receiptClassKind,

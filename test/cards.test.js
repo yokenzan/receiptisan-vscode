@@ -12,9 +12,8 @@ const {
 } = require('../out/features/data-view/view/cards.js');
 
 function wareki(alphabet, year, month, day) {
-  const baseYearMap = { M: 1868, T: 1912, S: 1926, H: 1989, R: 2019 };
   return {
-    gengou: { alphabet, base_year: baseYearMap[alphabet] },
+    gengou: { alphabet },
     year,
     month,
     ...(day != null ? { day } : {}),
@@ -76,7 +75,7 @@ function createReceipt() {
             tenki: { code: 1, name: '治癒' },
             full_text: '感冒',
             comment: null,
-            start_date: { wareki: wareki('R', 6, 1, 2) },
+            start_date: { year: 2024, month: 1, day: 2, wareki: wareki('R', 6, 1, 2) },
           },
         ],
       },
@@ -88,7 +87,7 @@ test('card renderers output expected sections', () => {
   const receipt = createReceipt();
   assert.ok(renderReceiptHeader(receipt).includes('診療年月'));
   assert.ok(renderPatientCard(receipt).includes('患者情報'));
-  assert.ok(renderHokenCard(receipt).includes('保険情報'));
+  assert.ok(renderHokenCard(receipt).includes('療養の給付'));
   assert.ok(renderShoubyoumeiCard(receipt.shoubyoumeis).includes('傷病名'));
 });
 

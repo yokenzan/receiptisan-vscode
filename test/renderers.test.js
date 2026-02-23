@@ -60,7 +60,7 @@ test('receipt meta helpers render expected labels', () => {
     shinryou_ym: {
       year: 2024,
       month: 2,
-      wareki: { gengou: { alphabet: 'R', base_year: 2019 }, year: 6, month: 2 },
+      wareki: { gengou: { alphabet: 'R' }, year: 6, month: 2 },
     },
     type: { patient_age_type: { name: '高外７' }, hoken_multiple_type: { name: '２併' } },
     hokens: {

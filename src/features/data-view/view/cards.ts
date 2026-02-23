@@ -95,7 +95,7 @@ function buildReceiptHeaderViewModel(receipt: Receipt) {
   }));
   const nyuuinDateCell =
     receipt.nyuugai === 'nyuuin' && receipt.nyuuin_date
-      ? formatWarekiShort(receipt.nyuuin_date.wareki)
+      ? formatWarekiShort(receipt.nyuuin_date.wareki, receipt.nyuuin_date.year)
       : '';
   const byoushouCell =
     receipt.nyuugai === 'nyuuin' && receipt.byoushou_types.length > 0
@@ -104,7 +104,7 @@ function buildReceiptHeaderViewModel(receipt: Receipt) {
 
   return {
     id: receipt.id,
-    shinryouYm: formatWarekiShort(receipt.shinryou_ym.wareki),
+    shinryouYm: formatWarekiShort(receipt.shinryou_ym.wareki, receipt.shinryou_ym.year),
     nyuugai: receipt.nyuugai,
     typeBadges,
     tokkiJikous,
@@ -117,7 +117,9 @@ function buildPatientCardViewModel(receipt: Receipt) {
   const p = receipt.patient;
   const sexKind =
     String(p.sex.code) === '1' ? 'male' : String(p.sex.code) === '2' ? 'female' : 'other';
-  const birthDate = p.birth_date?.wareki ? formatWarekiShort(p.birth_date.wareki) : '-';
+  const birthDate = p.birth_date?.wareki
+    ? formatWarekiShort(p.birth_date.wareki, p.birth_date.year)
+    : '-';
   const asOf = endOfMonthDate(receipt.shinryou_ym.year, receipt.shinryou_ym.month);
   const ageYearsMonths = p.birth_date
     ? calculateLegalAgeYearsMonthsAt(
@@ -292,7 +294,7 @@ export function renderUkeHeader(dr: DigitalizedReceipt): string {
 
   return renderTemplate('data-view/uke-header.eta', {
     hospitalName: dr.hospital.name ?? dr.hospital.code,
-    seikyuuYm: formatWarekiShort(dr.seikyuu_ym.wareki),
+    seikyuuYm: formatWarekiShort(dr.seikyuu_ym.wareki, dr.seikyuu_ym.year),
     auditPayerName: dr.audit_payer.name,
     prefectureName: dr.prefecture.name,
     detailParts,
@@ -352,7 +354,7 @@ export function renderShoubyoumeiCard(groups: ShoubyoumeiGroup[]): string {
         isWorpro: s.is_worpro === true,
         fullText: s.full_text,
         comment: s.comment ?? '',
-        startDate: formatWarekiShort(s.start_date.wareki),
+        startDate: formatWarekiShort(s.start_date.wareki, s.start_date.year),
         tenkiClass: getTenkiColorClass(s.tenki.code),
         tenkiName: s.tenki.name,
       });

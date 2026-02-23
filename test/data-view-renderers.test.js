@@ -7,9 +7,8 @@ const {
 } = require('../out/features/data-view/view/page.js');
 
 function wareki(alphabet, year, month, day) {
-  const baseYearMap = { M: 1868, T: 1912, S: 1926, H: 1989, R: 2019 };
   return {
-    gengou: { alphabet, base_year: baseYearMap[alphabet] },
+    gengou: { alphabet },
     year,
     month,
     ...(day != null ? { day } : {}),
@@ -19,7 +18,7 @@ function wareki(alphabet, year, month, day) {
 function createSampleData() {
   return [
     {
-      seikyuu_ym: { wareki: wareki('R', 6, 1) },
+      seikyuu_ym: { year: 2024, month: 1, wareki: wareki('R', 6, 1) },
       audit_payer: { name: '支払基金' },
       prefecture: { name: '東京都' },
       hospital: { name: 'サンプル病院', code: '0001', location: '東京', tel: '00-0000-0000' },
@@ -42,7 +41,7 @@ function createSampleData() {
             name: '患者A',
             name_kana: null,
             sex: { code: '1', name: '男' },
-            birth_date: { wareki: wareki('S', 60, 4, 1) },
+            birth_date: { year: 1985, month: 4, day: 1, wareki: wareki('S', 60, 4, 1) },
           },
           hokens: {
             main: '協会けんぽ',
