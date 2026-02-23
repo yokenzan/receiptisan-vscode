@@ -25,14 +25,14 @@ body.theme-classic-modern {
 
 body.theme-classic-modern #nav-show-button,
 body.theme-classic-modern #nav-hide-button,
-body.theme-classic-modern #theme-toggle-button {
+body.theme-classic-modern #settings-toggle-button {
   border: 1px solid #000000;
   border-radius: 0;
   box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #808080;
 }
 body.theme-classic-modern #nav-show-button:hover,
 body.theme-classic-modern #nav-hide-button:hover,
-body.theme-classic-modern #theme-toggle-button:hover {
+body.theme-classic-modern #settings-toggle-button:hover {
   background: #d9d9d9;
 }
 body.theme-classic-modern #nav-table tr.active {
