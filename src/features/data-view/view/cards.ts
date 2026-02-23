@@ -284,19 +284,29 @@ function calculateLegalAgeYearsMonthsAt(
   };
 }
 
+function formatHospitalCode(code: string): string {
+  const digits = code.replace(/\D/g, '').padStart(7, '0');
+  return `${digits.slice(0, 2)}.${digits.slice(2, 6)}.${digits.slice(6, 7)}`;
+}
+
 /**
  * Renders top-level UKE header card.
  */
-export function renderUkeHeader(dr: DigitalizedReceipt): string {
+export function renderUkeHeader(digitalizedReceipt: DigitalizedReceipt): string {
+  const hospital = digitalizedReceipt.hospital;
   const detailParts: string[] = [];
-  if (dr.hospital.location) detailParts.push(dr.hospital.location);
-  if (dr.hospital.tel) detailParts.push(`TEL: ${dr.hospital.tel}`);
+  if (hospital.location) detailParts.push(hospital.location);
+  if (hospital.tel) detailParts.push(`TEL: ${hospital.tel}`);
 
   return renderTemplate('data-view/uke-header.eta', {
-    hospitalName: dr.hospital.name ?? dr.hospital.code,
-    seikyuuYm: formatWarekiShort(dr.seikyuu_ym.wareki, dr.seikyuu_ym.year),
-    auditPayerName: dr.audit_payer.name,
-    prefectureName: dr.prefecture.name,
+    hospitalName: hospital.name ?? hospital.code,
+    hospitalCode: formatHospitalCode(hospital.code),
+    seikyuuYm: formatWarekiShort(
+      digitalizedReceipt.seikyuu_ym.wareki,
+      digitalizedReceipt.seikyuu_ym.year,
+    ),
+    auditPayerName: digitalizedReceipt.audit_payer.name,
+    prefectureName: digitalizedReceipt.prefecture.name,
     detailParts,
   });
 }

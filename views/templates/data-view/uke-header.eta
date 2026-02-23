@@ -2,6 +2,7 @@
   <% const renderWarekiCompact = (value) => String(value).replace(/\(([^)]+)\)/g, '<span class="date-wareki">($1)</span>'); %>
   <div class="uke-header-title"><%= it.hospitalName %></div>
   <div class="uke-header-detail">
+    <span>医療機関コード: <span class="code"><%= it.hospitalCode %></span></span>
     <span><span class="date-value"><%~ renderWarekiCompact(it.seikyuuYm) %></span>請求</span>
     <span><%= it.auditPayerName %></span>
     <span><%= it.prefectureName %></span>
