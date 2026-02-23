@@ -53,6 +53,9 @@ body.theme-original table th {
   border-bottom-color: var(--border);
   background: transparent;
 }
+body.theme-original table td {
+  background: var(--bg-card);
+}
 body.theme-original table th + th,
 body.theme-original table td + td {
   border-left: none;
