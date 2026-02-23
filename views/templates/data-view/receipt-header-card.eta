@@ -1,4 +1,4 @@
-<section class="data-section data-section-receipt-header" data-section="receipt-header">
+<section class="data-section data-section-receipt-header" data-section="basic-info">
   <h3 class="section-title">レセプト共通</h3>
     <% const renderWarekiCompact = (value) => String(value).replace(/\(([^)]+)\)/g, '<span class="date-wareki">($1)</span>'); %>
     <table class="receipt-info-table">

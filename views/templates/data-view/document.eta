@@ -18,8 +18,7 @@
     </div>
     <div class="settings-panel-group">
       <div class="settings-panel-label">セクション表示</div>
-      <label class="settings-checkbox"><input type="checkbox" data-section-toggle="receipt-header" checked />レセプト共通</label>
-      <label class="settings-checkbox"><input type="checkbox" data-section-toggle="patient" checked />患者情報</label>
+      <label class="settings-checkbox"><input type="checkbox" data-section-toggle="basic-info" checked />基本情報</label>
       <label class="settings-checkbox"><input type="checkbox" data-section-toggle="hoken" checked />保険情報</label>
       <label class="settings-checkbox"><input type="checkbox" data-section-toggle="kyuufu" checked />食事・生活療養</label>
       <label class="settings-checkbox"><input type="checkbox" data-section-toggle="shoubyoumei" checked />傷病名</label>

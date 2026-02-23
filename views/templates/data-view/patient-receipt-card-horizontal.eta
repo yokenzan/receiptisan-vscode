@@ -1,4 +1,4 @@
-<section class="data-section data-section-patient-receipt-horizontal" data-section="patient">
+<section class="data-section data-section-patient-receipt-horizontal" data-section="basic-info">
   <h3 class="section-title">基本情報</h3>
   <% const renderWarekiCompact = (value) => String(value).replace(/\(([^)]+)\)/g, '<span class="date-wareki">($1)</span>'); %>
   <div class="section-horizontal-columns">
