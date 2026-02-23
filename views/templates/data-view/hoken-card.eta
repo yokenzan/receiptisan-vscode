@@ -10,6 +10,7 @@
         <col class="col-kyuufu-futankin" />
         <col class="col-futankin" />
       </colgroup>
+      <thead>
       <tr>
         <th>区分</th>
         <th>事業者番号</th>
@@ -19,6 +20,7 @@
         <th>給付対象額</th>
         <th>負担金</th>
       </tr>
+      </thead>
       <% for (const row of it.rows) { %>
       <tr>
         <td><%= row.kubun %></td>

@@ -382,10 +382,6 @@ body.nav-resizing {
   padding-bottom: 4px;
   border-bottom: 2px solid var(--border-strong);
   margin-bottom: 6px;
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  background: var(--bg);
 }
 
 .data-section-receipt-header {
@@ -438,6 +434,17 @@ table td + td {
 
 table tr:last-child > * {
   border-bottom: none;
+}
+
+/* Sticky table headers */
+.tekiyou-table thead th,
+.shoubyoumei-table thead th,
+.hoken-integrated-table thead th,
+.hoken-kyuufu-table thead th,
+.kyuufu-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
 .tag {
@@ -1034,13 +1041,20 @@ table tr:last-child > * {
   margin-bottom: 2px;
 }
 
-.uke-header-detail {
+.uke-header-table {
+  width: auto;
+  border-collapse: collapse;
   font-size: 12px;
-  color: var(--text-dim);
 }
-
-.uke-header-detail span {
-  margin-right: 12px;
+.uke-header-table th {
+  text-align: left;
+  font-weight: normal;
+  color: var(--text-dim);
+  padding: 1px 8px 1px 0;
+  white-space: nowrap;
+}
+.uke-header-table td {
+  padding: 1px 16px 1px 0;
 }
 
 /* Shuukei table */

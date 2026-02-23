@@ -12,7 +12,9 @@
         <col class="col-start-date" />
         <col class="col-tenki" />
       </colgroup>
+      <thead>
       <tr><th>#</th><th>コード</th><th>主</th><th>疑</th><th>ワープロ</th><th>傷病名</th><th>開始日</th><th>転帰</th></tr>
+      </thead>
       <% for (const row of it.rows) { %>
       <tr<% if (row.rowClass) { %> class="<%= row.rowClass %>"<% } %>>
         <td><%= row.index %></td>

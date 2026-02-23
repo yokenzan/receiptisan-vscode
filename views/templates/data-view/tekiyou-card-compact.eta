@@ -12,6 +12,7 @@
         <col class="col-kaisuu" />
         <col class="col-santei-days" />
       </colgroup>
+      <thead>
       <tr>
         <th>診区</th>
         <th>負担区分</th>
@@ -22,6 +23,7 @@
         <th style="text-align:right">回数</th>
         <th>算定日</th>
       </tr>
+      </thead>
       <% for (const rowHtml of it.rowsHtml) { %>
       <%~ rowHtml %>
       <% } %>

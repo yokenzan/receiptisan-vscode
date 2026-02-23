@@ -22,6 +22,7 @@
         <col class="col-hyoujun-futankin" />
         <% } %>
       </colgroup>
+      <thead>
       <tr>
         <th>区分</th>
         <th>事業者番号</th>
@@ -35,6 +36,7 @@
         <th>標準負担金額</th>
         <% } %>
       </tr>
+      </thead>
       <% for (const row of it.rows) { %>
       <tr>
         <td><%= row.kubun %></td>
