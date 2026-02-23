@@ -25,11 +25,11 @@
       <thead>
       <tr>
         <th>区分</th>
-        <th>事業者番号</th>
+        <th class="sep-strong">事業者番号</th>
         <th>実日数</th>
         <th>請求点数</th>
         <th>給付対象額</th>
-        <th class="<%= it.showMealLifeColumns ? 'sep-after-hoken' : '' %>">負担金額</th>
+        <th class="<%= it.showMealLifeColumns ? 'sep-strong' : '' %>">負担金額</th>
         <% if (it.showMealLifeColumns) { %>
         <th>回数</th>
         <th>請求金額</th>
@@ -40,7 +40,7 @@
       <% for (const row of it.rows) { %>
       <tr>
         <td><%= row.kubun %></td>
-        <td class="code">
+        <td class="code sep-strong">
           <% if (row.hokenjaBangou) { %><%= row.hokenjaBangou %><% } else { %><span class="placeholder">-</span><% } %>
         </td>
         <td class="unit-cell">
@@ -68,7 +68,7 @@
           </span>
           <% } %>
         </td>
-        <td class="unit-cell <%= it.showMealLifeColumns ? 'sep-after-hoken' : '' %>">
+        <td class="unit-cell <%= it.showMealLifeColumns ? 'sep-strong' : '' %>">
           <% if (!row.ichibuFutankin) { %>
           <span class="placeholder">-</span>
           <% } else { %>

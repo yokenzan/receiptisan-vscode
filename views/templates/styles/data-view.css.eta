@@ -988,9 +988,9 @@ table tr:last-child > * {
 .hoken-kyuufu-table td {
   min-width: 44px;
 }
-.hoken-kyuufu-table th.sep-after-hoken,
-.hoken-kyuufu-table td.sep-after-hoken {
-  border-right: 1px solid var(--border);
+.hoken-kyuufu-table th.sep-strong,
+.hoken-kyuufu-table td.sep-strong {
+  border-right: 2px solid var(--border-strong);
 }
 .hoken-kyuufu-table .col-kubun {
   width: 70px;
