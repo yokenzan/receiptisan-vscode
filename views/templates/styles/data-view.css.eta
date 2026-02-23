@@ -609,24 +609,24 @@ table tr:last-child > * {
 }
 
 /* キーバリュー型テーブル共通: 項目名列の幅統一 */
-.receipt-info-table,
+.data-section-receipt-header table,
 .data-section-patient table {
   width: auto;
 }
-.receipt-info-table th,
+.data-section-receipt-header th,
 .data-section-patient th {
   white-space: nowrap;
   width: 72px;
   min-width: 72px;
   padding: 2px 8px 2px 6px;
 }
-.receipt-info-table td {
+.data-section-receipt-header td {
   padding: 2px 8px 2px 6px;
 }
-.receipt-info-table .tag {
+.data-section-receipt-header .tag {
   margin-right: 3px;
 }
-.receipt-info-table tr > td:first-of-type,
+.data-section-receipt-header tr > td:first-of-type,
 .data-section-patient tr > td {
   min-width: 320px;
 }

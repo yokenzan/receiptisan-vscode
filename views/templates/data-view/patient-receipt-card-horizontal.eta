@@ -3,7 +3,7 @@
   <% const renderWarekiCompact = (value) => String(value).replace(/\(([^)]+)\)/g, '<span class="date-wareki">($1)</span>'); %>
   <div class="section-horizontal-columns">
     <div class="section-horizontal-pane">
-        <table class="receipt-info-table">
+        <table>
           <tr>
             <th>No.</th>
             <td><strong><%= it.receiptHeader.id %></strong></td>
