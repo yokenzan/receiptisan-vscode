@@ -903,7 +903,7 @@ table tr:last-child > * {
   display: inline-block;
   font-size: 0.9em;
   transform: scaleX(0.9);
-  transform-origin: left center;
+  transform-origin: center;
 }
 /* コメント行は明細欄の文字を小さくする */
 .tekiyou-table td.col-name.item-co {

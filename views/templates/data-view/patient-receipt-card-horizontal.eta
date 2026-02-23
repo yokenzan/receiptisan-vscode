@@ -6,7 +6,7 @@
         <table>
           <tr>
             <th>No.</th>
-            <td><strong><%= it.receiptHeader.id %></strong></td>
+            <td><%= it.receiptHeader.id %></td>
           </tr>
           <tr>
             <th>診療年月</th>
