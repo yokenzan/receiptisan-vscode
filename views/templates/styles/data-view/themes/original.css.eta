@@ -63,7 +63,6 @@ body.theme-original table td + td {
 body.theme-original .tekiyou-table th {
   color: var(--text-dim);
   border-bottom-color: var(--border);
-  background: transparent;
 }
 body.theme-original .tekiyou-table td {
   border-bottom: none;
