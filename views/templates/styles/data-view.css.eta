@@ -93,7 +93,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 6px 8px;
+  height: 29px;
+  padding: 0 8px;
   border-bottom: 1px solid var(--border-strong);
   background: var(--bg-card);
 }
@@ -108,6 +109,11 @@ body {
   width: 100%;
   border-collapse: collapse;
   table-layout: auto;
+}
+#nav-table thead th {
+  position: sticky;
+  top: 30px;
+  z-index: 2;
 }
 
 #nav-table tr {
@@ -130,6 +136,9 @@ body {
 }
 .nav-col:last-child {
   border-right: none;
+}
+td.nav-no {
+  text-align: right;
 }
 .nav-patient-id {
   text-align: right;

@@ -38,10 +38,13 @@
       <button id="nav-hide-button" type="button" aria-controls="nav" aria-label="レセプト一覧を閉じる">閉</button>
     </div>
     <table id="nav-table">
+      <thead>
+        <tr><th class="nav-col nav-no">No.</th><th class="nav-col">診療年月</th><th class="nav-col">法別</th><th class="nav-col">患者番号</th><th class="nav-col">患者氏名</th></tr>
+      </thead>
       <tbody>
         <% for (const navItem of it.navItems) { %>
         <tr class="nav-item" data-target="<%= navItem.id %>">
-          <td class="nav-col nav-no">No.<%= navItem.label.idPart %></td>
+          <td class="nav-col nav-no"><%= navItem.label.idPart %></td>
           <td class="nav-col nav-ym-class">
             <span><%= navItem.label.shinryouYmWestern %></span>
             <% if (navItem.label.receiptClassLabel) { %>
