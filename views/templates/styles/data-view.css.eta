@@ -300,29 +300,26 @@ body.nav-resizing {
   background: var(--bg);
 }
 
-.receipt-info-card {
+.data-section-receipt-header {
   position: static;
   background: var(--bg);
 }
 
-.card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-strong);
-  border-radius: 3px;
-  margin-bottom: 6px;
+.data-section {
+  margin-bottom: 8px;
 }
 
-.card-title {
+.data-section[hidden] {
+  display: none;
+}
+
+.section-title {
   font-size: 12px;
   font-weight: 600;
   color: var(--accent);
-  padding: 4px 8px;
+  padding: 4px 0;
+  margin: 0;
   border-bottom: 1px solid var(--border-strong);
-  background: var(--bg-muted);
-}
-
-.card-body {
-  padding: 4px 8px;
 }
 
 table {
@@ -518,11 +515,11 @@ table tr:last-child > * {
 
 /* キーバリュー型テーブル共通: 項目名列の幅統一 */
 .receipt-info-table,
-.card-patient table {
+.data-section-patient table {
   width: auto;
 }
 .receipt-info-table th,
-.card-patient th {
+.data-section-patient th {
   white-space: nowrap;
   width: 72px;
   min-width: 72px;
@@ -535,7 +532,7 @@ table tr:last-child > * {
   margin-right: 3px;
 }
 .receipt-info-table tr > td:first-of-type,
-.card-patient tr > td {
+.data-section-patient tr > td {
   min-width: 320px;
 }
 .receipt-chip {
@@ -549,69 +546,65 @@ table tr:last-child > * {
 }
 
 /* 情報カードの共通幅制限 */
-.receipt-info-card,
-.card-patient,
-.card-hoken,
-.card-patient-receipt-horizontal,
-.card-hoken-kyuufu-horizontal,
-.card-shoubyoumei,
-.card-kyuufu {
+.data-section-receipt-header,
+.data-section-patient,
+.data-section-hoken,
+.data-section-patient-receipt-horizontal,
+.data-section-hoken-kyuufu-horizontal,
+.data-section-shoubyoumei,
+.data-section-kyuufu {
   max-width: 800px;
 }
 
-.card-patient-receipt-horizontal,
-.card-hoken-kyuufu-horizontal {
+.data-section-patient-receipt-horizontal,
+.data-section-hoken-kyuufu-horizontal {
   width: fit-content;
   max-width: 1200px;
 }
 
-.card-patient-receipt-horizontal .card-body {
+.data-section-patient-receipt-horizontal {
   width: var(--hoken-shared-width);
 }
 
-.card-hoken-kyuufu-horizontal .card-body {
-  width: auto;
-}
-
 /* 患者情報カード */
-.card-patient td {
+.data-section-patient td {
   max-width: 320px;
 }
-.card-patient ruby {
+.data-section-patient ruby {
   ruby-align: start;
 }
-.card-patient rt {
+.data-section-patient rt {
   font-size: 9px;
   color: var(--text-dim);
   font-weight: normal;
 }
 
-.card-horizontal-columns {
+.section-horizontal-columns {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
   width: 100%;
 }
-.card-horizontal-pane {
+.section-horizontal-pane {
   min-width: 0;
 }
-.card-pane-title {
+.section-pane-title {
   font-size: 11px;
   color: var(--text-dim);
   font-weight: 600;
   margin-bottom: 4px;
 }
-.card-patient-receipt-horizontal table {
+.data-section-patient-receipt-horizontal table {
   width: 100%;
 }
-.card-patient-receipt-horizontal th {
+.data-section-patient-receipt-horizontal th {
   white-space: nowrap;
 }
-.card-patient-receipt-horizontal .patient-info-table td {
+.data-section-patient-receipt-horizontal .patient-info-table td {
   max-width: 320px;
   text-align: left;
 }
-.card-patient-receipt-horizontal .name-kana-inline {
+.data-section-patient-receipt-horizontal .name-kana-inline {
   display: inline-block;
   color: var(--text-dim);
   font-size: 10px;
@@ -684,13 +677,13 @@ table tr:last-child > * {
 }
 
 /* 食事・生活療養カード */
-.card-kyuufu table {
+.data-section-kyuufu table {
   width: auto;
 }
-.card-kyuufu th {
+.data-section-kyuufu th {
   white-space: nowrap;
 }
-.card-kyuufu td {
+.data-section-kyuufu td {
   min-width: 48px;
   max-width: 160px;
 }
@@ -982,13 +975,10 @@ body.layout-horizontal #content {
 }
 
 @media (max-width: 1100px) {
-  .card-patient-receipt-horizontal .card-body {
+  .data-section-patient-receipt-horizontal {
     width: auto;
   }
-  .card-hoken-kyuufu-horizontal .card-body {
-    width: auto;
-  }
-  .card-horizontal-columns {
+  .section-horizontal-columns {
     grid-template-columns: 1fr;
   }
 }

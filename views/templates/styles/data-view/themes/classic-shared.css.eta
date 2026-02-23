@@ -39,15 +39,13 @@ body.theme-classic-modern #nav-table tr.active {
   background: #000080;
   color: #ffffff;
 }
-body.theme-classic-modern .card,
 body.theme-classic-modern .uke-header {
   border: 1px solid #000000;
   border-radius: 0;
   box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #808080;
 }
-body.theme-classic-modern .card-title {
-  background: #000080;
-  color: #ffffff;
+body.theme-classic-modern .section-title {
+  color: #000080;
 }
 body.theme-classic-modern table th {
   background: #e8e8e8;

@@ -42,12 +42,11 @@ body.theme-original .receipt-header {
   border-bottom-width: 1px;
   border-bottom-color: var(--border);
 }
-body.theme-original .card {
+body.theme-original .data-section {
   border-color: var(--border);
 }
-body.theme-original .card-title {
+body.theme-original .section-title {
   border-bottom-color: var(--border);
-  background: transparent;
 }
 body.theme-original table th {
   color: var(--text-dim);
