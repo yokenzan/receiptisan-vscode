@@ -1,6 +1,6 @@
 <div class="uke-header">
   <% const renderWarekiCompact = (value) => String(value).replace(/\(([^)]+)\)/g, '<span class="date-wareki">($1)</span>'); %>
-  <div class="uke-header-title"><%= it.hospitalName %></div>
+  <div class="uke-header-title"><%= it.title %></div>
   <table class="uke-header-table">
     <tr>
       <th>医療機関コード</th>

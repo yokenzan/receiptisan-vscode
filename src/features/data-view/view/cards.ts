@@ -299,17 +299,21 @@ function formatHospitalCode(code: string): string {
 export function renderUkeHeader(digitalizedReceipt: DigitalizedReceipt): string {
   const hospital = digitalizedReceipt.hospital;
 
+  const auditPayer = digitalizedReceipt.audit_payer;
+  const seikyuuYm = formatWarekiShort(
+    digitalizedReceipt.seikyuu_ym.wareki,
+    digitalizedReceipt.seikyuu_ym.year,
+  );
+  const auditPayerLabel = auditPayer.short_name ? `${auditPayer.short_name}保` : '';
+
   return renderTemplate('data-view/uke-header.eta', {
-    hospitalName: hospital.name ?? hospital.code,
+    title: `${seikyuuYm}${auditPayerLabel}請求分 - ${hospital.name ?? hospital.code}`,
     hospitalCode: formatHospitalCode(hospital.code),
     prefectureName: digitalizedReceipt.prefecture.name,
     location: hospital.location ?? '',
     tel: hospital.tel ?? '',
-    seikyuuYm: formatWarekiShort(
-      digitalizedReceipt.seikyuu_ym.wareki,
-      digitalizedReceipt.seikyuu_ym.year,
-    ),
-    auditPayerName: digitalizedReceipt.audit_payer.name,
+    seikyuuYm,
+    auditPayerName: auditPayer.name,
   });
 }
 
