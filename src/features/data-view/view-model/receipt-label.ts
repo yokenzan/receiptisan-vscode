@@ -5,6 +5,7 @@ export interface ReceiptLabelViewModel {
   idPart: string;
   shinryouYm: string;
   shinryouYmWestern: string;
+  nyuugaiLabel: string;
   receiptClassLabel: string;
   receiptClassKind: 'nyuuin' | 'gairai' | 'neutral';
   lawCodesLabel: string;
@@ -57,6 +58,7 @@ export function buildReceiptLabelViewModel(receipt: Receipt): ReceiptLabelViewMo
     idPart: String(receipt.id).padStart(4, '0'),
     shinryouYm: formatWarekiShort(receipt.shinryou_ym.wareki, receipt.shinryou_ym.year),
     shinryouYmWestern,
+    nyuugaiLabel: receipt.nyuugai === 'nyuuin' ? '入院' : '外来',
     receiptClassLabel,
     receiptClassKind,
     lawCodesLabel: resolveLawCodes(receipt),
