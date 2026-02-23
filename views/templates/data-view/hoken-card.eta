@@ -1,6 +1,5 @@
-<div class="card card-hoken">
-  <div class="card-title">保険情報</div>
-  <div class="card-body">
+<section class="data-section data-section-hoken" data-section="hoken">
+  <h3 class="section-title">療養の給付</h3>
     <table class="hoken-integrated-table">
       <colgroup>
         <col class="col-kubun" />
@@ -11,20 +10,22 @@
         <col class="col-kyuufu-futankin" />
         <col class="col-futankin" />
       </colgroup>
+      <thead>
       <tr>
         <th>区分</th>
         <th>事業者番号</th>
-        <th>資格番号</th>
+        <th class="sep-strong">資格番号</th>
         <th>実日数</th>
         <th>請求点数</th>
         <th>給付対象額</th>
         <th>負担金</th>
       </tr>
+      </thead>
       <% for (const row of it.rows) { %>
       <tr>
         <td><%= row.kubun %></td>
         <td class="code"><%= row.hokenjaBangou %></td>
-        <td><%= row.shikakuBangou %></td>
+        <td class="sep-strong"><%= row.shikakuBangou %></td>
         <td class="unit-cell">
           <% if (row.jitsunissuu) { %>
           <span class="value-num"><%= row.jitsunissuu.value %></span><span class="value-unit"><%= row.jitsunissuu.unit %></span>
@@ -61,5 +62,4 @@
       <% } %>
     </div>
     <% } %>
-  </div>
-</div>
+</section>

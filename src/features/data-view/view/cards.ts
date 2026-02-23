@@ -20,6 +20,7 @@ interface HokenRowViewModel {
 
 interface KyuufuRowViewModel {
   kubun: string;
+  jigyoushaBangou: string;
   kaisuu: UnitValue | null;
   goukeiKingaku: UnitValue | null;
   hyoujunFutangaku: UnitValue | null;
@@ -95,7 +96,7 @@ function buildReceiptHeaderViewModel(receipt: Receipt) {
   }));
   const nyuuinDateCell =
     receipt.nyuugai === 'nyuuin' && receipt.nyuuin_date
-      ? formatWarekiShort(receipt.nyuuin_date.wareki)
+      ? formatWarekiShort(receipt.nyuuin_date.wareki, receipt.nyuuin_date.year)
       : '';
   const byoushouCell =
     receipt.nyuugai === 'nyuuin' && receipt.byoushou_types.length > 0
@@ -104,7 +105,7 @@ function buildReceiptHeaderViewModel(receipt: Receipt) {
 
   return {
     id: receipt.id,
-    shinryouYm: formatWarekiShort(receipt.shinryou_ym.wareki),
+    shinryouYm: formatWarekiShort(receipt.shinryou_ym.wareki, receipt.shinryou_ym.year),
     nyuugai: receipt.nyuugai,
     typeBadges,
     tokkiJikous,
@@ -117,7 +118,9 @@ function buildPatientCardViewModel(receipt: Receipt) {
   const p = receipt.patient;
   const sexKind =
     String(p.sex.code) === '1' ? 'male' : String(p.sex.code) === '2' ? 'female' : 'other';
-  const birthDate = p.birth_date?.wareki ? formatWarekiShort(p.birth_date.wareki) : '-';
+  const birthDate = p.birth_date?.wareki
+    ? formatWarekiShort(p.birth_date.wareki, p.birth_date.year)
+    : '-';
   const asOf = endOfMonthDate(receipt.shinryou_ym.year, receipt.shinryou_ym.month);
   const ageYearsMonths = p.birth_date
     ? calculateLegalAgeYearsMonthsAt(
@@ -199,6 +202,7 @@ function buildHokenCardData(receipt: Receipt): {
 
 function buildKyuufuRows(receipt: Receipt): KyuufuRowViewModel[] {
   const k = receipt.ryouyou_no_kyuufu;
+  const h = receipt.hokens;
   const ih = k.iryou_hoken;
   const rows: KyuufuRowViewModel[] = [];
   const hasIh =
@@ -211,6 +215,7 @@ function buildKyuufuRows(receipt: Receipt): KyuufuRowViewModel[] {
   if (hasIh && ih) {
     rows.push({
       kubun: '医療保険',
+      jigyoushaBangou: h.iryou_hoken?.hokenja_bangou ?? '',
       kaisuu: makeUnitValue(ih.shokuji_seikatsu_ryouyou_kaisuu, '回'),
       goukeiKingaku: makeUnitValue(ih.shokuji_seikatsu_ryouyou_goukei_kingaku, '円'),
       hyoujunFutangaku: makeUnitValue(
@@ -232,6 +237,7 @@ function buildKyuufuRows(receipt: Receipt): KyuufuRowViewModel[] {
 
     rows.push({
       kubun: `公費${i + 1}`,
+      jigyoushaBangou: h.kouhi_futan_iryous[i]?.futansha_bangou ?? '',
       kaisuu: makeUnitValue(rk.shokuji_seikatsu_ryouyou_kaisuu, '回'),
       goukeiKingaku: makeUnitValue(rk.shokuji_seikatsu_ryouyou_goukei_kingaku, '円'),
       hyoujunFutangaku: makeUnitValue(
@@ -282,20 +288,32 @@ function calculateLegalAgeYearsMonthsAt(
   };
 }
 
+function formatHospitalCode(code: string): string {
+  const digits = code.replace(/\D/g, '').padStart(7, '0');
+  return `${digits.slice(0, 2)}.${digits.slice(2, 6)}.${digits.slice(6, 7)}`;
+}
+
 /**
  * Renders top-level UKE header card.
  */
-export function renderUkeHeader(dr: DigitalizedReceipt): string {
-  const detailParts: string[] = [];
-  if (dr.hospital.location) detailParts.push(dr.hospital.location);
-  if (dr.hospital.tel) detailParts.push(`TEL: ${dr.hospital.tel}`);
+export function renderUkeHeader(digitalizedReceipt: DigitalizedReceipt): string {
+  const hospital = digitalizedReceipt.hospital;
+
+  const auditPayer = digitalizedReceipt.audit_payer;
+  const seikyuuYm = formatWarekiShort(
+    digitalizedReceipt.seikyuu_ym.wareki,
+    digitalizedReceipt.seikyuu_ym.year,
+  );
+  const auditPayerLabel = auditPayer.short_name ? `${auditPayer.short_name}保` : '';
 
   return renderTemplate('data-view/uke-header.eta', {
-    hospitalName: dr.hospital.name ?? dr.hospital.code,
-    seikyuuYm: formatWarekiShort(dr.seikyuu_ym.wareki),
-    auditPayerName: dr.audit_payer.name,
-    prefectureName: dr.prefecture.name,
-    detailParts,
+    title: `${seikyuuYm}${auditPayerLabel}請求分 - ${hospital.name ?? hospital.code}`,
+    hospitalCode: formatHospitalCode(hospital.code),
+    prefectureName: digitalizedReceipt.prefecture.name,
+    location: hospital.location ?? '',
+    tel: hospital.tel ?? '',
+    seikyuuYm,
+    auditPayerName: auditPayer.name,
   });
 }
 
@@ -352,7 +370,7 @@ export function renderShoubyoumeiCard(groups: ShoubyoumeiGroup[]): string {
         isWorpro: s.is_worpro === true,
         fullText: s.full_text,
         comment: s.comment ?? '',
-        startDate: formatWarekiShort(s.start_date.wareki),
+        startDate: formatWarekiShort(s.start_date.wareki, s.start_date.year),
         tenkiClass: getTenkiColorClass(s.tenki.code),
         tenkiName: s.tenki.name,
       });

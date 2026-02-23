@@ -1,16 +1,26 @@
 <div class="uke-header">
   <% const renderWarekiCompact = (value) => String(value).replace(/\(([^)]+)\)/g, '<span class="date-wareki">($1)</span>'); %>
-  <div class="uke-header-title"><%= it.hospitalName %></div>
-  <div class="uke-header-detail">
-    <span><span class="date-value"><%~ renderWarekiCompact(it.seikyuuYm) %></span>請求</span>
-    <span><%= it.auditPayerName %></span>
-    <span><%= it.prefectureName %></span>
-  </div>
-  <% if (it.detailParts.length > 0) { %>
-  <div class="uke-header-detail">
-    <% for (const detailPart of it.detailParts) { %>
-    <span><%= detailPart %></span>
+  <div class="uke-header-title"><%= it.title %></div>
+  <table class="uke-header-table">
+    <tr>
+      <th>医療機関コード</th>
+      <td><span class="code"><%= it.hospitalCode %></span></td>
+      <th>請求年月</th>
+      <td><span class="date-value"><%~ renderWarekiCompact(it.seikyuuYm) %></span></td>
+    </tr>
+    <tr>
+      <th>都道府県</th>
+      <td><%= it.prefectureName %></td>
+      <th>審査支払機関</th>
+      <td><%= it.auditPayerName %></td>
+    </tr>
+    <% if (it.location || it.tel) { %>
+    <tr>
+      <th>所在地</th>
+      <td><%= it.location || '-' %></td>
+      <th>TEL</th>
+      <td><%= it.tel || '-' %></td>
+    </tr>
     <% } %>
-  </div>
-  <% } %>
+  </table>
 </div>

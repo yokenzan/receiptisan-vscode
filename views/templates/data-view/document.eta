@@ -9,7 +9,28 @@
 </head>
 <body<% if (it.layoutMode === 'horizontal') { %> class="layout-horizontal"<% } %>>
   <button id="nav-show-button" type="button" aria-controls="nav" aria-label="レセプト一覧を表示">開</button>
-  <button id="theme-toggle-button" type="button" aria-label="テーマ切替">L</button>
+  <button id="settings-toggle-button" type="button" aria-label="表示設定">⚙</button>
+  <div id="settings-panel" hidden>
+    <div class="settings-panel-header">表示設定</div>
+    <div class="settings-panel-group">
+      <div class="settings-panel-label">テーマ</div>
+      <div id="theme-buttons" class="settings-panel-buttons"></div>
+    </div>
+    <div class="settings-panel-group">
+      <div class="settings-panel-label">セクション表示</div>
+      <% if (it.layoutMode === 'horizontal') { %>
+      <label class="settings-checkbox"><input type="checkbox" data-section-toggle="basic-info" checked />基本情報</label>
+      <label class="settings-checkbox"><input type="checkbox" data-section-toggle="hoken" checked />療養の給付</label>
+      <% } else { %>
+      <label class="settings-checkbox"><input type="checkbox" data-section-toggle="receipt-header" checked />請求情報</label>
+      <label class="settings-checkbox"><input type="checkbox" data-section-toggle="patient" checked />患者情報</label>
+      <label class="settings-checkbox"><input type="checkbox" data-section-toggle="hoken" checked />療養の給付</label>
+      <label class="settings-checkbox"><input type="checkbox" data-section-toggle="kyuufu" checked />食事・生活</label>
+      <% } %>
+      <label class="settings-checkbox"><input type="checkbox" data-section-toggle="shoubyoumei" checked />傷病名</label>
+      <label class="settings-checkbox"><input type="checkbox" data-section-toggle="tekiyou" checked />摘要欄</label>
+    </div>
+  </div>
 
   <div id="nav">
     <div id="nav-header">
@@ -17,10 +38,13 @@
       <button id="nav-hide-button" type="button" aria-controls="nav" aria-label="レセプト一覧を閉じる">閉</button>
     </div>
     <table id="nav-table">
+      <thead>
+        <tr><th class="nav-col nav-no">No.</th><th class="nav-col">診療年月</th><th class="nav-col">法別</th><th class="nav-col">患者番号</th><th class="nav-col">患者氏名</th></tr>
+      </thead>
       <tbody>
         <% for (const navItem of it.navItems) { %>
         <tr class="nav-item" data-target="<%= navItem.id %>">
-          <td class="nav-col nav-no">No.<%= navItem.label.idPart %></td>
+          <td class="nav-col nav-no"><%= navItem.label.idPart %></td>
           <td class="nav-col nav-ym-class">
             <span><%= navItem.label.shinryouYmWestern %></span>
             <% if (navItem.label.receiptClassLabel) { %>
@@ -104,6 +128,59 @@
   <script nonce="<%= it.nonce %>">
     (function() {
       var vscodeApi = acquireVsCodeApi();
+
+      // 設定パネル開閉
+      var settingsButton = document.getElementById('settings-toggle-button');
+      var settingsPanel = document.getElementById('settings-panel');
+      settingsButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        settingsPanel.hidden = !settingsPanel.hidden;
+      });
+      document.addEventListener('click', function(e) {
+        if (!settingsPanel.contains(e.target) && e.target !== settingsButton) {
+          settingsPanel.hidden = true;
+        }
+      });
+
+      // セクショントグル
+      var checkboxes = settingsPanel.querySelectorAll('[data-section-toggle]');
+      var savedState = vscodeApi.getState() || {};
+      var visibleSections = savedState.visibleSections || null;
+
+      function applySectionVisibility(sectionName, visible) {
+        var elements = document.querySelectorAll('[data-section="' + sectionName + '"]');
+        elements.forEach(function(el) { el.hidden = !visible; });
+      }
+
+      function saveSectionState() {
+        var sections = [];
+        checkboxes.forEach(function(cb) {
+          if (cb.checked) sections.push(cb.getAttribute('data-section-toggle'));
+        });
+        var state = vscodeApi.getState() || {};
+        state.visibleSections = sections;
+        vscodeApi.setState(state);
+      }
+
+      // 保存済み状態を復元
+      if (visibleSections) {
+        checkboxes.forEach(function(cb) {
+          var section = cb.getAttribute('data-section-toggle');
+          var visible = visibleSections.indexOf(section) >= 0;
+          cb.checked = visible;
+          applySectionVisibility(section, visible);
+        });
+      }
+
+      checkboxes.forEach(function(cb) {
+        cb.addEventListener('change', function() {
+          var section = cb.getAttribute('data-section-toggle');
+          applySectionVisibility(section, cb.checked);
+          saveSectionState();
+        });
+      });
+
+      // nav リサイズ
       var handle = document.getElementById('nav-resize-handle');
       var nav = document.getElementById('nav');
       var isHorizontal = document.body.classList.contains('layout-horizontal');

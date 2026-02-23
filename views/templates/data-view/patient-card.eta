@@ -1,6 +1,5 @@
-<div class="card card-patient">
-  <div class="card-title">患者情報</div>
-  <div class="card-body">
+<section class="data-section data-section-patient" data-section="patient">
+  <h3 class="section-title">患者情報</h3>
     <% const renderWarekiCompact = (value) => String(value).replace(/\(([^)]+)\)/g, '<span class="date-wareki">($1)</span>'); %>
     <table>
       <tr>
@@ -47,5 +46,4 @@
         </td>
       </tr>
     </table>
-  </div>
-</div>
+</section>

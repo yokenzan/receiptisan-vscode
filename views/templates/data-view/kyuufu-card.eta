@@ -1,16 +1,26 @@
-<div class="card card-kyuufu">
-  <div class="card-title">食事・生活療養</div>
-  <div class="card-body">
-    <table>
+<section class="data-section data-section-kyuufu" data-section="kyuufu">
+  <h3 class="section-title">食事・生活</h3>
+    <table class="kyuufu-table">
+      <colgroup>
+        <col class="col-kubun" />
+        <col class="col-jigyousha" />
+        <col class="col-kaisuu" />
+        <col class="col-goukei-kingaku" />
+        <col class="col-hyoujun-futangaku" />
+      </colgroup>
+      <thead>
       <tr>
         <th>区分</th>
+        <th class="sep-strong">事業者番号</th>
         <th>回数</th>
         <th>合計金額</th>
         <th>標準負担額</th>
       </tr>
+      </thead>
       <% for (const row of it.rows) { %>
       <tr>
         <td><%= row.kubun %></td>
+        <td class="code sep-strong"><%= row.jigyoushaBangou %></td>
         <td class="unit-cell">
           <% if (row.kaisuu) { %><span class="value-num"><%= row.kaisuu.value %></span><span class="value-unit"><%= row.kaisuu.unit %></span><% } %>
         </td>
@@ -23,5 +33,4 @@
       </tr>
       <% } %>
     </table>
-  </div>
-</div>
+</section>

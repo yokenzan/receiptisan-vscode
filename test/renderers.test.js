@@ -60,7 +60,7 @@ test('receipt meta helpers render expected labels', () => {
     shinryou_ym: {
       year: 2024,
       month: 2,
-      wareki: { gengou: { alphabet: 'R', base_year: 2019 }, year: 6, month: 2 },
+      wareki: { gengou: { alphabet: 'R' }, year: 6, month: 2 },
     },
     type: { patient_age_type: { name: '高外７' }, hoken_multiple_type: { name: '２併' } },
     hokens: {
@@ -69,7 +69,7 @@ test('receipt meta helpers render expected labels', () => {
     },
     patient: { id: 'P-9', name: '山田太郎' },
   });
-  assert.equal(label.idPart, '0012');
+  assert.equal(label.idPart, '12');
   assert.equal(label.receiptClassLabel, '高外７');
   assert.equal(label.receiptClassKind, 'gairai');
   assert.equal(label.lawCodesLabel, '01________');

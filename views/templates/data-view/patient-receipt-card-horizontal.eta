@@ -1,12 +1,12 @@
-<div class="card card-patient-receipt-horizontal">
-  <div class="card-body">
-    <% const renderWarekiCompact = (value) => String(value).replace(/\(([^)]+)\)/g, '<span class="date-wareki">($1)</span>'); %>
-    <div class="card-horizontal-columns">
-      <div class="card-horizontal-pane">
-        <table class="receipt-info-table">
+<section class="data-section data-section-patient-receipt-horizontal" data-section="basic-info">
+  <h3 class="section-title">基本情報</h3>
+  <% const renderWarekiCompact = (value) => String(value).replace(/\(([^)]+)\)/g, '<span class="date-wareki">($1)</span>'); %>
+  <div class="section-horizontal-columns">
+    <div class="section-horizontal-pane">
+        <table>
           <tr>
             <th>No.</th>
-            <td><strong><%= it.receiptHeader.id %></strong></td>
+            <td><%= it.receiptHeader.id %></td>
           </tr>
           <tr>
             <th>診療年月</th>
@@ -50,8 +50,8 @@
           <% } %>
         </table>
       </div>
-      <div class="card-horizontal-pane">
-        <table class="patient-info-table">
+    <div class="section-horizontal-pane">
+      <table class="patient-info-table">
           <tr>
             <th>患者番号</th>
             <td>
@@ -96,7 +96,6 @@
             </td>
           </tr>
         </table>
-      </div>
     </div>
   </div>
-</div>
+</section>

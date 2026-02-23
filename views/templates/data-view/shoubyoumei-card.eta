@@ -1,6 +1,5 @@
-<div class="card card-shoubyoumei">
-  <div class="card-title">傷病名</div>
-  <div class="card-body">
+<section class="data-section data-section-shoubyoumei" data-section="shoubyoumei">
+  <h3 class="section-title">傷病名</h3>
     <% const renderWarekiCompact = (value) => String(value).replace(/\(([^)]+)\)/g, '<span class="date-wareki">($1)</span>'); %>
     <table class="shoubyoumei-table">
       <colgroup>
@@ -13,7 +12,9 @@
         <col class="col-start-date" />
         <col class="col-tenki" />
       </colgroup>
-      <tr><th>#</th><th>コード</th><th>主</th><th>疑</th><th>ワープロ</th><th>傷病名</th><th>開始日</th><th>転帰</th></tr>
+      <thead>
+      <tr><th>#</th><th>コード</th><th>主</th><th>疑</th><th class="sep-strong">ワープロ</th><th>名称</th><th>開始日</th><th>転帰</th></tr>
+      </thead>
       <% for (const row of it.rows) { %>
       <tr<% if (row.rowClass) { %> class="<%= row.rowClass %>"<% } %>>
         <td><%= row.index %></td>
@@ -25,7 +26,7 @@
         </td>
         <td><% if (row.isMain) { %><span class="tag tag-main">主</span><% } %></td>
         <td><% if (row.isUtagai) { %><span class="tag tag-utagai">疑</span><% } %></td>
-        <td><% if (row.isWorpro) { %><span class="tag tag-worpro">未</span><% } %></td>
+        <td class="sep-strong"><% if (row.isWorpro) { %><span class="tag tag-worpro">未</span><% } %></td>
         <td>
           <%= row.fullText %>
           <% if (row.comment) { %> <span class="text-dim">（<%= row.comment %>）</span><% } %>
@@ -35,5 +36,4 @@
       </tr>
       <% } %>
     </table>
-  </div>
-</div>
+</section>
