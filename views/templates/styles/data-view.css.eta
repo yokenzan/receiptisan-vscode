@@ -1049,7 +1049,6 @@ table tr:last-child > * {
 .uke-header-table th {
   text-align: left;
   font-weight: normal;
-  color: var(--text-dim);
   padding: 1px 8px 1px 0;
   white-space: nowrap;
 }
