@@ -20,6 +20,7 @@ interface HokenRowViewModel {
 
 interface KyuufuRowViewModel {
   kubun: string;
+  jigyoushaBangou: string;
   kaisuu: UnitValue | null;
   goukeiKingaku: UnitValue | null;
   hyoujunFutangaku: UnitValue | null;
@@ -201,6 +202,7 @@ function buildHokenCardData(receipt: Receipt): {
 
 function buildKyuufuRows(receipt: Receipt): KyuufuRowViewModel[] {
   const k = receipt.ryouyou_no_kyuufu;
+  const h = receipt.hokens;
   const ih = k.iryou_hoken;
   const rows: KyuufuRowViewModel[] = [];
   const hasIh =
@@ -213,6 +215,7 @@ function buildKyuufuRows(receipt: Receipt): KyuufuRowViewModel[] {
   if (hasIh && ih) {
     rows.push({
       kubun: '医療保険',
+      jigyoushaBangou: h.iryou_hoken?.hokenja_bangou ?? '',
       kaisuu: makeUnitValue(ih.shokuji_seikatsu_ryouyou_kaisuu, '回'),
       goukeiKingaku: makeUnitValue(ih.shokuji_seikatsu_ryouyou_goukei_kingaku, '円'),
       hyoujunFutangaku: makeUnitValue(
@@ -234,6 +237,7 @@ function buildKyuufuRows(receipt: Receipt): KyuufuRowViewModel[] {
 
     rows.push({
       kubun: `公費${i + 1}`,
+      jigyoushaBangou: h.kouhi_futan_iryous[i]?.futansha_bangou ?? '',
       kaisuu: makeUnitValue(rk.shokuji_seikatsu_ryouyou_kaisuu, '回'),
       goukeiKingaku: makeUnitValue(rk.shokuji_seikatsu_ryouyou_goukei_kingaku, '円'),
       hyoujunFutangaku: makeUnitValue(

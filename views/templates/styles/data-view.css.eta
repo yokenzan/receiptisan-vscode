@@ -764,16 +764,33 @@ table tr:last-child > * {
   max-width: 80px;
 }
 
-/* 食事・生活療養カード */
-.data-section-kyuufu table {
+/* 食事・生活セクション */
+.kyuufu-table {
   width: auto;
 }
-.data-section-kyuufu th {
+.kyuufu-table th {
   white-space: nowrap;
 }
-.data-section-kyuufu td {
+.kyuufu-table .col-kubun {
+  min-width: 60px;
+  max-width: 80px;
+}
+.kyuufu-table .col-jigyousha {
+  min-width: 80px;
+  max-width: 120px;
+}
+.kyuufu-table td.code {
+  text-align: right;
+}
+.kyuufu-table .col-kaisuu {
   min-width: 48px;
-  max-width: 160px;
+  max-width: 80px;
+}
+.kyuufu-table .col-goukei-kingaku,
+.kyuufu-table .col-hyoujun-futangaku {
+  min-width: 110px;
+  max-width: 110px;
+  width: 110px;
 }
 
 /* Tekiyou table */
