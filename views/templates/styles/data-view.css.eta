@@ -190,7 +190,7 @@ td.nav-no {
 }
 
 #nav-table tr.active {
-  background: #cfe0f4;
+  background: #b8d4f0;
   border-left-color: var(--accent);
   color: var(--text-bright);
 }
