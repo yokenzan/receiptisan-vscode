@@ -51,9 +51,9 @@ body.theme-original .section-title {
 body.theme-original table th {
   color: var(--text-dim);
   border-bottom-color: var(--border);
-  background: transparent;
+  background: var(--bg-card);
 }
-body.theme-original table td {
+body.theme-original .data-section table td {
   background: var(--bg-card);
 }
 body.theme-original table th + th,
