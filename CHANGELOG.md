@@ -1,3 +1,29 @@
+# [1.6.0](https://github.com/yokenzan/receiptisan-vscode/compare/v1.5.0...v1.6.0) (2026-02-23)
+
+
+### Bug Fixes
+
+* **data-view:** align receipt header th width with patient section ([bb37f65](https://github.com/yokenzan/receiptisan-vscode/commit/bb37f65f1d906eb96e4feaa428a80609e9dedb5d))
+* **data-view:** convert receipt header to 2-column layout ([b11ebac](https://github.com/yokenzan/receiptisan-vscode/commit/b11ebac448197f1e905c627d04fe8bc27b715880))
+* **data-view:** fix original theme sticky header and td background scope ([5cd589e](https://github.com/yokenzan/receiptisan-vscode/commit/5cd589e19100bcf8385df250b69f54cc012fa325))
+* **data-view:** remove transparent background from tekiyou th in original theme ([931a847](https://github.com/yokenzan/receiptisan-vscode/commit/931a84752e486e050a1ac690df0076750b4871a7))
+* **data-view:** remove zero-padding from receipt id and hide empty patient id ([04707b8](https://github.com/yokenzan/receiptisan-vscode/commit/04707b89d90000ae6837855cd792f2ffe46b1bc7))
+* **data-view:** right-align nav patient-id column with min-width ([c386f71](https://github.com/yokenzan/receiptisan-vscode/commit/c386f717aebbd8dae2ce51aa6483a77e648b50ed))
+* **data-view:** show layout-specific section toggles in settings panel ([8b5ec13](https://github.com/yokenzan/receiptisan-vscode/commit/8b5ec13c2c4f3537ee99ccd98e2e968ca927a15b))
+* **data-view:** unify receipt-header and patient into basic-info toggle ([cc18802](https://github.com/yokenzan/receiptisan-vscode/commit/cc1880255453a1ac1c88cacd6b5699a5cf97d438))
+* **data-view:** use overflow-x clip for tekiyou table to enable sticky headers ([f4f1082](https://github.com/yokenzan/receiptisan-vscode/commit/f4f108284cd776488d96c49552c631ec51889355))
+* **data-view:** use pre-computed western year instead of re-deriving from base_year ([e0b9b0d](https://github.com/yokenzan/receiptisan-vscode/commit/e0b9b0ddb5cc515089bce1210b7c6143a9136638))
+* **data-view:** use standard text color for UKE header table headers ([8fc7e51](https://github.com/yokenzan/receiptisan-vscode/commit/8fc7e516d36ba1b769d8eb107600a864709bee8f))
+
+
+### Features
+
+* **data-view:** add settings panel with section visibility toggle ([b5b13fe](https://github.com/yokenzan/receiptisan-vscode/commit/b5b13fed05bf113bdd2a9ce56427c631ed89de71))
+* **data-view:** add sticky header row to nav table ([5ede0f5](https://github.com/yokenzan/receiptisan-vscode/commit/5ede0f5be19d5c9d035b582591a4e732cec4b408))
+* **data-view:** display hospital code in UKE header ([445fad9](https://github.com/yokenzan/receiptisan-vscode/commit/445fad909a731383e73658d9b16daf7035678261))
+* **data-view:** improve kyuufu section with jigyousha column and aligned widths ([e268a39](https://github.com/yokenzan/receiptisan-vscode/commit/e268a390160136eaf1d8cac0cdf1b44b11a094d7))
+* **data-view:** show seikyuu summary as UKE header title ([8c644fa](https://github.com/yokenzan/receiptisan-vscode/commit/8c644fac373fece91d52c2a09a668a39182ec105))
+
 # [1.5.0](https://github.com/yokenzan/receiptisan-vscode/compare/v1.4.0...v1.5.0) (2026-02-22)
 
 
