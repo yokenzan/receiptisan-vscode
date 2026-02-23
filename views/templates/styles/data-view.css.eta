@@ -128,6 +128,11 @@ body {
 .nav-col:last-child {
   border-right: none;
 }
+.nav-patient-id {
+  text-align: right;
+  font-family: var(--font-mono);
+  min-width: 64px;
+}
 .nav-patient-name {
   width: 100%;
   max-width: 0;
