@@ -1123,9 +1123,9 @@ body.layout-horizontal #content {
   }
 }
 
-/* 摘要テーブルの横スクロール */
+/* 摘要テーブルのはみ出し防止（clipはstickyを壊さない） */
 .tekiyou-scroll-container {
-  overflow-x: auto;
+  overflow-x: clip;
 }
 
 /* カレンダー列 */
