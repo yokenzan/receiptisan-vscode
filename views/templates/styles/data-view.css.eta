@@ -712,6 +712,10 @@ table tr:last-child > * {
 .hoken-integrated-table {
   width: auto;
 }
+.hoken-integrated-table th + th,
+.hoken-integrated-table td + td {
+  border-left: none;
+}
 .hoken-integrated-table .col-kubun {
   min-width: 60px;
   max-width: 80px;
@@ -744,6 +748,10 @@ table tr:last-child > * {
 .shoubyoumei-table {
   width: auto;
 }
+.shoubyoumei-table th + th,
+.shoubyoumei-table td + td {
+  border-left: none;
+}
 .shoubyoumei-table .col-idx {
   min-width: 24px;
   max-width: 40px;
@@ -774,6 +782,10 @@ table tr:last-child > * {
 /* 食事・生活セクション */
 .kyuufu-table {
   width: auto;
+}
+.kyuufu-table th + th,
+.kyuufu-table td + td {
+  border-left: none;
 }
 .kyuufu-table th {
   white-space: nowrap;
@@ -982,6 +994,10 @@ table tr:last-child > * {
 .hoken-kyuufu-table th {
   white-space: nowrap;
 }
+.hoken-kyuufu-table th + th,
+.hoken-kyuufu-table td + td {
+  border-left: none;
+}
 .hoken-kyuufu-table {
   width: auto;
 }
@@ -989,8 +1005,14 @@ table tr:last-child > * {
   min-width: 44px;
 }
 .hoken-kyuufu-table th.sep-strong,
-.hoken-kyuufu-table td.sep-strong {
-  border-right: 2px solid var(--border-strong);
+.hoken-kyuufu-table td.sep-strong,
+.hoken-integrated-table th.sep-strong,
+.hoken-integrated-table td.sep-strong,
+.kyuufu-table th.sep-strong,
+.kyuufu-table td.sep-strong,
+.shoubyoumei-table th.sep-strong,
+.shoubyoumei-table td.sep-strong {
+  border-right: 1.5px solid var(--border);
 }
 .hoken-kyuufu-table .col-kubun {
   width: 70px;

@@ -13,7 +13,7 @@
         <col class="col-tenki" />
       </colgroup>
       <thead>
-      <tr><th>#</th><th>コード</th><th>主</th><th>疑</th><th>ワープロ</th><th>傷病名</th><th>開始日</th><th>転帰</th></tr>
+      <tr><th>#</th><th>コード</th><th>主</th><th>疑</th><th class="sep-strong">ワープロ</th><th>名称</th><th>開始日</th><th>転帰</th></tr>
       </thead>
       <% for (const row of it.rows) { %>
       <tr<% if (row.rowClass) { %> class="<%= row.rowClass %>"<% } %>>
@@ -26,7 +26,7 @@
         </td>
         <td><% if (row.isMain) { %><span class="tag tag-main">主</span><% } %></td>
         <td><% if (row.isUtagai) { %><span class="tag tag-utagai">疑</span><% } %></td>
-        <td><% if (row.isWorpro) { %><span class="tag tag-worpro">未</span><% } %></td>
+        <td class="sep-strong"><% if (row.isWorpro) { %><span class="tag tag-worpro">未</span><% } %></td>
         <td>
           <%= row.fullText %>
           <% if (row.comment) { %> <span class="text-dim">（<%= row.comment %>）</span><% } %>
