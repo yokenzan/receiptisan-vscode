@@ -55,7 +55,7 @@ export function buildReceiptLabelViewModel(receipt: Receipt): ReceiptLabelViewMo
   const shinryouYmWestern = `${receipt.shinryou_ym.year}.${String(receipt.shinryou_ym.month).padStart(2, '0')}`;
 
   return {
-    idPart: String(receipt.id).padStart(4, '0'),
+    idPart: String(receipt.id),
     shinryouYm: formatWarekiShort(receipt.shinryou_ym.wareki, receipt.shinryou_ym.year),
     shinryouYmWestern,
     nyuugaiLabel: receipt.nyuugai === 'nyuuin' ? '入院' : '外来',
