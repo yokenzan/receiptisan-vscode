@@ -1,4 +1,4 @@
-body.theme-classic-modern {
+body.theme-classic {
   --bg: #d4d0c8;
   --bg-card: #ffffff;
   --bg-hover: #dcdcdc;
@@ -23,34 +23,34 @@ body.theme-classic-modern {
   --control-fg: #000000;
 }
 
-body.theme-classic-modern #nav-show-button,
-body.theme-classic-modern #nav-hide-button,
-body.theme-classic-modern #settings-toggle-button {
+body.theme-classic #nav-show-button,
+body.theme-classic #nav-hide-button,
+body.theme-classic #settings-toggle-button {
   border: 1px solid #000000;
   border-radius: 0;
   box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #808080;
 }
-body.theme-classic-modern #nav-show-button:hover,
-body.theme-classic-modern #nav-hide-button:hover,
-body.theme-classic-modern #settings-toggle-button:hover {
+body.theme-classic #nav-show-button:hover,
+body.theme-classic #nav-hide-button:hover,
+body.theme-classic #settings-toggle-button:hover {
   background: #d9d9d9;
 }
-body.theme-classic-modern #nav-table tr.active {
+body.theme-classic #nav-table tr.active {
   background: #000080;
   color: #ffffff;
 }
-body.theme-classic-modern .uke-header {
+body.theme-classic .uke-header {
   border: 1px solid #000000;
   border-radius: 0;
   box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #808080;
 }
-body.theme-classic-modern .section-title {
+body.theme-classic .section-title {
   color: #000080;
 }
-body.theme-classic-modern table th {
+body.theme-classic table th {
   background: #e8e8e8;
 }
-body.theme-classic-modern .tag {
+body.theme-classic .tag {
   border: 1px solid #000000;
   border-radius: 0;
 }
