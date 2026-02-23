@@ -8,15 +8,19 @@
       <tr>
         <th>診療年月</th>
         <td><span class="date-value"><%~ renderWarekiCompact(it.shinryouYm) %></span>診療</td>
-        <th>入外</th>
-        <td>
-          <% if (it.nyuugai === 'nyuuin') { %>
-          <span class="tag tag-nyuuin">入院</span>
-          <% } else { %>
-          <span class="tag tag-gairai">外来</span>
-          <% } %>
-        </td>
+        <td></td><td></td>
       </tr>
+      <% if (it.nyuuinDateCell) { %>
+      <tr>
+        <th>入院日</th>
+        <td><span class="date-value"><%~ renderWarekiCompact(it.nyuuinDateCell) %></span></td>
+        <% if (it.byoushouCell) { %>
+        <th>病棟</th><td><%= it.byoushouCell %></td>
+        <% } else { %>
+        <td></td><td></td>
+        <% } %>
+      </tr>
+      <% } %>
       <tr>
         <th>種別</th>
         <td>
@@ -27,11 +31,7 @@
           </span>
           <% } %>
         </td>
-        <% if (it.nyuuinDateCell) { %>
-        <th>入院日</th><td><span class="date-value"><%~ renderWarekiCompact(it.nyuuinDateCell) %></span></td>
-        <% } else { %>
         <td></td><td></td>
-        <% } %>
       </tr>
       <tr>
         <th>特記事項</th>
@@ -47,11 +47,7 @@
           <span class="placeholder">-</span>
           <% } %>
         </td>
-        <% if (it.byoushouCell) { %>
-        <th>病棟</th><td><%= it.byoushouCell %></td>
-        <% } else { %>
         <td></td><td></td>
-        <% } %>
       </tr>
     </table>
 </section>
