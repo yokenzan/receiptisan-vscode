@@ -1,0 +1,29 @@
+body.theme-gruvbox-light {
+  --bg: #fbf1c7;
+  --bg-card: #f9f5d7;
+  --bg-hover: #f2e5bc;
+  --bg-muted: #f5eebe;
+  --border: #d5c4a1;
+  --border-strong: #a89984;
+  --text: #3c3836;
+  --text-dim: #665c54;
+  --text-bright: #282828;
+  --accent: #b57614;
+  --accent-dim: #945e0a;
+  --green: #79740e;
+  --orange: #af3a03;
+  --yellow: #b57614;
+  --color-si: #3c3836;
+  --color-iy: #076678;
+  --color-to: #79740e;
+  --color-co: #b57614;
+  --control-border: #a89984;
+  --control-bg: #f9f5d7;
+  --control-hover-bg: #f2e5bc;
+  --control-fg: #3c3836;
+}
+
+body.theme-gruvbox-light .shoubyoumei-table th + th,
+body.theme-gruvbox-light .shoubyoumei-table td + td {
+  border-left: none;
+}

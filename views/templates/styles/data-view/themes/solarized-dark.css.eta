@@ -1,0 +1,46 @@
+body.theme-solarized-dark {
+  --bg: #002b36;
+  --bg-card: #073642;
+  --bg-hover: #0a4050;
+  --bg-muted: #053340;
+  --border: #2a5a68;
+  --border-strong: #468c98;
+  --text: #839496;
+  --text-dim: #657b83;
+  --text-bright: #fdf6e3;
+  --accent: #268bd2;
+  --accent-dim: #1a6fb0;
+  --green: #859900;
+  --orange: #cb4b16;
+  --yellow: #b58900;
+  --color-si: #93a1a1;
+  --color-iy: #268bd2;
+  --color-to: #859900;
+  --color-co: #b58900;
+  --control-border: #468c98;
+  --control-bg: #073642;
+  --control-hover-bg: #0a4050;
+  --control-fg: #93a1a1;
+}
+
+body.theme-solarized-dark #nav-table tr.active {
+  background: #0a4050;
+}
+
+body.theme-solarized-dark .shoubyoumei-table th + th,
+body.theme-solarized-dark .shoubyoumei-table td + td {
+  border-left: none;
+}
+
+body.theme-solarized-dark .tekiyou-table td {
+  border-bottom: 1px solid #0a3842;
+}
+body.theme-solarized-dark .tekiyou-table .row-upper-shinku td {
+  border-top: 2px solid #468c98;
+}
+body.theme-solarized-dark .tekiyou-table .row-next-shinku td {
+  border-top: 1px solid var(--border-strong);
+}
+body.theme-solarized-dark .tekiyou-table .row-new-santei td {
+  border-top: 1px dotted #2a5a68;
+}

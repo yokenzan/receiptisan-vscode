@@ -1,0 +1,46 @@
+body.theme-dracula {
+  --bg: #282a36;
+  --bg-card: #44475a;
+  --bg-hover: #555870;
+  --bg-muted: #363848;
+  --border: #5a5e78;
+  --border-strong: #6272a4;
+  --text: #f8f8f2;
+  --text-dim: #9499b0;
+  --text-bright: #ffffff;
+  --accent: #bd93f9;
+  --accent-dim: #a67de8;
+  --green: #50fa7b;
+  --orange: #ffb86c;
+  --yellow: #f1fa8c;
+  --color-si: #f8f8f2;
+  --color-iy: #8be9fd;
+  --color-to: #50fa7b;
+  --color-co: #f1fa8c;
+  --control-border: #6272a4;
+  --control-bg: #44475a;
+  --control-hover-bg: #555870;
+  --control-fg: #f8f8f2;
+}
+
+body.theme-dracula #nav-table tr.active {
+  background: #555870;
+}
+
+body.theme-dracula .shoubyoumei-table th + th,
+body.theme-dracula .shoubyoumei-table td + td {
+  border-left: none;
+}
+
+body.theme-dracula .tekiyou-table td {
+  border-bottom: 1px solid #383a4a;
+}
+body.theme-dracula .tekiyou-table .row-upper-shinku td {
+  border-top: 2px solid #6272a4;
+}
+body.theme-dracula .tekiyou-table .row-next-shinku td {
+  border-top: 1px solid var(--border-strong);
+}
+body.theme-dracula .tekiyou-table .row-new-santei td {
+  border-top: 1px dotted #5a5e78;
+}

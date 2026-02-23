@@ -1,0 +1,29 @@
+body.theme-ayu-light {
+  --bg: #fafafa;
+  --bg-card: #ffffff;
+  --bg-hover: #f0f0f0;
+  --bg-muted: #f5f5f5;
+  --border: #d4d4d4;
+  --border-strong: #abb0b6;
+  --text: #575f66;
+  --text-dim: #828c99;
+  --text-bright: #3d424a;
+  --accent: #ff9940;
+  --accent-dim: #e6802a;
+  --green: #86b300;
+  --orange: #f2590c;
+  --yellow: #f29718;
+  --color-si: #575f66;
+  --color-iy: #399ee6;
+  --color-to: #4cbf99;
+  --color-co: #f29718;
+  --control-border: #abb0b6;
+  --control-bg: #ffffff;
+  --control-hover-bg: #f0f0f0;
+  --control-fg: #575f66;
+}
+
+body.theme-ayu-light .shoubyoumei-table th + th,
+body.theme-ayu-light .shoubyoumei-table td + td {
+  border-left: none;
+}

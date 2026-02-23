@@ -1,0 +1,29 @@
+body.theme-solarized-light {
+  --bg: #fdf6e3;
+  --bg-card: #eee8d5;
+  --bg-hover: #e6dfca;
+  --bg-muted: #f5efd8;
+  --border: #d3c9a7;
+  --border-strong: #93a1a1;
+  --text: #657b83;
+  --text-dim: #839496;
+  --text-bright: #073642;
+  --accent: #268bd2;
+  --accent-dim: #1a6fb0;
+  --green: #859900;
+  --orange: #cb4b16;
+  --yellow: #b58900;
+  --color-si: #586e75;
+  --color-iy: #268bd2;
+  --color-to: #859900;
+  --color-co: #b58900;
+  --control-border: #93a1a1;
+  --control-bg: #eee8d5;
+  --control-hover-bg: #e6dfca;
+  --control-fg: #586e75;
+}
+
+body.theme-solarized-light .shoubyoumei-table th + th,
+body.theme-solarized-light .shoubyoumei-table td + td {
+  border-left: none;
+}
