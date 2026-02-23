@@ -1,5 +1,5 @@
 body.theme-classic-modern {
-  --bg: #c0c0c0;
+  --bg: #d4d0c8;
   --bg-card: #ffffff;
   --bg-hover: #dcdcdc;
   --bg-muted: #efefef;
