@@ -119,44 +119,6 @@ export function buildCalendarDataCells(
 }
 
 /**
- * Builds compact calendar header cells for active days only.
- */
-export function buildCompactCalendarHeaderCells(
-  activeDays: number[],
-  year: number,
-  month: number,
-): TableCellViewModel[] {
-  return activeDays.map((day) => ({
-    className: getCalendarClassName(year, month, day, false),
-    text: String(day),
-  }));
-}
-
-/**
- * Builds compact calendar data cells and pads up to minimum columns.
- */
-export function buildCompactCalendarDataCells(
-  dailyKaisuus: DailyKaisuu[] | undefined,
-  showDailyKaisuu: boolean,
-  activeDays: number[],
-  minCols: number,
-  year: number,
-  month: number,
-): TableCellViewModel[] {
-  const cells = activeDays.map((day) => {
-    const count = showDailyKaisuu ? getDailyKaisuu(dailyKaisuus, year, month, day) : 0;
-    return {
-      className: getCalendarClassName(year, month, day, false),
-      text: count > 0 ? String(count) : '',
-    };
-  });
-  for (let i = activeDays.length; i < minCols; i++) {
-    cells.push({ className: 'col-cal', text: '' });
-  }
-  return cells;
-}
-
-/**
  * Formats active treatment days as compact ranges (e.g. 1~5, 8, 12~14).
  */
 export function formatSanteiDays(

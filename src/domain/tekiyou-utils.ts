@@ -1,4 +1,4 @@
-import type { DailyKaisuu, ShinryouShikibetsuSection } from '../shared/receiptisan-json-types';
+import type { DailyKaisuu } from '../shared/receiptisan-json-types';
 
 const FUTAN_KUBUN_MAP: Record<string, number> = {
   // 1者
@@ -102,21 +102,4 @@ export function getDailyKaisuu(
     (dk) => dk.date.year === year && dk.date.month === month && dk.date.day === day,
   );
   return entry?.kaisuu ?? 0;
-}
-
-/**
- * Collects and sorts days that have at least one non-zero daily kaisuu.
- */
-export function collectActiveDays(sections: ShinryouShikibetsuSection[]): number[] {
-  const days = new Set<number>();
-  for (const section of sections) {
-    for (const ichiren of section.ichiren_units) {
-      for (const santei of ichiren.santei_units) {
-        for (const dk of santei.daily_kaisuus ?? []) {
-          if (dk.kaisuu > 0) days.add(dk.date.day);
-        }
-      }
-    }
-  }
-  return Array.from(days).sort((a, b) => a - b);
 }
