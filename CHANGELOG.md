@@ -1,3 +1,10 @@
+## [1.7.6](https://github.com/yokenzan/receiptisan-vscode/compare/v1.7.5...v1.7.6) (2026-02-24)
+
+
+### Bug Fixes
+
+* **webview:** remove duplicate var declaration and log catch errors ([1dc3ba3](https://github.com/yokenzan/receiptisan-vscode/commit/1dc3ba3bf670cfa4e9d4e8c975d3f3df2598bed0))
+
 ## [1.7.5](https://github.com/yokenzan/receiptisan-vscode/compare/v1.7.4...v1.7.5) (2026-02-24)
 
 
