@@ -24,6 +24,20 @@ export interface CliError {
 }
 
 /**
+ * Type guard for CliError.
+ */
+export function isCliError(err: unknown): err is CliError {
+  return (
+    typeof err === 'object' &&
+    err !== null &&
+    'type' in err &&
+    'message' in err &&
+    typeof (err as CliError).type === 'string' &&
+    typeof (err as CliError).message === 'string'
+  );
+}
+
+/**
  * Executes the configured receiptisan command and captures output.
  */
 export async function executeReceiptisan(
