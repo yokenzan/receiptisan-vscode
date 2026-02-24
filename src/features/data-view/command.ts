@@ -1,6 +1,6 @@
 import * as path from 'node:path';
 import * as vscode from 'vscode';
-import type { CliError } from '../../cli/receiptisan-client';
+import { isCliError } from '../../cli/receiptisan-client';
 import { type LayoutMode, presentDataViewError } from './presenter';
 import { generateDataViewHtml } from './service';
 
@@ -54,7 +54,12 @@ async function updatePanel(
   try {
     panel.webview.html = await generateDataViewHtml(filePath, layoutMode);
   } catch (err) {
-    const error = err as CliError;
+    const error = isCliError(err)
+      ? err
+      : {
+          type: 'execution_error' as const,
+          message: err instanceof Error ? err.message : String(err),
+        };
     panel.webview.html = presentDataViewError(error);
     vscode.window.showErrorMessage(error.message);
   }

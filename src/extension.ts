@@ -18,20 +18,32 @@ function currentUkeEditor(): vscode.TextEditor {
  */
 export function activate(context: vscode.ExtensionContext): void {
   const previewCommand = vscode.commands.registerCommand('receiptisan.preview', async () => {
-    await showPreview(currentUkeEditor().document);
+    try {
+      await showPreview(currentUkeEditor().document);
+    } catch (err) {
+      vscode.window.showErrorMessage(err instanceof Error ? err.message : String(err));
+    }
   });
 
   const dataViewVerticalCommand = vscode.commands.registerCommand(
     'receiptisan.dataViewVertical',
     async () => {
-      await showDataView(currentUkeEditor().document, 'vertical');
+      try {
+        await showDataView(currentUkeEditor().document, 'vertical');
+      } catch (err) {
+        vscode.window.showErrorMessage(err instanceof Error ? err.message : String(err));
+      }
     },
   );
 
   const dataViewHorizontalCommand = vscode.commands.registerCommand(
     'receiptisan.dataViewHorizontal',
     async () => {
-      await showDataView(currentUkeEditor().document, 'horizontal');
+      try {
+        await showDataView(currentUkeEditor().document, 'horizontal');
+      } catch (err) {
+        vscode.window.showErrorMessage(err instanceof Error ? err.message : String(err));
+      }
     },
   );
 
