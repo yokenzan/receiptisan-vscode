@@ -1,3 +1,10 @@
+## [1.7.3](https://github.com/yokenzan/receiptisan-vscode/compare/v1.7.2...v1.7.3) (2026-02-24)
+
+
+### Bug Fixes
+
+* **view:** add fallback HTML when error templates fail to render ([3e5ad89](https://github.com/yokenzan/receiptisan-vscode/commit/3e5ad89db87bf499b59ab3264fa9a4dcb78f6d85))
+
 ## [1.7.2](https://github.com/yokenzan/receiptisan-vscode/compare/v1.7.1...v1.7.2) (2026-02-24)
 
 
