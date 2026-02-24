@@ -6,15 +6,15 @@
         <td><%= it.id %></td>
       </tr>
       <tr>
-        <th class="date-th">診療年月</th>
-        <td class="date-cell">
+        <th>診療年月</th>
+        <td>
           <span class="date-value"><%= it.shinryouYm.westernYear %><sup class="date-wareki-sup"><%= it.shinryouYm.warekiYear %></sup><%= it.shinryouYm.westernRest %></span>診療
         </td>
       </tr>
       <% if (it.nyuuinDateCell) { %>
       <tr>
-        <th class="date-th">入院日</th>
-        <td class="date-cell">
+        <th>入院日</th>
+        <td>
           <span class="date-value"><%= it.nyuuinDateCell.westernYear %><sup class="date-wareki-sup"><%= it.nyuuinDateCell.warekiYear %></sup><%= it.nyuuinDateCell.westernRest %></span>
         </td>
       </tr>

@@ -4,7 +4,12 @@ import type {
   ShoubyoumeiGroup,
 } from '../../../shared/receiptisan-json-types';
 import { renderTemplate } from '../../../template/eta-renderer';
-import { buildDateDisplayViewModel, type DateDisplayViewModel } from '../view-model/date-display';
+import {
+  buildYearMonthDayDisplayViewModel,
+  buildYearMonthDisplayViewModel,
+  type YearMonthDayDisplayViewModel,
+  type YearMonthDisplayViewModel,
+} from '../view-model/date-display';
 import { getTenkiColorClass } from './receipt-meta';
 import { formatNumber } from './tekiyou-table';
 
@@ -49,7 +54,7 @@ interface ShoubyoumeiRowViewModel {
   isWorpro: boolean;
   fullText: string;
   comment: string;
-  startDate: DateDisplayViewModel;
+  startDate: YearMonthDayDisplayViewModel;
   tenkiClass: string;
   tenkiName: string;
 }
@@ -63,11 +68,11 @@ interface UnitValue {
 
 interface ReceiptHeaderViewModel extends Record<string, unknown> {
   id: number;
-  shinryouYm: DateDisplayViewModel;
+  shinryouYm: YearMonthDisplayViewModel;
   nyuugai: string;
   typeBadges: Array<{ code: string; name: string }>;
   tokkiJikous: Array<{ code: string; name: string }>;
-  nyuuinDateCell: DateDisplayViewModel | null;
+  nyuuinDateCell: YearMonthDayDisplayViewModel | null;
   byoushouCell: string;
 }
 
@@ -77,9 +82,32 @@ interface PatientCardViewModel extends Record<string, unknown> {
   nameKana: string | null;
   sexName: string;
   sexKind: 'male' | 'female' | 'other';
-  birthDate: DateDisplayViewModel | null;
+  birthDate: YearMonthDayDisplayViewModel | null;
   ageYearsMonths: { years: number; months: number } | null;
   isBirthMonth: boolean;
+}
+
+/**
+ * Narrows wareki shape to day-required variant for YMD render paths.
+ */
+function requireDay(
+  wareki: {
+    gengou: { alphabet: string };
+    year: number;
+    month: number;
+    day?: number;
+  },
+  label: string,
+): {
+  gengou: { alphabet: string };
+  year: number;
+  month: number;
+  day: number;
+} {
+  if (wareki.day == null) {
+    throw new Error(`Missing day in wareki for ${label}`);
+  }
+  return { ...wareki, day: wareki.day };
 }
 
 function fallbackDash(value: string | null | undefined): string {
@@ -117,7 +145,10 @@ function buildReceiptHeaderViewModel(receipt: Receipt): ReceiptHeaderViewModel {
   }));
   const nyuuinDateCell =
     receipt.nyuugai === 'nyuuin' && receipt.nyuuin_date
-      ? buildDateDisplayViewModel(receipt.nyuuin_date.wareki, receipt.nyuuin_date.year)
+      ? buildYearMonthDayDisplayViewModel(
+          requireDay(receipt.nyuuin_date.wareki, 'nyuuin_date'),
+          receipt.nyuuin_date.year,
+        )
       : null;
   const byoushouCell =
     receipt.nyuugai === 'nyuuin' && receipt.byoushou_types.length > 0
@@ -126,7 +157,7 @@ function buildReceiptHeaderViewModel(receipt: Receipt): ReceiptHeaderViewModel {
 
   return {
     id: receipt.id,
-    shinryouYm: buildDateDisplayViewModel(receipt.shinryou_ym.wareki, receipt.shinryou_ym.year),
+    shinryouYm: buildYearMonthDisplayViewModel(receipt.shinryou_ym.wareki, receipt.shinryou_ym.year),
     nyuugai: receipt.nyuugai,
     typeBadges,
     tokkiJikous,
@@ -140,7 +171,10 @@ function buildPatientCardViewModel(receipt: Receipt): PatientCardViewModel {
   const sexKind =
     String(p.sex.code) === '1' ? 'male' : String(p.sex.code) === '2' ? 'female' : 'other';
   const birthDate = p.birth_date?.wareki
-    ? buildDateDisplayViewModel(p.birth_date.wareki, p.birth_date.year)
+    ? buildYearMonthDayDisplayViewModel(
+        requireDay(p.birth_date.wareki, 'patient.birth_date'),
+        p.birth_date.year,
+      )
     : null;
   const asOf = endOfMonthDate(receipt.shinryou_ym.year, receipt.shinryou_ym.month);
   const ageYearsMonths = p.birth_date
@@ -321,7 +355,7 @@ export function renderUkeHeader(digitalizedReceipt: DigitalizedReceipt): string 
   const hospital = digitalizedReceipt.hospital;
 
   const auditPayer = digitalizedReceipt.audit_payer;
-  const seikyuuYm = buildDateDisplayViewModel(
+  const seikyuuYm = buildYearMonthDisplayViewModel(
     digitalizedReceipt.seikyuu_ym.wareki,
     digitalizedReceipt.seikyuu_ym.year,
   );
@@ -392,7 +426,10 @@ export function renderShoubyoumeiCard(groups: ShoubyoumeiGroup[]): string {
         isWorpro: s.is_worpro === true,
         fullText: s.full_text,
         comment: s.comment ?? '',
-        startDate: buildDateDisplayViewModel(s.start_date.wareki, s.start_date.year),
+        startDate: buildYearMonthDayDisplayViewModel(
+          requireDay(s.start_date.wareki, 'shoubyoumei.start_date'),
+          s.start_date.year,
+        ),
         tenkiClass: getTenkiColorClass(s.tenki.code),
         tenkiName: s.tenki.name,
       });

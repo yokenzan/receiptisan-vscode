@@ -6,8 +6,8 @@
     <tr>
       <th>医療機関コード</th>
       <td><span class="code"><%= it.hospitalCode %></span></td>
-      <th class="date-th">請求年月</th>
-      <td class="date-cell"><span class="date-value"><%= it.seikyuuYm.westernYear %><sup class="date-wareki-sup"><%= it.seikyuuYm.warekiYear %></sup><%= it.seikyuuYm.westernRest %></span></td>
+      <th>請求年月</th>
+      <td><span class="date-value"><%= it.seikyuuYm.westernYear %><sup class="date-wareki-sup"><%= it.seikyuuYm.warekiYear %></sup><%= it.seikyuuYm.westernRest %></span></td>
     </tr>
     <tr>
       <th>都道府県</th>

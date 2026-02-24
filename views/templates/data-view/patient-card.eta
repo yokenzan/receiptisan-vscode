@@ -32,8 +32,8 @@
         </td>
       </tr>
       <tr>
-        <th class="date-th">生年月日</th>
-        <td class="date-cell">
+        <th>生年月日</th>
+        <td>
           <% if (!it.birthDate) { %>
           <span class="placeholder">-</span>
           <% } else { %>

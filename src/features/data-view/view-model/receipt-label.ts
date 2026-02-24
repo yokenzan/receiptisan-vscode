@@ -1,11 +1,15 @@
 import { formatWarekiShort } from '../../../domain/tekiyou-utils';
 import type { Receipt } from '../../../shared/receiptisan-json-types';
-import { buildDateDisplayViewModel, type DateDisplayViewModel } from './date-display';
+import {
+  buildYearMonthDisplayViewModel,
+  type YearMonthDisplayViewModel,
+} from './date-display';
 
 export interface ReceiptLabelViewModel {
   idPart: string;
   shinryouYm: string;
-  shinryouYmDate: DateDisplayViewModel;
+  // Structured YM data for template-side rendering (independent from legacy plain string label).
+  shinryouYmDate: YearMonthDisplayViewModel;
   shinryouYmWestern: string;
   nyuugaiLabel: string;
   receiptClassLabel: string;
@@ -54,7 +58,7 @@ export function buildReceiptLabelViewModel(receipt: Receipt): ReceiptLabelViewMo
       : receipt.nyuugai === 'nyuuin'
         ? 'nyuuin'
         : 'gairai';
-  const shinryouYmDate = buildDateDisplayViewModel(
+  const shinryouYmDate = buildYearMonthDisplayViewModel(
     receipt.shinryou_ym.wareki,
     receipt.shinryou_ym.year,
   );

@@ -8,8 +8,8 @@
             <td><%= it.receiptHeader.id %></td>
           </tr>
           <tr>
-            <th class="date-th">診療年月</th>
-            <td class="date-cell">
+            <th>診療年月</th>
+            <td>
               <span class="date-value"><%= it.receiptHeader.shinryouYm.westernYear %><sup class="date-wareki-sup"><%= it.receiptHeader.shinryouYm.warekiYear %></sup><%= it.receiptHeader.shinryouYm.westernRest %></span>診療
             </td>
           </tr>
@@ -41,8 +41,8 @@
           </tr>
           <% if (it.receiptHeader.nyuuinDateCell) { %>
           <tr>
-            <th class="date-th">入院日</th>
-            <td class="date-cell">
+            <th>入院日</th>
+            <td>
               <span class="date-value"><%= it.receiptHeader.nyuuinDateCell.westernYear %><sup class="date-wareki-sup"><%= it.receiptHeader.nyuuinDateCell.warekiYear %></sup><%= it.receiptHeader.nyuuinDateCell.westernRest %></span>
             </td>
           </tr>
@@ -82,8 +82,8 @@
             </td>
           </tr>
           <tr>
-            <th class="date-th">生年月日</th>
-            <td class="date-cell">
+            <th>生年月日</th>
+            <td>
               <% if (!it.patient.birthDate) { %>
               <span class="placeholder">-</span>
               <% } else { %>
