@@ -1,3 +1,5 @@
+import type { WarekiDate, WarekiYearMonth } from '../../../shared/receiptisan-json-types';
+
 interface DateDisplayBaseViewModel {
   year: number;
   month: number;
@@ -24,11 +26,7 @@ export interface YearMonthDayDisplayViewModel extends DateDisplayBaseViewModel {
  * Builds a display model for dates that only have year and month.
  */
 export function buildYearMonthDisplayViewModel(
-  wareki: {
-    gengou: { alphabet: string };
-    year: number;
-    month: number;
-  },
+  wareki: WarekiYearMonth,
   westernYear: number,
 ): YearMonthDisplayViewModel {
   const mm = String(wareki.month).padStart(2, '0');
@@ -48,17 +46,9 @@ export function buildYearMonthDisplayViewModel(
  * Builds a display model for dates that include day.
  */
 export function buildYearMonthDayDisplayViewModel(
-  wareki: {
-    gengou: { alphabet: string };
-    year: number;
-    month: number;
-    day?: number;
-  },
+  wareki: WarekiDate,
   westernYear: number,
 ): YearMonthDayDisplayViewModel {
-  if (wareki.day == null) {
-    throw new Error('Missing day in wareki for year-month-day display');
-  }
   const mm = String(wareki.month).padStart(2, '0');
   const dd = `.${String(wareki.day).padStart(2, '0')}`;
 

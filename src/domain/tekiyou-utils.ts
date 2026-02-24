@@ -1,4 +1,4 @@
-import type { DailyKaisuu } from '../shared/receiptisan-json-types';
+import type { DailyKaisuu, WarekiDate, WarekiYearMonth } from '../shared/receiptisan-json-types';
 
 const FUTAN_KUBUN_MAP: Record<string, number> = {
   // 1者
@@ -63,12 +63,7 @@ export function toHalfWidthAscii(text: string): string {
  * @param westernYear - pre-computed western year from CLI (avoids re-deriving from base_year)
  */
 export function formatWarekiShort(
-  wareki: {
-    gengou: { alphabet: string };
-    year: number;
-    month: number;
-    day?: number;
-  },
+  wareki: WarekiYearMonth | WarekiDate,
   westernYear?: number,
 ): string {
   const yy = String(wareki.year).padStart(2, '0');
@@ -78,7 +73,7 @@ export function formatWarekiShort(
       ? `${westernYear}(${wareki.gengou.alphabet}${yy})`
       : `${wareki.gengou.alphabet}${yy}`;
   const base = `${yearPart}.${mm}`;
-  return wareki.day != null ? `${base}.${String(wareki.day).padStart(2, '0')}` : base;
+  return 'day' in wareki ? `${base}.${String(wareki.day).padStart(2, '0')}` : base;
 }
 
 /**
