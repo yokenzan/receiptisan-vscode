@@ -12,10 +12,15 @@ import { buildThemeScript } from './theme-script';
  * Renders standalone data view error document.
  */
 export function renderDataViewErrorHtml(error: { message: string; stderr?: string }): string {
-  return renderTemplate('data-view/error.eta', {
-    message: error.message,
-    stderr: error.stderr ?? '',
-  });
+  try {
+    return renderTemplate('data-view/error.eta', {
+      message: error.message,
+      stderr: error.stderr ?? '',
+    });
+  } catch {
+    const msg = error.message.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+    return `<!DOCTYPE html><html lang="ja"><body><h1>エラー</h1><p>${msg}</p></body></html>`;
+  }
 }
 
 /**
