@@ -1,3 +1,13 @@
+# [1.7.0](https://github.com/yokenzan/receiptisan-vscode/compare/v1.6.0...v1.7.0) (2026-02-24)
+
+
+### Features
+
+* **data-view:** add 13 new editor-inspired theme CSS files ([4a69ecc](https://github.com/yokenzan/receiptisan-vscode/commit/4a69eccd4f9286bb5542c282f391da04a6fa1fbe))
+* **data-view:** add high contrast themes and consolidate theme list ([6108757](https://github.com/yokenzan/receiptisan-vscode/commit/6108757c53bd71ae91492583670b48022a8f5a10))
+* **data-view:** register 13 new themes in TypeScript config and VS Code settings ([3a8bbbd](https://github.com/yokenzan/receiptisan-vscode/commit/3a8bbbd4f2700b450412655eee78a4fe1546be8f))
+* **data-view:** replace theme buttons with dropdown select ([3761177](https://github.com/yokenzan/receiptisan-vscode/commit/37611777048e1e5cd7341023681e122ea9570e55))
+
 # [1.6.0](https://github.com/yokenzan/receiptisan-vscode/compare/v1.5.0...v1.6.0) (2026-02-23)
 
 
