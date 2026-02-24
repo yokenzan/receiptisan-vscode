@@ -63,7 +63,7 @@
               <% if (it.patient.name === '-') { %>
               <span class="placeholder">-</span>
               <% } else if (it.patient.nameKana) { %>
-              <span><%= it.patient.name %></span><span class="name-kana-inline">(<%= it.patient.nameKana %>)</span>
+              <span><%= it.patient.name %></span><sup class="name-kana-sup"><%= it.patient.nameKana %></sup>
               <% } else { %>
               <%= it.patient.name %>
               <% } %>
