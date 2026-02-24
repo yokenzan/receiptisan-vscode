@@ -189,7 +189,7 @@
       var maxRatio = 0.7;
 
       // 保存済みサイズを復元
-      var savedState = vscodeApi.getState() || {};
+      savedState = vscodeApi.getState() || {};
       if (savedState[stateKey]) {
         if (isHorizontal) {
           nav.style.width = savedState[stateKey] + 'px';

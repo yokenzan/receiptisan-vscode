@@ -26,7 +26,7 @@
     try {
       var storedTheme = localStorage.getItem(config.storageKey);
       if (isKnownTheme(storedTheme)) return storedTheme;
-    } catch (_e) {}
+    } catch (e) { console.warn('Failed to read theme from localStorage:', e); }
 
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       return 'dark';
@@ -48,7 +48,7 @@
     applyTheme(select.value);
     try {
       localStorage.setItem(config.storageKey, select.value);
-    } catch (_e) {}
+    } catch (e) { console.warn('Failed to save theme to localStorage:', e); }
   });
   if (config.configuredTheme !== 'auto') {
     select.disabled = true;
