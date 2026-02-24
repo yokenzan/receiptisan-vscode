@@ -35,6 +35,7 @@ export async function executeReceiptisan(
   const args = [...config.args, ...buildCliArgs(filePath, format)];
 
   return new Promise((resolve, reject) => {
+    let settled = false;
     const stdoutChunks: Buffer[] = [];
     const stderrChunks: Buffer[] = [];
 
@@ -43,14 +44,20 @@ export async function executeReceiptisan(
       cwd: config.cwd,
     });
 
-    cancellationToken?.onCancellationRequested(() => {
+    const cancelDisposable = cancellationToken?.onCancellationRequested(() => {
+      if (settled) return;
+      settled = true;
       child.kill();
       reject({ type: 'cancelled', message: 'キャンセルされました' } as CliError);
     });
 
     child.stdout.on('data', (chunk: Buffer) => stdoutChunks.push(chunk));
     child.stderr.on('data', (chunk: Buffer) => stderrChunks.push(chunk));
+
     child.on('error', (err: NodeJS.ErrnoException) => {
+      if (settled) return;
+      settled = true;
+      cancelDisposable?.dispose();
       if (err.code === 'ENOENT') {
         reject({
           type: 'command_not_found',
@@ -65,6 +72,9 @@ export async function executeReceiptisan(
     });
 
     child.on('close', (code) => {
+      cancelDisposable?.dispose();
+      if (settled) return;
+      settled = true;
       const stdout = Buffer.concat(stdoutChunks).toString('utf-8');
       const stderr = Buffer.concat(stderrChunks).toString('utf-8');
       const exitCode = code ?? 1;
