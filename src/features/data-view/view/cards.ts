@@ -157,7 +157,10 @@ function buildReceiptHeaderViewModel(receipt: Receipt): ReceiptHeaderViewModel {
 
   return {
     id: receipt.id,
-    shinryouYm: buildYearMonthDisplayViewModel(receipt.shinryou_ym.wareki, receipt.shinryou_ym.year),
+    shinryouYm: buildYearMonthDisplayViewModel(
+      receipt.shinryou_ym.wareki,
+      receipt.shinryou_ym.year,
+    ),
     nyuugai: receipt.nyuugai,
     typeBadges,
     tokkiJikous,

@@ -1,9 +1,6 @@
 import { formatWarekiShort } from '../../../domain/tekiyou-utils';
 import type { Receipt } from '../../../shared/receiptisan-json-types';
-import {
-  buildYearMonthDisplayViewModel,
-  type YearMonthDisplayViewModel,
-} from './date-display';
+import { buildYearMonthDisplayViewModel, type YearMonthDisplayViewModel } from './date-display';
 
 export interface ReceiptLabelViewModel {
   idPart: string;
