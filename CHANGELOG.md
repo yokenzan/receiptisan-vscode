@@ -1,3 +1,10 @@
+## [1.7.5](https://github.com/yokenzan/receiptisan-vscode/compare/v1.7.4...v1.7.5) (2026-02-24)
+
+
+### Bug Fixes
+
+* **commands:** add top-level error handling and isCliError type guard ([9f76bc1](https://github.com/yokenzan/receiptisan-vscode/commit/9f76bc1aa7ec369eed1a9133cd59a053aa571304))
+
 ## [1.7.4](https://github.com/yokenzan/receiptisan-vscode/compare/v1.7.3...v1.7.4) (2026-02-24)
 
 
