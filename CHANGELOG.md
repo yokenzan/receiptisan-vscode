@@ -1,3 +1,10 @@
+## [1.7.2](https://github.com/yokenzan/receiptisan-vscode/compare/v1.7.1...v1.7.2) (2026-02-24)
+
+
+### Bug Fixes
+
+* **preview:** include CLI stderr in error display ([f8e452f](https://github.com/yokenzan/receiptisan-vscode/commit/f8e452f6c71af61d90a3b3da6ff104a53965a664))
+
 ## [1.7.1](https://github.com/yokenzan/receiptisan-vscode/compare/v1.7.0...v1.7.1) (2026-02-24)
 
 

@@ -2,7 +2,7 @@
   "name": "receiptisan-vscode",
   "displayName": "Receiptisan VS Code",
   "description": "Preview RECEIPTC.UKE(電子レセプトファイル) using receiptisan CLI",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "publisher": "yokenzan",
   "license": "MIT",
   "repository": {
