@@ -2,7 +2,7 @@ import * as path from 'node:path';
 import { Eta } from 'eta';
 
 const views = path.join(__dirname, '..', 'views', 'templates');
-const eta = new Eta({ views, useWith: true, cache: true });
+const eta = new Eta({ views, useWith: false, cache: true });
 
 /**
  * Renders Eta template with provided data.
