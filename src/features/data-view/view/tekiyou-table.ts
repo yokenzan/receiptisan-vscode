@@ -66,7 +66,7 @@ function getFutanClassName(slotActive: boolean, index: number, total: number): s
  */
 export function formatNumber(n: number | null | undefined): string {
   if (n == null) return '';
-  return n.toLocaleString();
+  return n.toLocaleString('ja-JP');
 }
 
 /**
@@ -78,7 +78,7 @@ export function formatTokuteiKizaiUnitPrice(text: string): string {
     const raw = token.replace(/,/g, '');
     if (!/^-?\d+$/.test(raw)) return token;
     const value = Number.parseInt(raw, 10);
-    return Number.isFinite(value) ? value.toLocaleString() : token;
+    return Number.isFinite(value) ? value.toLocaleString('ja-JP') : token;
   });
 }
 
