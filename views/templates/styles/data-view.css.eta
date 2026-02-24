@@ -533,6 +533,10 @@ table tr:last-child > * {
 .text-orange {
   color: var(--orange);
 }
+.santei-mark {
+  color: var(--accent);
+  font-weight: bold;
+}
 .code {
   font-family: var(--font-mono);
   font-size: 11px;
@@ -881,8 +885,6 @@ table tr:last-child > * {
 }
 .tekiyou-table .col-mark {
   text-align: center;
-  color: #9c27b0;
-  font-weight: bold;
 }
 .tekiyou-table td.col-name {
   word-break: break-all;

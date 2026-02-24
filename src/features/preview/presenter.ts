@@ -16,8 +16,9 @@ export function presentPreviewError(error: unknown): { html: string; message: st
     error instanceof Error
       ? error.message
       : ((error as { message?: string }).message ?? String(error));
+  const stderr = (error as { stderr?: string }).stderr;
   return {
-    html: renderErrorPage('プレビューエラー', message),
+    html: renderErrorPage('プレビューエラー', message, stderr),
     message,
   };
 }

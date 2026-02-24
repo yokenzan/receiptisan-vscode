@@ -4,7 +4,7 @@
   <% for (const cell of it.futanCells) { %>
   <td class="<%= cell.className %>"><% if (cell.active) { %>●<% } %></td>
   <% } %>
-  <td class="col-mark"><% if (it.isFirstInSantei) { %><span style="color:#9c27b0;font-weight:bold">＊</span><% } %></td>
+  <td class="col-mark"><% if (it.isFirstInSantei) { %><span class="santei-mark">＊</span><% } %></td>
   <td class="col-name <%= it.categoryClass %><%= it.unknownClass %>">
     <% for (const segment of it.nameSegments) { %>
       <% if (segment.inParen) { %><span class="tekiyou-paren-compact"><%= segment.text %></span><% } else { %><%= segment.text %><% } %>
