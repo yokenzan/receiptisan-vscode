@@ -87,29 +87,6 @@ interface PatientCardViewModel extends Record<string, unknown> {
   isBirthMonth: boolean;
 }
 
-/**
- * Narrows wareki shape to day-required variant for YMD render paths.
- */
-function requireDay(
-  wareki: {
-    gengou: { alphabet: string };
-    year: number;
-    month: number;
-    day?: number;
-  },
-  label: string,
-): {
-  gengou: { alphabet: string };
-  year: number;
-  month: number;
-  day: number;
-} {
-  if (wareki.day == null) {
-    throw new Error(`Missing day in wareki for ${label}`);
-  }
-  return { ...wareki, day: wareki.day };
-}
-
 function fallbackDash(value: string | null | undefined): string {
   if (value == null) return '-';
   return value.trim().length > 0 ? value : '-';
@@ -145,10 +122,7 @@ function buildReceiptHeaderViewModel(receipt: Receipt): ReceiptHeaderViewModel {
   }));
   const nyuuinDateCell =
     receipt.nyuugai === 'nyuuin' && receipt.nyuuin_date
-      ? buildYearMonthDayDisplayViewModel(
-          requireDay(receipt.nyuuin_date.wareki, 'nyuuin_date'),
-          receipt.nyuuin_date.year,
-        )
+      ? buildYearMonthDayDisplayViewModel(receipt.nyuuin_date.wareki, receipt.nyuuin_date.year)
       : null;
   const byoushouCell =
     receipt.nyuugai === 'nyuuin' && receipt.byoushou_types.length > 0
@@ -174,10 +148,7 @@ function buildPatientCardViewModel(receipt: Receipt): PatientCardViewModel {
   const sexKind =
     String(p.sex.code) === '1' ? 'male' : String(p.sex.code) === '2' ? 'female' : 'other';
   const birthDate = p.birth_date?.wareki
-    ? buildYearMonthDayDisplayViewModel(
-        requireDay(p.birth_date.wareki, 'patient.birth_date'),
-        p.birth_date.year,
-      )
+    ? buildYearMonthDayDisplayViewModel(p.birth_date.wareki, p.birth_date.year)
     : null;
   const asOf = endOfMonthDate(receipt.shinryou_ym.year, receipt.shinryou_ym.month);
   const ageYearsMonths = p.birth_date
@@ -429,10 +400,7 @@ export function renderShoubyoumeiCard(groups: ShoubyoumeiGroup[]): string {
         isWorpro: s.is_worpro === true,
         fullText: s.full_text,
         comment: s.comment ?? '',
-        startDate: buildYearMonthDayDisplayViewModel(
-          requireDay(s.start_date.wareki, 'shoubyoumei.start_date'),
-          s.start_date.year,
-        ),
+        startDate: buildYearMonthDayDisplayViewModel(s.start_date.wareki, s.start_date.year),
         tenkiClass: getTenkiColorClass(s.tenki.code),
         tenkiName: s.tenki.name,
       });

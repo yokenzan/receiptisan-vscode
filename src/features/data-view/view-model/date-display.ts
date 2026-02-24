@@ -52,10 +52,13 @@ export function buildYearMonthDayDisplayViewModel(
     gengou: { alphabet: string };
     year: number;
     month: number;
-    day: number;
+    day?: number;
   },
   westernYear: number,
 ): YearMonthDayDisplayViewModel {
+  if (wareki.day == null) {
+    throw new Error('Missing day in wareki for year-month-day display');
+  }
   const mm = String(wareki.month).padStart(2, '0');
   const dd = `.${String(wareki.day).padStart(2, '0')}`;
 
