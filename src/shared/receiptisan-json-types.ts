@@ -16,7 +16,7 @@ export interface DigitalizedReceipt {
 export interface Receipt {
   id: number;
   shinryou_ym: YearMonth;
-  nyuugai: string;
+  nyuugai: 'nyuuin' | 'gairai';
   audit_payer: AuditPayer;
   prefecture: Prefecture;
   hospital: Hospital;
