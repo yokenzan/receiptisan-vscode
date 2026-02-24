@@ -1,6 +1,5 @@
 <section class="data-section data-section-patient-receipt-horizontal" data-section="basic-info">
   <h3 class="section-title">基本情報</h3>
-  <% const renderWarekiCompact = (value) => String(value).replace(/\(([^)]+)\)/g, '<span class="date-wareki">($1)</span>'); %>
   <div class="section-horizontal-columns">
     <div class="section-horizontal-pane">
         <table>
@@ -11,7 +10,7 @@
           <tr>
             <th>診療年月</th>
             <td>
-              <span class="date-value"><%~ renderWarekiCompact(it.receiptHeader.shinryouYm) %></span>診療
+              <span class="date-value"><%~ it.receiptHeader.shinryouYm %></span>診療
             </td>
           </tr>
           <tr>
@@ -44,7 +43,7 @@
           <tr>
             <th>入院日</th>
             <td>
-              <span class="date-value"><%~ renderWarekiCompact(it.receiptHeader.nyuuinDateCell) %></span>
+              <span class="date-value"><%~ it.receiptHeader.nyuuinDateCell %></span>
             </td>
           </tr>
           <% } %>
@@ -88,7 +87,7 @@
               <% if (it.patient.birthDate === '-') { %>
               <span class="placeholder">-</span>
               <% } else { %>
-              <span class="date-value"><%~ renderWarekiCompact(it.patient.birthDate) %></span>
+              <span class="date-value"><%~ it.patient.birthDate %></span>
               <% if (it.patient.ageYearsMonths) { %>
               <span class="age-display"><span class="value-num"><%= it.patient.ageYearsMonths.years %></span><span class="value-unit">歳</span><span class="value-num"><%= it.patient.ageYearsMonths.months %></span><span class="value-unit">ヶ月</span><% if (it.patient.isBirthMonth) { %>🎂<% } %></span>
               <% } %>

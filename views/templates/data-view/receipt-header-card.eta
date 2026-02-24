@@ -1,6 +1,5 @@
 <section class="data-section data-section-receipt-header" data-section="receipt-header">
   <h3 class="section-title">請求情報</h3>
-    <% const renderWarekiCompact = (value) => String(value).replace(/\(([^)]+)\)/g, '<span class="date-wareki">($1)</span>'); %>
     <table>
       <tr>
         <th>No.</th>
@@ -8,12 +7,12 @@
       </tr>
       <tr>
         <th>診療年月</th>
-        <td><span class="date-value"><%~ renderWarekiCompact(it.shinryouYm) %></span>診療</td>
+        <td><span class="date-value"><%~ it.shinryouYm %></span>診療</td>
       </tr>
       <% if (it.nyuuinDateCell) { %>
       <tr>
         <th>入院日</th>
-        <td><span class="date-value"><%~ renderWarekiCompact(it.nyuuinDateCell) %></span></td>
+        <td><span class="date-value"><%~ it.nyuuinDateCell %></span></td>
       </tr>
       <% if (it.byoushouCell) { %>
       <tr>

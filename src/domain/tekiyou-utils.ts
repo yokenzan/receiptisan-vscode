@@ -82,6 +82,14 @@ export function formatWarekiShort(
 }
 
 /**
+ * Wraps wareki parenthetical text in styled spans for HTML display.
+ * Example: "2024(R06).02" → "2024<span class=\"date-wareki\">(R06)</span>.02"
+ */
+export function wrapWarekiParenthetical(text: string): string {
+  return text.replace(/\(([^)]+)\)/g, '<span class="date-wareki">($1)</span>');
+}
+
+/**
  * Returns number of days in given year/month.
  */
 export function getDaysInMonth(year: number, month: number): number {

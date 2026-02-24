@@ -1,4 +1,4 @@
-import { formatWarekiShort } from '../../../domain/tekiyou-utils';
+import { formatWarekiShort, wrapWarekiParenthetical } from '../../../domain/tekiyou-utils';
 import type {
   DigitalizedReceipt,
   Receipt,
@@ -96,7 +96,9 @@ function buildReceiptHeaderViewModel(receipt: Receipt) {
   }));
   const nyuuinDateCell =
     receipt.nyuugai === 'nyuuin' && receipt.nyuuin_date
-      ? formatWarekiShort(receipt.nyuuin_date.wareki, receipt.nyuuin_date.year)
+      ? wrapWarekiParenthetical(
+          formatWarekiShort(receipt.nyuuin_date.wareki, receipt.nyuuin_date.year),
+        )
       : '';
   const byoushouCell =
     receipt.nyuugai === 'nyuuin' && receipt.byoushou_types.length > 0
@@ -105,7 +107,9 @@ function buildReceiptHeaderViewModel(receipt: Receipt) {
 
   return {
     id: receipt.id,
-    shinryouYm: formatWarekiShort(receipt.shinryou_ym.wareki, receipt.shinryou_ym.year),
+    shinryouYm: wrapWarekiParenthetical(
+      formatWarekiShort(receipt.shinryou_ym.wareki, receipt.shinryou_ym.year),
+    ),
     nyuugai: receipt.nyuugai,
     typeBadges,
     tokkiJikous,
@@ -119,7 +123,7 @@ function buildPatientCardViewModel(receipt: Receipt) {
   const sexKind =
     String(p.sex.code) === '1' ? 'male' : String(p.sex.code) === '2' ? 'female' : 'other';
   const birthDate = p.birth_date?.wareki
-    ? formatWarekiShort(p.birth_date.wareki, p.birth_date.year)
+    ? wrapWarekiParenthetical(formatWarekiShort(p.birth_date.wareki, p.birth_date.year))
     : '-';
   const asOf = endOfMonthDate(receipt.shinryou_ym.year, receipt.shinryou_ym.month);
   const ageYearsMonths = p.birth_date
@@ -300,9 +304,8 @@ export function renderUkeHeader(digitalizedReceipt: DigitalizedReceipt): string 
   const hospital = digitalizedReceipt.hospital;
 
   const auditPayer = digitalizedReceipt.audit_payer;
-  const seikyuuYm = formatWarekiShort(
-    digitalizedReceipt.seikyuu_ym.wareki,
-    digitalizedReceipt.seikyuu_ym.year,
+  const seikyuuYm = wrapWarekiParenthetical(
+    formatWarekiShort(digitalizedReceipt.seikyuu_ym.wareki, digitalizedReceipt.seikyuu_ym.year),
   );
   const auditPayerLabel = auditPayer.short_name ? `${auditPayer.short_name}保` : '';
 
@@ -370,7 +373,9 @@ export function renderShoubyoumeiCard(groups: ShoubyoumeiGroup[]): string {
         isWorpro: s.is_worpro === true,
         fullText: s.full_text,
         comment: s.comment ?? '',
-        startDate: formatWarekiShort(s.start_date.wareki, s.start_date.year),
+        startDate: wrapWarekiParenthetical(
+          formatWarekiShort(s.start_date.wareki, s.start_date.year),
+        ),
         tenkiClass: getTenkiColorClass(s.tenki.code),
         tenkiName: s.tenki.name,
       });

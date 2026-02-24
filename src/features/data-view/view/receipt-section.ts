@@ -1,3 +1,4 @@
+import { wrapWarekiParenthetical } from '../../../domain/tekiyou-utils';
 import { renderTemplate } from '../../../template/eta-renderer';
 import type { DataViewReceiptViewModel } from '../view-model';
 import {
@@ -23,7 +24,10 @@ export function renderReceiptSection(
 
   return renderTemplate('data-view/receipt-section.eta', {
     id: receiptViewModel.id,
-    headerLabel: receiptViewModel.label,
+    headerLabel: {
+      ...receiptViewModel.label,
+      shinryouYm: wrapWarekiParenthetical(receiptViewModel.label.shinryouYm),
+    },
     receiptHeaderHtml: isHorizontal ? '' : renderReceiptHeader(receipt),
     patientCardHtml: isHorizontal
       ? renderPatientReceiptCardHorizontal(receipt)

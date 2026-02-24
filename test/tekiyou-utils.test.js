@@ -5,6 +5,7 @@ const {
   decodeFutanKubun,
   toHalfWidthAscii,
   collectActiveDays,
+  wrapWarekiParenthetical,
 } = require('../out/domain/tekiyou-utils.js');
 
 test('decodeFutanKubun decodes representative codes', () => {
@@ -42,4 +43,15 @@ test('collectActiveDays picks and sorts only positive days', () => {
   ];
 
   assert.deepEqual(collectActiveDays(sections), [3, 8]);
+});
+
+test('wrapWarekiParenthetical wraps parenthetical in styled span', () => {
+  assert.equal(
+    wrapWarekiParenthetical('2024(R06).02'),
+    '2024<span class="date-wareki">(R06)</span>.02',
+  );
+});
+
+test('wrapWarekiParenthetical leaves text without parenthetical unchanged', () => {
+  assert.equal(wrapWarekiParenthetical('2024.02'), '2024.02');
 });
