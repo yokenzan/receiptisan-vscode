@@ -1,3 +1,10 @@
+## [1.7.4](https://github.com/yokenzan/receiptisan-vscode/compare/v1.7.3...v1.7.4) (2026-02-24)
+
+
+### Bug Fixes
+
+* **cli:** prevent double settlement and listener leak on cancellation ([adebadc](https://github.com/yokenzan/receiptisan-vscode/commit/adebadc68e42ef0d1f216418e42aa1e4f3b87c5d))
+
 ## [1.7.3](https://github.com/yokenzan/receiptisan-vscode/compare/v1.7.2...v1.7.3) (2026-02-24)
 
 
