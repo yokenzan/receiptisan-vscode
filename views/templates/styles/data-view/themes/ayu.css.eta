@@ -1,0 +1,46 @@
+body.theme-ayu {
+  --bg: #1f2430;
+  --bg-card: #232834;
+  --bg-hover: #2d3446;
+  --bg-muted: #272d3a;
+  --border: #3e4b5e;
+  --border-strong: #546178;
+  --text: #cccac2;
+  --text-dim: #8a9199;
+  --text-bright: #e6e1cf;
+  --accent: #ffcc66;
+  --accent-dim: #e6b84d;
+  --green: #bae67e;
+  --orange: #ffa759;
+  --yellow: #ffd580;
+  --color-si: #cccac2;
+  --color-iy: #73d0ff;
+  --color-to: #bae67e;
+  --color-co: #ffd580;
+  --control-border: #546178;
+  --control-bg: #232834;
+  --control-hover-bg: #2d3446;
+  --control-fg: #cccac2;
+}
+
+body.theme-ayu #nav-table tr.active {
+  background: #2d3446;
+}
+
+body.theme-ayu .shoubyoumei-table th + th,
+body.theme-ayu .shoubyoumei-table td + td {
+  border-left: none;
+}
+
+body.theme-ayu .tekiyou-table td {
+  border-bottom: 1px solid #2a3040;
+}
+body.theme-ayu .tekiyou-table .row-upper-shinku td {
+  border-top: 2px solid #546178;
+}
+body.theme-ayu .tekiyou-table .row-next-shinku td {
+  border-top: 1px solid var(--border-strong);
+}
+body.theme-ayu .tekiyou-table .row-new-santei td {
+  border-top: 1px dotted #3e4b5e;
+}

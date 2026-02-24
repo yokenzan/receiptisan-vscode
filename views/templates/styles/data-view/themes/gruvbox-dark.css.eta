@@ -1,0 +1,46 @@
+body.theme-gruvbox-dark {
+  --bg: #282828;
+  --bg-card: #3c3836;
+  --bg-hover: #504945;
+  --bg-muted: #32302f;
+  --border: #665c54;
+  --border-strong: #7c6f64;
+  --text: #ebdbb2;
+  --text-dim: #a89984;
+  --text-bright: #fbf1c7;
+  --accent: #d79921;
+  --accent-dim: #b57614;
+  --green: #b8bb26;
+  --orange: #fe8019;
+  --yellow: #fabd2f;
+  --color-si: #ebdbb2;
+  --color-iy: #83a598;
+  --color-to: #b8bb26;
+  --color-co: #fabd2f;
+  --control-border: #7c6f64;
+  --control-bg: #3c3836;
+  --control-hover-bg: #504945;
+  --control-fg: #ebdbb2;
+}
+
+body.theme-gruvbox-dark #nav-table tr.active {
+  background: #504945;
+}
+
+body.theme-gruvbox-dark .shoubyoumei-table th + th,
+body.theme-gruvbox-dark .shoubyoumei-table td + td {
+  border-left: none;
+}
+
+body.theme-gruvbox-dark .tekiyou-table td {
+  border-bottom: 1px solid #3c3836;
+}
+body.theme-gruvbox-dark .tekiyou-table .row-upper-shinku td {
+  border-top: 2px solid #7c6f64;
+}
+body.theme-gruvbox-dark .tekiyou-table .row-next-shinku td {
+  border-top: 1px solid var(--border-strong);
+}
+body.theme-gruvbox-dark .tekiyou-table .row-new-santei td {
+  border-top: 1px dotted #665c54;
+}

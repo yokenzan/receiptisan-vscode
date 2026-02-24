@@ -14,7 +14,7 @@
     <div class="settings-panel-header">表示設定</div>
     <div class="settings-panel-group">
       <div class="settings-panel-label">テーマ</div>
-      <div id="theme-buttons" class="settings-panel-buttons"></div>
+      <div id="theme-select-container"></div>
     </div>
     <div class="settings-panel-group">
       <div class="settings-panel-label">セクション表示</div>

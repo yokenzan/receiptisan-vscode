@@ -114,11 +114,22 @@
             "light",
             "dark",
             "original",
-            "classic"
+            "classic",
+            "sakura",
+            "gruvbox-dark",
+            "gruvbox-light",
+            "ayu",
+            "solarized-dark",
+            "solarized-light",
+            "molokai",
+            "dracula",
+            "material-palenight",
+            "highcontrast-light",
+            "highcontrast-dark"
           ],
           "default": "auto",
           "description": "Default theme for Data View. Auto uses saved toggle (if any) or system preference.",
-          "markdownDescription": "データビューの既定テーマ。`auto` は保存済みの切替（なければOS設定）を使います。`light` / `dark` / `original` / `classic` を指定すると固定表示になります。"
+          "markdownDescription": "データビューの既定テーマ。`auto` は保存済みの切替（なければOS設定）を使います。テーマ名を指定すると固定表示になります。"
         }
       }
     }

@@ -1,10 +1,9 @@
 (() => {
-  var container = document.getElementById('theme-buttons');
+  var container = document.getElementById('theme-select-container');
   if (!container) return;
   var body = document.body;
   var config = <%~ it.configJson %>;
   var themeClasses = config.themes.map(function(theme) { return 'theme-' + theme; });
-  var buttons = {};
 
   function isKnownTheme(theme) {
     return config.themes.indexOf(theme) >= 0;
@@ -14,12 +13,9 @@
     var normalizedTheme = isKnownTheme(theme) ? theme : config.themes[0];
     body.classList.remove.apply(body.classList, themeClasses);
     body.classList.add('theme-' + normalizedTheme);
-    // ボタンのアクティブ状態を更新
-    config.themes.forEach(function(t) {
-      if (buttons[t]) {
-        buttons[t].classList.toggle('active', t === normalizedTheme);
-      }
-    });
+    if (select) {
+      select.value = normalizedTheme;
+    }
   }
 
   function getInitialTheme() {
@@ -38,25 +34,26 @@
     return 'light';
   }
 
-  // テーマボタンを生成
+  // テーマセレクトを生成
+  var select = document.createElement('select');
+  select.className = 'theme-select';
+  select.setAttribute('aria-label', 'テーマ切替');
   config.themes.forEach(function(theme) {
-    var btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'theme-button';
-    btn.textContent = config.labels[theme];
-    btn.setAttribute('aria-label', config.names[theme]);
-    btn.addEventListener('click', function() {
-      applyTheme(theme);
-      try {
-        localStorage.setItem(config.storageKey, theme);
-      } catch (_e) {}
-    });
-    if (config.configuredTheme !== 'auto') {
-      btn.disabled = true;
-    }
-    container.appendChild(btn);
-    buttons[theme] = btn;
+    var option = document.createElement('option');
+    option.value = theme;
+    option.textContent = config.names[theme];
+    select.appendChild(option);
   });
+  select.addEventListener('change', function() {
+    applyTheme(select.value);
+    try {
+      localStorage.setItem(config.storageKey, select.value);
+    } catch (_e) {}
+  });
+  if (config.configuredTheme !== 'auto') {
+    select.disabled = true;
+  }
+  container.appendChild(select);
 
   applyTheme(getInitialTheme());
 })();

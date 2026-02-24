@@ -1,0 +1,29 @@
+body.theme-sakura {
+  --bg: #fdf2f4;
+  --bg-card: #ffffff;
+  --bg-hover: #fce4e8;
+  --bg-muted: #fef8f9;
+  --border: #e8c4cb;
+  --border-strong: #d4a0ab;
+  --text: #4a2832;
+  --text-dim: #8a5a66;
+  --text-bright: #2e1018;
+  --accent: #d4667a;
+  --accent-dim: #b84d62;
+  --green: #5a9e6f;
+  --orange: #c97040;
+  --yellow: #a08830;
+  --color-si: #4a2832;
+  --color-iy: #c05878;
+  --color-to: #4e8a5e;
+  --color-co: #9a7a20;
+  --control-border: #d4a0ab;
+  --control-bg: #fff5f7;
+  --control-hover-bg: #fce4e8;
+  --control-fg: #4a2832;
+}
+
+body.theme-sakura .shoubyoumei-table th + th,
+body.theme-sakura .shoubyoumei-table td + td {
+  border-left: none;
+}

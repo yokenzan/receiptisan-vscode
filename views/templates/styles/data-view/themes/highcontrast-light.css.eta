@@ -1,0 +1,60 @@
+body.theme-highcontrast-light {
+  --bg: #ffffff;
+  --bg-card: #ffffff;
+  --bg-hover: #d6f0d6;
+  --bg-muted: #f0f0f0;
+  --border: #555555;
+  --border-strong: #000000;
+  --text: #000000;
+  --text-dim: #333333;
+  --text-bright: #000000;
+  --accent: #006600;
+  --accent-dim: #004d00;
+  --green: #006400;
+  --orange: #b33000;
+  --yellow: #6b5900;
+  --color-si: #000000;
+  --color-iy: #00008b;
+  --color-to: #006400;
+  --color-co: #6b5900;
+  --control-border: #333333;
+  --control-bg: #f5f5f5;
+  --control-hover-bg: #d6f0d6;
+  --control-fg: #000000;
+
+  --tenki-1-bg: #b71c1c;
+  --tenki-1-fg: #ffffff;
+  --tenki-2-bg: #1b5e20;
+  --tenki-2-fg: #ffffff;
+  --tenki-3-bg: #006064;
+  --tenki-3-fg: #ffffff;
+  --tenki-4-bg: #0d47a1;
+  --tenki-4-fg: #ffffff;
+
+  --badge-type-bg: #6a1b9a;
+  --badge-type-fg: #ffffff;
+  --badge-tokki-bg: #0d47a1;
+  --badge-tokki-fg: #ffffff;
+  --badge-main-bg: #b71c1c;
+  --badge-main-fg: #ffffff;
+
+  --nyuuin-bg: #b71c1c;
+  --nyuuin-fg: #ffffff;
+  --gairai-bg: #0d47a1;
+  --gairai-fg: #ffffff;
+
+  --sex-male-bg: #0d47a1;
+  --sex-male-fg: #ffffff;
+  --sex-female-bg: #b71c1c;
+  --sex-female-fg: #ffffff;
+
+  --utagai-bg: #e65100;
+  --utagai-fg: #ffffff;
+  --worpro-bg: #4a148c;
+  --worpro-fg: #ffffff;
+}
+
+body.theme-highcontrast-light .shoubyoumei-table th + th,
+body.theme-highcontrast-light .shoubyoumei-table td + td {
+  border-left: none;
+}
