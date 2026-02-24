@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/yokenzan/receiptisan-vscode/compare/v1.7.0...v1.7.1) (2026-02-24)
+
+
+### Bug Fixes
+
+* **data-view:** specify ja-JP locale for number formatting ([7859850](https://github.com/yokenzan/receiptisan-vscode/commit/78598504edf710409c5683ebcd96776227391aca))
+
 # [1.7.0](https://github.com/yokenzan/receiptisan-vscode/compare/v1.6.0...v1.7.0) (2026-02-24)
 
 
