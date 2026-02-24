@@ -1,4 +1,4 @@
-body.theme-ayu-dark {
+body.theme-ayu {
   --bg: #1f2430;
   --bg-card: #232834;
   --bg-hover: #2d3446;
@@ -23,24 +23,24 @@ body.theme-ayu-dark {
   --control-fg: #cccac2;
 }
 
-body.theme-ayu-dark #nav-table tr.active {
+body.theme-ayu #nav-table tr.active {
   background: #2d3446;
 }
 
-body.theme-ayu-dark .shoubyoumei-table th + th,
-body.theme-ayu-dark .shoubyoumei-table td + td {
+body.theme-ayu .shoubyoumei-table th + th,
+body.theme-ayu .shoubyoumei-table td + td {
   border-left: none;
 }
 
-body.theme-ayu-dark .tekiyou-table td {
+body.theme-ayu .tekiyou-table td {
   border-bottom: 1px solid #2a3040;
 }
-body.theme-ayu-dark .tekiyou-table .row-upper-shinku td {
+body.theme-ayu .tekiyou-table .row-upper-shinku td {
   border-top: 2px solid #546178;
 }
-body.theme-ayu-dark .tekiyou-table .row-next-shinku td {
+body.theme-ayu .tekiyou-table .row-next-shinku td {
   border-top: 1px solid var(--border-strong);
 }
-body.theme-ayu-dark .tekiyou-table .row-new-santei td {
+body.theme-ayu .tekiyou-table .row-new-santei td {
   border-top: 1px dotted #3e4b5e;
 }

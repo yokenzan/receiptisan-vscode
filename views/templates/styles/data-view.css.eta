@@ -1199,12 +1199,11 @@ body.layout-horizontal #content {
 <%~ include('data-view/themes/sakura.css.eta') %>
 <%~ include('data-view/themes/gruvbox-dark.css.eta') %>
 <%~ include('data-view/themes/gruvbox-light.css.eta') %>
-<%~ include('data-view/themes/ayu-dark.css.eta') %>
-<%~ include('data-view/themes/ayu-light.css.eta') %>
+<%~ include('data-view/themes/ayu.css.eta') %>
 <%~ include('data-view/themes/solarized-dark.css.eta') %>
 <%~ include('data-view/themes/solarized-light.css.eta') %>
 <%~ include('data-view/themes/molokai.css.eta') %>
 <%~ include('data-view/themes/dracula.css.eta') %>
-<%~ include('data-view/themes/material-dark.css.eta') %>
-<%~ include('data-view/themes/material-light.css.eta') %>
 <%~ include('data-view/themes/material-palenight.css.eta') %>
+<%~ include('data-view/themes/highcontrast-light.css.eta') %>
+<%~ include('data-view/themes/highcontrast-dark.css.eta') %>
