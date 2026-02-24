@@ -562,10 +562,19 @@ table tr:last-child > * {
 .date-value {
   font-family: inherit;
   font-variant-numeric: normal;
+  white-space: nowrap;
 }
-.date-wareki {
-  font-size: 90%;
+.date-wareki-sup {
   color: var(--text-dim);
+  font-size: 75%;
+  vertical-align: super;
+  line-height: 1;
+  margin-left: 0.08em;
+  letter-spacing: 0.01em;
+}
+.date-cell {
+  padding: 0 6px !important;
+  white-space: nowrap;
 }
 .age-display {
   margin-left: 0.55em;

@@ -1,12 +1,13 @@
 <div class="uke-header">
-  <% const renderWarekiCompact = (value) => String(value).replace(/\(([^)]+)\)/g, '<span class="date-wareki">($1)</span>'); %>
-  <div class="uke-header-title"><%= it.title %></div>
+  <div class="uke-header-title">
+    <%= it.seikyuuYm.western %><%= it.auditPayerLabel %>請求分 - <%= it.hospitalDisplayName %>
+  </div>
   <table class="uke-header-table">
     <tr>
       <th>医療機関コード</th>
       <td><span class="code"><%= it.hospitalCode %></span></td>
-      <th>請求年月</th>
-      <td><span class="date-value"><%~ renderWarekiCompact(it.seikyuuYm) %></span></td>
+      <th class="date-th">請求年月</th>
+      <td class="date-cell"><span class="date-value"><%= it.seikyuuYm.westernYear %><sup class="date-wareki-sup"><%= it.seikyuuYm.warekiYear %></sup><%= it.seikyuuYm.westernRest %></span></td>
     </tr>
     <tr>
       <th>都道府県</th>

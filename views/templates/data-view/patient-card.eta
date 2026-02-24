@@ -1,6 +1,5 @@
 <section class="data-section data-section-patient" data-section="patient">
   <h3 class="section-title">患者情報</h3>
-    <% const renderWarekiCompact = (value) => String(value).replace(/\(([^)]+)\)/g, '<span class="date-wareki">($1)</span>'); %>
     <table>
       <tr>
         <th>患者番号</th>
@@ -33,12 +32,12 @@
         </td>
       </tr>
       <tr>
-        <th>生年月日</th>
-        <td>
-          <% if (it.birthDate === '-') { %>
+        <th class="date-th">生年月日</th>
+        <td class="date-cell">
+          <% if (!it.birthDate) { %>
           <span class="placeholder">-</span>
           <% } else { %>
-          <span class="date-value"><%~ renderWarekiCompact(it.birthDate) %></span>
+          <span class="date-value"><%= it.birthDate.westernYear %><sup class="date-wareki-sup"><%= it.birthDate.warekiYear %></sup><%= it.birthDate.westernRest %></span>
           <% if (it.ageYearsMonths) { %>
           <span class="age-display"><span class="value-num"><%= it.ageYearsMonths.years %></span><span class="value-unit">歳</span><span class="value-num"><%= it.ageYearsMonths.months %></span><span class="value-unit">ヶ月</span><% if (it.isBirthMonth) { %>🎂<% } %></span>
           <% } %>

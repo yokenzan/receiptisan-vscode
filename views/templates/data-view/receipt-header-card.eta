@@ -1,19 +1,22 @@
 <section class="data-section data-section-receipt-header" data-section="receipt-header">
   <h3 class="section-title">請求情報</h3>
-    <% const renderWarekiCompact = (value) => String(value).replace(/\(([^)]+)\)/g, '<span class="date-wareki">($1)</span>'); %>
     <table>
       <tr>
         <th>No.</th>
         <td><%= it.id %></td>
       </tr>
       <tr>
-        <th>診療年月</th>
-        <td><span class="date-value"><%~ renderWarekiCompact(it.shinryouYm) %></span>診療</td>
+        <th class="date-th">診療年月</th>
+        <td class="date-cell">
+          <span class="date-value"><%= it.shinryouYm.westernYear %><sup class="date-wareki-sup"><%= it.shinryouYm.warekiYear %></sup><%= it.shinryouYm.westernRest %></span>診療
+        </td>
       </tr>
       <% if (it.nyuuinDateCell) { %>
       <tr>
-        <th>入院日</th>
-        <td><span class="date-value"><%~ renderWarekiCompact(it.nyuuinDateCell) %></span></td>
+        <th class="date-th">入院日</th>
+        <td class="date-cell">
+          <span class="date-value"><%= it.nyuuinDateCell.westernYear %><sup class="date-wareki-sup"><%= it.nyuuinDateCell.warekiYear %></sup><%= it.nyuuinDateCell.westernRest %></span>
+        </td>
       </tr>
       <% if (it.byoushouCell) { %>
       <tr>

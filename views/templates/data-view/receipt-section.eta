@@ -1,7 +1,6 @@
 <div id="<%= it.id %>" class="receipt-section">
-  <% const renderWarekiCompact = (value) => String(value).replace(/\(([^)]+)\)/g, '<span class="date-wareki">($1)</span>'); %>
   <div class="receipt-header">
-    <%~ renderWarekiCompact(it.headerLabel.shinryouYm) %>診療分<%= it.headerLabel.nyuugaiLabel %>レセプト - <%= it.headerLabel.patientId === '-' ? '' : it.headerLabel.patientId %> <%= it.headerLabel.patientName %>
+    <%= it.headerLabel.shinryouYmDate.western %>診療分<%= it.headerLabel.nyuugaiLabel %>レセプト - <%= it.headerLabel.patientId === '-' ? '' : it.headerLabel.patientId %> <%= it.headerLabel.patientName %>
   </div>
   <%~ it.receiptHeaderHtml %>
   <%~ it.patientCardHtml %>

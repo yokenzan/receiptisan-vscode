@@ -1,6 +1,5 @@
 <section class="data-section data-section-shoubyoumei" data-section="shoubyoumei">
   <h3 class="section-title">傷病名</h3>
-    <% const renderWarekiCompact = (value) => String(value).replace(/\(([^)]+)\)/g, '<span class="date-wareki">($1)</span>'); %>
     <table class="shoubyoumei-table">
       <colgroup>
         <col class="col-idx" />
@@ -13,7 +12,7 @@
         <col class="col-tenki" />
       </colgroup>
       <thead>
-      <tr><th>#</th><th>コード</th><th>主</th><th>疑</th><th class="sep-strong">ワープロ</th><th>名称</th><th>開始日</th><th>転帰</th></tr>
+      <tr><th>#</th><th>コード</th><th>主</th><th>疑</th><th class="sep-strong">ワープロ</th><th>名称</th><th class="date-th">開始日</th><th>転帰</th></tr>
       </thead>
       <% for (const row of it.rows) { %>
       <tr<% if (row.rowClass) { %> class="<%= row.rowClass %>"<% } %>>
@@ -31,7 +30,7 @@
           <%= row.fullText %>
           <% if (row.comment) { %> <span class="text-dim">（<%= row.comment %>）</span><% } %>
         </td>
-        <td><span class="date-value"><%~ renderWarekiCompact(row.startDate) %></span></td>
+        <td class="date-cell"><span class="date-value"><%= row.startDate.westernYear %><sup class="date-wareki-sup"><%= row.startDate.warekiYear %></sup><%= row.startDate.westernRest %></span></td>
         <td><span class="tag <%= row.tenkiClass %>"><%= row.tenkiName %></span></td>
       </tr>
       <% } %>

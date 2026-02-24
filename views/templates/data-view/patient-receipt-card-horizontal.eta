@@ -1,6 +1,5 @@
 <section class="data-section data-section-patient-receipt-horizontal" data-section="basic-info">
   <h3 class="section-title">基本情報</h3>
-  <% const renderWarekiCompact = (value) => String(value).replace(/\(([^)]+)\)/g, '<span class="date-wareki">($1)</span>'); %>
   <div class="section-horizontal-columns">
     <div class="section-horizontal-pane">
         <table>
@@ -9,9 +8,9 @@
             <td><%= it.receiptHeader.id %></td>
           </tr>
           <tr>
-            <th>診療年月</th>
-            <td>
-              <span class="date-value"><%~ renderWarekiCompact(it.receiptHeader.shinryouYm) %></span>診療
+            <th class="date-th">診療年月</th>
+            <td class="date-cell">
+              <span class="date-value"><%= it.receiptHeader.shinryouYm.westernYear %><sup class="date-wareki-sup"><%= it.receiptHeader.shinryouYm.warekiYear %></sup><%= it.receiptHeader.shinryouYm.westernRest %></span>診療
             </td>
           </tr>
           <tr>
@@ -42,9 +41,9 @@
           </tr>
           <% if (it.receiptHeader.nyuuinDateCell) { %>
           <tr>
-            <th>入院日</th>
-            <td>
-              <span class="date-value"><%~ renderWarekiCompact(it.receiptHeader.nyuuinDateCell) %></span>
+            <th class="date-th">入院日</th>
+            <td class="date-cell">
+              <span class="date-value"><%= it.receiptHeader.nyuuinDateCell.westernYear %><sup class="date-wareki-sup"><%= it.receiptHeader.nyuuinDateCell.warekiYear %></sup><%= it.receiptHeader.nyuuinDateCell.westernRest %></span>
             </td>
           </tr>
           <% } %>
@@ -83,12 +82,12 @@
             </td>
           </tr>
           <tr>
-            <th>生年月日</th>
-            <td>
-              <% if (it.patient.birthDate === '-') { %>
+            <th class="date-th">生年月日</th>
+            <td class="date-cell">
+              <% if (!it.patient.birthDate) { %>
               <span class="placeholder">-</span>
               <% } else { %>
-              <span class="date-value"><%~ renderWarekiCompact(it.patient.birthDate) %></span>
+              <span class="date-value"><%= it.patient.birthDate.westernYear %><sup class="date-wareki-sup"><%= it.patient.birthDate.warekiYear %></sup><%= it.patient.birthDate.westernRest %></span>
               <% if (it.patient.ageYearsMonths) { %>
               <span class="age-display"><span class="value-num"><%= it.patient.ageYearsMonths.years %></span><span class="value-unit">歳</span><span class="value-num"><%= it.patient.ageYearsMonths.months %></span><span class="value-unit">ヶ月</span><% if (it.patient.isBirthMonth) { %>🎂<% } %></span>
               <% } %>
