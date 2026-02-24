@@ -1,7 +1,7 @@
 <tr<% if (it.rowClass) { %> class="<%= it.rowClass %>"<% } %>>
   <td class="col-shinku"><%= it.shinkuCode %></td>
   <td class="col-futan-code"><%= it.futanCodeDisplay %></td>
-  <td class="col-mark"><% if (it.isFirstInSantei) { %><span style="color:#9c27b0;font-weight:bold">＊</span><% } %></td>
+  <td class="col-mark"><% if (it.isFirstInSantei) { %><span class="santei-mark">＊</span><% } %></td>
   <td class="col-name <%= it.categoryClass %><%= it.unknownClass %>">
     <% for (const segment of it.nameSegments) { %>
       <% if (segment.inParen) { %><span class="tekiyou-paren-compact"><%= segment.text %></span><% } else { %><%= segment.text %><% } %>
