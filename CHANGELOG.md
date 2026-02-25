@@ -1,3 +1,11 @@
+## [1.8.1](https://github.com/yokenzan/receiptisan-vscode/compare/v1.8.0...v1.8.1) (2026-02-25)
+
+
+### Bug Fixes
+
+* align meal and life療養 column label ([a5f016f](https://github.com/yokenzan/receiptisan-vscode/commit/a5f016fef7fdbf5d38091865ab0e61b20c17b140))
+* rename data-view kyuufu total amount label ([ae95e63](https://github.com/yokenzan/receiptisan-vscode/commit/ae95e63e807300980c8e7ddef03bdda6eaa9aae3))
+
 # [1.8.0](https://github.com/yokenzan/receiptisan-vscode/compare/v1.7.6...v1.8.0) (2026-02-25)
 
 
