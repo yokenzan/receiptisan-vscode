@@ -1,6 +1,7 @@
 import type { CliError } from '../../cli/receiptisan-client';
 import type { ReceiptisanJsonOutput } from '../../shared/receiptisan-json-types';
 import type { DataViewTheme } from './theme';
+import type { DataViewRenderOptions } from './view/tekiyou';
 import { renderDataViewErrorHtml, renderDataViewPage } from './view/page';
 
 export type LayoutMode = 'vertical' | 'horizontal';
@@ -11,10 +12,10 @@ export type LayoutMode = 'vertical' | 'horizontal';
 export function presentDataView(
   data: ReceiptisanJsonOutput,
   layoutMode: LayoutMode,
-  normalizeTekiyouAscii: boolean,
+  options: DataViewRenderOptions,
   defaultTheme: DataViewTheme,
 ): string {
-  return renderDataViewPage(data, layoutMode, { normalizeTekiyouAscii }, defaultTheme);
+  return renderDataViewPage(data, layoutMode, options, defaultTheme);
 }
 
 /**

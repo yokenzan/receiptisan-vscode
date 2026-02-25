@@ -29,8 +29,8 @@ export function renderReceiptSection(
       ? renderPatientReceiptCardHorizontal(receipt)
       : renderPatientCard(receipt),
     hokenCardHtml: isHorizontal
-      ? renderHokenKyuufuCardHorizontal(receipt)
-      : renderHokenCard(receipt),
+      ? renderHokenKyuufuCardHorizontal(receipt, options)
+      : renderHokenCard(receipt, options),
     kyuufuCardHtml: isHorizontal ? '' : renderKyuufuCard(receipt),
     shoubyoumeiCardHtml: renderShoubyoumeiCard(receipt.shoubyoumeis),
     tekiyouCardHtml: renderTekiyouCard(receipt, receiptViewModel.showCalendar, options),

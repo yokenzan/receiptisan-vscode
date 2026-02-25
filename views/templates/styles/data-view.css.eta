@@ -744,10 +744,15 @@ table tr:last-child > * {
   min-width: 110px;
   max-width: 110px;
 }
-.hoken-integrated-table .shikaku-cell {
+.hoken-kyuufu-table .col-shikaku {
+  width: 110px;
+}
+.hoken-integrated-table .shikaku-cell,
+.hoken-kyuufu-table .shikaku-cell {
   text-align: left;
 }
-.hoken-integrated-table .shikaku-layout {
+.hoken-integrated-table .shikaku-layout,
+.hoken-kyuufu-table .shikaku-layout {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -755,7 +760,8 @@ table tr:last-child > * {
   width: 100%;
   min-height: 1.1em;
 }
-.hoken-integrated-table .shikaku-main-stack {
+.hoken-integrated-table .shikaku-main-stack,
+.hoken-kyuufu-table .shikaku-main-stack {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -763,14 +769,17 @@ table tr:last-child > * {
   gap: 0;
   line-height: 0.9;
 }
-.hoken-integrated-table .shikaku-kigou {
+.hoken-integrated-table .shikaku-kigou,
+.hoken-kyuufu-table .shikaku-kigou {
   font-size: 72%;
 }
-.hoken-integrated-table .shikaku-bangou {
+.hoken-integrated-table .shikaku-bangou,
+.hoken-kyuufu-table .shikaku-bangou {
   font-size: 76%;
   margin-top: -1px;
 }
-.hoken-integrated-table .shikaku-edaban {
+.hoken-integrated-table .shikaku-edaban,
+.hoken-kyuufu-table .shikaku-edaban {
   margin-left: auto;
   white-space: nowrap;
   align-self: center;
@@ -1061,9 +1070,6 @@ table tr:last-child > * {
 }
 .hoken-kyuufu-table .col-hokenja {
   width: 81px;
-}
-.hoken-kyuufu-table .col-shikaku {
-  width: 88px;
 }
 .hoken-kyuufu-table .col-jitsunissuu {
   width: 46px;

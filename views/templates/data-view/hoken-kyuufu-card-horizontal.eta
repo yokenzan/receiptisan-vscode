@@ -37,8 +37,22 @@
         <td class="code">
           <% if (row.hokenjaBangou) { %><%= row.hokenjaBangou %><% } else { %><span class="placeholder">-</span><% } %>
         </td>
-        <td class="sep-strong">
-          <% if (row.shikakuBangou) { %><%= row.shikakuBangou %><% } else { %><span class="placeholder">-</span><% } %>
+        <td class="sep-strong shikaku-cell">
+          <% if (row.shikakuBangouParts) { %>
+          <span class="shikaku-layout">
+            <span class="shikaku-main-stack">
+              <span class="shikaku-kigou"><%= row.shikakuBangouParts.kigou %></span>
+              <span class="shikaku-bangou"><%= row.shikakuBangouParts.bangou %></span>
+            </span>
+            <% if (row.shikakuBangouParts.edaban) { %>
+            <span class="shikaku-edaban">(<%= row.shikakuBangouParts.edaban %>)</span>
+            <% } %>
+          </span>
+          <% } else if (row.shikakuBangou) { %>
+          <%= row.shikakuBangou %>
+          <% } else { %>
+          <span class="placeholder">-</span>
+          <% } %>
         </td>
         <td class="unit-cell">
           <% if (row.jitsunissuu) { %>

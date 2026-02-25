@@ -3,6 +3,7 @@ import type {
   Receipt,
   ShoubyoumeiGroup,
 } from '../../../shared/receiptisan-json-types';
+import { toHalfWidthAscii } from '../../../domain/tekiyou-utils';
 import { renderTemplate } from '../../../template/eta-renderer';
 import {
   buildYearMonthDayDisplayViewModel,
@@ -12,6 +13,7 @@ import {
 } from '../view-model/date-display';
 import { getTenkiColorClass } from './receipt-meta';
 import { formatNumber } from './tekiyou-table';
+import type { DataViewRenderOptions } from './tekiyou';
 
 interface HokenRowViewModel {
   kubun: string;
@@ -40,6 +42,11 @@ interface HokenKyuufuRowViewModel {
   kubun: string;
   hokenjaBangou: string;
   shikakuBangou: string;
+  shikakuBangouParts: {
+    kigou: string;
+    bangou: string;
+    edaban: string;
+  } | null;
   jitsunissuu: UnitValue | null;
   tensuu: UnitValue | null;
   kyuufuTaishouIchibuFutankin: UnitValue | null;
@@ -180,10 +187,16 @@ function buildPatientCardViewModel(receipt: Receipt): PatientCardViewModel {
   };
 }
 
-function buildHokenCardData(receipt: Receipt): {
+function normalizeShikakuBangou(value: string | null | undefined, normalizeAscii: boolean): string {
+  if (!value) return '';
+  return normalizeAscii ? toHalfWidthAscii(value) : value;
+}
+
+function buildHokenCardData(receipt: Receipt, options?: DataViewRenderOptions): {
   rows: HokenRowViewModel[];
   detailParts: string[];
 } {
+  const normalizeAscii = options?.normalizeHokenShikakuAscii ?? false;
   const h = receipt.hokens;
   const ih = h.iryou_hoken;
   const k = receipt.ryouyou_no_kyuufu;
@@ -192,10 +205,13 @@ function buildHokenCardData(receipt: Receipt): {
 
   if (ih) {
     const kih = k.iryou_hoken;
-    const hasStructuredShikaku = [ih.kigou, ih.bangou, ih.edaban].some(
+    const kigou = normalizeShikakuBangou(ih.kigou, normalizeAscii);
+    const bangou = normalizeShikakuBangou(ih.bangou, normalizeAscii);
+    const edaban = normalizeShikakuBangou(ih.edaban, normalizeAscii);
+    const hasStructuredShikaku = [kigou, bangou, edaban].some(
       (v) => typeof v === 'string' && v.trim().length > 0,
     );
-    const shikakuParts = [ih.kigou, ih.bangou, ih.edaban].filter((v) => v != null);
+    const shikakuParts = [kigou, bangou, edaban].filter((v) => v.length > 0);
 
     rows.push({
       kubun: '医療保険',
@@ -203,9 +219,9 @@ function buildHokenCardData(receipt: Receipt): {
       shikakuBangou: shikakuParts.join('・'),
       shikakuBangouParts: hasStructuredShikaku
         ? {
-            kigou: ih.kigou ?? '',
-            bangou: ih.bangou ?? '',
-            edaban: ih.edaban ?? '',
+            kigou,
+            bangou,
+            edaban,
           }
         : null,
       jitsunissuu: makeUnitValue(kih?.shinryou_jitsunissuu, '日'),
@@ -227,7 +243,7 @@ function buildHokenCardData(receipt: Receipt): {
     rows.push({
       kubun: `公費${i + 1}`,
       hokenjaBangou: kouhi.futansha_bangou,
-      shikakuBangou: kouhi.jukyuusha_bangou,
+      shikakuBangou: normalizeShikakuBangou(kouhi.jukyuusha_bangou, normalizeAscii),
       shikakuBangouParts: null,
       jitsunissuu: makeUnitValue(rk?.shinryou_jitsunissuu, '日'),
       tensuu: makeUnitValue(rk?.goukei_tensuu, '点'),
@@ -380,8 +396,8 @@ export function renderPatientCard(receipt: Receipt): string {
 /**
  * Renders integrated insurance/public-insurance information card.
  */
-export function renderHokenCard(receipt: Receipt): string {
-  const { rows, detailParts } = buildHokenCardData(receipt);
+export function renderHokenCard(receipt: Receipt, options?: DataViewRenderOptions): string {
+  const { rows, detailParts } = buildHokenCardData(receipt, options);
   if (rows.length === 0) return '';
 
   return renderTemplate('data-view/hoken-card.eta', {
@@ -449,8 +465,11 @@ export function renderPatientReceiptCardHorizontal(receipt: Receipt): string {
 /**
  * Renders a single horizontal card combining insurance and meal/life data.
  */
-export function renderHokenKyuufuCardHorizontal(receipt: Receipt): string {
-  const { rows: hokenRows, detailParts } = buildHokenCardData(receipt);
+export function renderHokenKyuufuCardHorizontal(
+  receipt: Receipt,
+  options?: DataViewRenderOptions,
+): string {
+  const { rows: hokenRows, detailParts } = buildHokenCardData(receipt, options);
   const kyuufuRows = buildKyuufuRows(receipt);
   if (hokenRows.length === 0 && kyuufuRows.length === 0) return '';
 
@@ -460,6 +479,7 @@ export function renderHokenKyuufuCardHorizontal(receipt: Receipt): string {
       kubun: row.kubun,
       hokenjaBangou: row.hokenjaBangou,
       shikakuBangou: row.shikakuBangou,
+      shikakuBangouParts: row.shikakuBangouParts,
       jitsunissuu: row.jitsunissuu,
       tensuu: row.tensuu,
       kyuufuTaishouIchibuFutankin: row.kyuufuTaishouIchibuFutankin,
@@ -482,6 +502,7 @@ export function renderHokenKyuufuCardHorizontal(receipt: Receipt): string {
       kubun: row.kubun,
       hokenjaBangou: '',
       shikakuBangou: '',
+      shikakuBangouParts: null,
       jitsunissuu: null,
       tensuu: null,
       kyuufuTaishouIchibuFutankin: null,
