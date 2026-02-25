@@ -96,6 +96,23 @@ test('renderKyuufuCard returns empty when no meal/life data exists', () => {
   assert.equal(renderKyuufuCard(receipt), '');
 });
 
+test('renderKyuufuCard includes shikaku column next to jigyousha and uses stacked layout', () => {
+  const receipt = createReceipt();
+  receipt.ryouyou_no_kyuufu.iryou_hoken.shokuji_seikatsu_ryouyou_kaisuu = 2;
+  receipt.ryouyou_no_kyuufu.iryou_hoken.shokuji_seikatsu_ryouyou_goukei_kingaku = 1234;
+  receipt.ryouyou_no_kyuufu.iryou_hoken.shokuji_seikatsu_ryouyou_hyoujun_futangaku = 600;
+  receipt.hokens.iryou_hoken.kigou = 'AB';
+  receipt.hokens.iryou_hoken.bangou = '1234';
+  receipt.hokens.iryou_hoken.edaban = '5';
+
+  const html = renderKyuufuCard(receipt);
+  assert.match(html, /<th class="sep-strong">資格番号<\/th>/);
+  assert.ok(html.includes('class="shikaku-layout"'));
+  assert.ok(html.includes('class="shikaku-kigou">AB</span>'));
+  assert.ok(html.includes('class="shikaku-bangou">1234</span>'));
+  assert.ok(html.includes('class="shikaku-edaban">(5)</span>'));
+});
+
 test('renderPatientCard shows legal age at end of shinryou month', () => {
   const receipt = createReceipt();
   receipt.shinryou_ym = { year: 2025, month: 10, wareki: wareki('R', 7, 10) };

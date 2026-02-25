@@ -747,12 +747,19 @@ table tr:last-child > * {
 .hoken-kyuufu-table .col-shikaku {
   width: 110px;
 }
+.kyuufu-table .col-shikaku {
+  min-width: 110px;
+  max-width: 110px;
+  width: 110px;
+}
 .hoken-integrated-table .shikaku-cell,
-.hoken-kyuufu-table .shikaku-cell {
+.hoken-kyuufu-table .shikaku-cell,
+.kyuufu-table .shikaku-cell {
   text-align: left;
 }
 .hoken-integrated-table .shikaku-layout,
-.hoken-kyuufu-table .shikaku-layout {
+.hoken-kyuufu-table .shikaku-layout,
+.kyuufu-table .shikaku-layout {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -761,7 +768,8 @@ table tr:last-child > * {
   min-height: 1.1em;
 }
 .hoken-integrated-table .shikaku-main-stack,
-.hoken-kyuufu-table .shikaku-main-stack {
+.hoken-kyuufu-table .shikaku-main-stack,
+.kyuufu-table .shikaku-main-stack {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -770,16 +778,19 @@ table tr:last-child > * {
   line-height: 0.9;
 }
 .hoken-integrated-table .shikaku-kigou,
-.hoken-kyuufu-table .shikaku-kigou {
+.hoken-kyuufu-table .shikaku-kigou,
+.kyuufu-table .shikaku-kigou {
   font-size: 72%;
 }
 .hoken-integrated-table .shikaku-bangou,
-.hoken-kyuufu-table .shikaku-bangou {
+.hoken-kyuufu-table .shikaku-bangou,
+.kyuufu-table .shikaku-bangou {
   font-size: 76%;
   margin-top: -1px;
 }
 .hoken-integrated-table .shikaku-edaban,
-.hoken-kyuufu-table .shikaku-edaban {
+.hoken-kyuufu-table .shikaku-edaban,
+.kyuufu-table .shikaku-edaban {
   margin-left: auto;
   white-space: nowrap;
   align-self: center;

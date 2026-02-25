@@ -33,6 +33,12 @@ interface HokenRowViewModel {
 interface KyuufuRowViewModel {
   kubun: string;
   jigyoushaBangou: string;
+  shikakuBangou: string;
+  shikakuBangouParts: {
+    kigou: string;
+    bangou: string;
+    edaban: string;
+  } | null;
   kaisuu: UnitValue | null;
   goukeiKingaku: UnitValue | null;
   hyoujunFutangaku: UnitValue | null;
@@ -261,7 +267,8 @@ function buildHokenCardData(receipt: Receipt, options?: DataViewRenderOptions): 
   };
 }
 
-function buildKyuufuRows(receipt: Receipt): KyuufuRowViewModel[] {
+function buildKyuufuRows(receipt: Receipt, options?: DataViewRenderOptions): KyuufuRowViewModel[] {
+  const normalizeAscii = options?.normalizeHokenShikakuAscii ?? false;
   const k = receipt.ryouyou_no_kyuufu;
   const h = receipt.hokens;
   const ih = k.iryou_hoken;
@@ -274,9 +281,23 @@ function buildKyuufuRows(receipt: Receipt): KyuufuRowViewModel[] {
       ih.shokuji_seikatsu_ryouyou_hyoujun_futangaku > 0);
 
   if (hasIh && ih) {
+    const kigou = normalizeShikakuBangou(h.iryou_hoken?.kigou, normalizeAscii);
+    const bangou = normalizeShikakuBangou(h.iryou_hoken?.bangou, normalizeAscii);
+    const edaban = normalizeShikakuBangou(h.iryou_hoken?.edaban, normalizeAscii);
+    const hasStructuredShikaku = [kigou, bangou, edaban].some((v) => v.trim().length > 0);
+    const shikakuParts = [kigou, bangou, edaban].filter((v) => v.length > 0);
+
     rows.push({
       kubun: '医療保険',
       jigyoushaBangou: h.iryou_hoken?.hokenja_bangou ?? '',
+      shikakuBangou: shikakuParts.join('・'),
+      shikakuBangouParts: hasStructuredShikaku
+        ? {
+            kigou,
+            bangou,
+            edaban,
+          }
+        : null,
       kaisuu: makeUnitValue(ih.shokuji_seikatsu_ryouyou_kaisuu, '回'),
       goukeiKingaku: makeUnitValue(ih.shokuji_seikatsu_ryouyou_goukei_kingaku, '円'),
       hyoujunFutangaku: makeUnitValue(
@@ -299,6 +320,8 @@ function buildKyuufuRows(receipt: Receipt): KyuufuRowViewModel[] {
     rows.push({
       kubun: `公費${i + 1}`,
       jigyoushaBangou: h.kouhi_futan_iryous[i]?.futansha_bangou ?? '',
+      shikakuBangou: normalizeShikakuBangou(h.kouhi_futan_iryous[i]?.jukyuusha_bangou, normalizeAscii),
+      shikakuBangouParts: null,
       kaisuu: makeUnitValue(rk.shokuji_seikatsu_ryouyou_kaisuu, '回'),
       goukeiKingaku: makeUnitValue(rk.shokuji_seikatsu_ryouyou_goukei_kingaku, '円'),
       hyoujunFutangaku: makeUnitValue(
@@ -445,8 +468,8 @@ export function renderShoubyoumeiCard(groups: ShoubyoumeiGroup[]): string {
 /**
  * Renders meal/life therapy benefit card.
  */
-export function renderKyuufuCard(receipt: Receipt): string {
-  const rows = buildKyuufuRows(receipt);
+export function renderKyuufuCard(receipt: Receipt, options?: DataViewRenderOptions): string {
+  const rows = buildKyuufuRows(receipt, options);
   if (rows.length === 0) return '';
 
   return renderTemplate('data-view/kyuufu-card.eta', { rows });
@@ -470,7 +493,7 @@ export function renderHokenKyuufuCardHorizontal(
   options?: DataViewRenderOptions,
 ): string {
   const { rows: hokenRows, detailParts } = buildHokenCardData(receipt, options);
-  const kyuufuRows = buildKyuufuRows(receipt);
+  const kyuufuRows = buildKyuufuRows(receipt, options);
   if (hokenRows.length === 0 && kyuufuRows.length === 0) return '';
 
   const map = new Map<string, HokenKyuufuRowViewModel>();

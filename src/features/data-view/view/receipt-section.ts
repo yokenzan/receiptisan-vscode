@@ -31,7 +31,7 @@ export function renderReceiptSection(
     hokenCardHtml: isHorizontal
       ? renderHokenKyuufuCardHorizontal(receipt, options)
       : renderHokenCard(receipt, options),
-    kyuufuCardHtml: isHorizontal ? '' : renderKyuufuCard(receipt),
+    kyuufuCardHtml: isHorizontal ? '' : renderKyuufuCard(receipt, options),
     shoubyoumeiCardHtml: renderShoubyoumeiCard(receipt.shoubyoumeis),
     tekiyouCardHtml: renderTekiyouCard(receipt, receiptViewModel.showCalendar, options),
   });
