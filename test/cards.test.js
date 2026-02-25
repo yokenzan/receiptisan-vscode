@@ -149,7 +149,8 @@ test('renderHokenKyuufuCardHorizontal combines hoken and kyuufu by kubun', () =>
   assert.ok(html.includes('請求点数'));
   assert.ok(html.includes('標準負担金額'));
   assert.ok(html.includes('請求金額'));
-  assert.ok(html.includes('資格番号:'));
+  assert.match(html, /<th class="sep-strong">資格番号<\/th>/);
+  assert.match(html, /<td class="sep-strong">\s*AB・1234\s*<\/td>/);
 });
 
 test('renderHokenKyuufuCardHorizontal hides meal/life columns for gairai', () => {
@@ -163,4 +164,18 @@ test('renderHokenKyuufuCardHorizontal hides meal/life columns for gairai', () =>
   assert.ok(!html.includes('回数'));
   assert.ok(!html.includes('請求金額'));
   assert.ok(!html.includes('標準負担金額'));
+});
+
+test('renderHokenCard lays out shikaku bangou with stacked symbol/number and right-aligned edaban', () => {
+  const receipt = createReceipt();
+  receipt.hokens.iryou_hoken.kigou = 'AB';
+  receipt.hokens.iryou_hoken.bangou = '1234';
+  receipt.hokens.iryou_hoken.edaban = '5';
+
+  const html = renderHokenCard(receipt);
+  assert.ok(html.includes('class="shikaku-layout"'));
+  assert.ok(html.includes('class="shikaku-main-stack"'));
+  assert.ok(html.includes('class="shikaku-kigou">AB</span>'));
+  assert.ok(html.includes('class="shikaku-bangou">1234</span>'));
+  assert.ok(html.includes('class="shikaku-edaban">(5)</span>'));
 });

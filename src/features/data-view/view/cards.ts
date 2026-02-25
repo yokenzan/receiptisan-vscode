@@ -17,6 +17,11 @@ interface HokenRowViewModel {
   kubun: string;
   hokenjaBangou: string;
   shikakuBangou: string;
+  shikakuBangouParts: {
+    kigou: string;
+    bangou: string;
+    edaban: string;
+  } | null;
   jitsunissuu: UnitValue | null;
   tensuu: UnitValue | null;
   kyuufuTaishouIchibuFutankin: UnitValue | null;
@@ -187,12 +192,22 @@ function buildHokenCardData(receipt: Receipt): {
 
   if (ih) {
     const kih = k.iryou_hoken;
+    const hasStructuredShikaku = [ih.kigou, ih.bangou, ih.edaban].some(
+      (v) => typeof v === 'string' && v.trim().length > 0,
+    );
     const shikakuParts = [ih.kigou, ih.bangou, ih.edaban].filter((v) => v != null);
 
     rows.push({
       kubun: '医療保険',
       hokenjaBangou: ih.hokenja_bangou,
       shikakuBangou: shikakuParts.join('・'),
+      shikakuBangouParts: hasStructuredShikaku
+        ? {
+            kigou: ih.kigou ?? '',
+            bangou: ih.bangou ?? '',
+            edaban: ih.edaban ?? '',
+          }
+        : null,
       jitsunissuu: makeUnitValue(kih?.shinryou_jitsunissuu, '日'),
       tensuu: makeUnitValue(kih?.goukei_tensuu, '点'),
       kyuufuTaishouIchibuFutankin: makeUnitValue(kih?.kyuufu_taishou_ichibu_futankin, '円', {
@@ -213,6 +228,7 @@ function buildHokenCardData(receipt: Receipt): {
       kubun: `公費${i + 1}`,
       hokenjaBangou: kouhi.futansha_bangou,
       shikakuBangou: kouhi.jukyuusha_bangou,
+      shikakuBangouParts: null,
       jitsunissuu: makeUnitValue(rk?.shinryou_jitsunissuu, '日'),
       tensuu: makeUnitValue(rk?.goukei_tensuu, '点'),
       kyuufuTaishouIchibuFutankin: makeUnitValue(rk?.kyuufu_taishou_ichibu_futankin, '円', {
@@ -477,12 +493,10 @@ export function renderHokenKyuufuCardHorizontal(receipt: Receipt): string {
   }
 
   const rows = [...map.values()].sort((a, b) => getKubunOrder(a.kubun) - getKubunOrder(b.kubun));
-  const shikakuRows = rows.filter((row) => row.shikakuBangou.trim().length > 0);
 
   return renderTemplate('data-view/hoken-kyuufu-card-horizontal.eta', {
     rows,
     detailParts,
-    shikakuRows,
     showMealLifeColumns: receipt.nyuugai === 'nyuuin',
   });
 }

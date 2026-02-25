@@ -1,17 +1,10 @@
 <section class="data-section data-section-hoken-kyuufu-horizontal" data-section="hoken">
   <h3 class="section-title">療養の給付</h3>
-    <% if (it.shikakuRows.length > 0) { %>
-    <div class="hoken-shikaku-detail">
-      <% for (const row of it.shikakuRows) { %>
-      <span><%= row.kubun %> 資格番号: <%= row.shikakuBangou %></span>
-      <% } %>
-    </div>
-    <% } %>
-
     <table class="hoken-kyuufu-table">
       <colgroup>
         <col class="col-kubun" />
         <col class="col-hokenja" />
+        <col class="col-shikaku" />
         <col class="col-jitsunissuu" />
         <col class="col-tensuu" />
         <col class="col-kyuufu-futankin" />
@@ -25,7 +18,8 @@
       <thead>
       <tr>
         <th>区分</th>
-        <th class="sep-strong">事業者番号</th>
+        <th>事業者番号</th>
+        <th class="sep-strong">資格番号</th>
         <th>実日数</th>
         <th>請求点数</th>
         <th>給付対象額</th>
@@ -40,8 +34,11 @@
       <% for (const row of it.rows) { %>
       <tr>
         <td><%= row.kubun %></td>
-        <td class="code sep-strong">
+        <td class="code">
           <% if (row.hokenjaBangou) { %><%= row.hokenjaBangou %><% } else { %><span class="placeholder">-</span><% } %>
+        </td>
+        <td class="sep-strong">
+          <% if (row.shikakuBangou) { %><%= row.shikakuBangou %><% } else { %><span class="placeholder">-</span><% } %>
         </td>
         <td class="unit-cell">
           <% if (row.jitsunissuu) { %>
