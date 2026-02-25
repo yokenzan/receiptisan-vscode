@@ -1,8 +1,8 @@
 import type { CliError } from '../../cli/receiptisan-client';
 import type { ReceiptisanJsonOutput } from '../../shared/receiptisan-json-types';
 import type { DataViewTheme } from './theme';
-import type { DataViewRenderOptions } from './view/tekiyou';
 import { renderDataViewErrorHtml, renderDataViewPage } from './view/page';
+import type { DataViewRenderOptions } from './view/tekiyou';
 
 export type LayoutMode = 'vertical' | 'horizontal';
 

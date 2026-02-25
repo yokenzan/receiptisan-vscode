@@ -1,9 +1,9 @@
+import { toHalfWidthAscii } from '../../../domain/tekiyou-utils';
 import type {
   DigitalizedReceipt,
   Receipt,
   ShoubyoumeiGroup,
 } from '../../../shared/receiptisan-json-types';
-import { toHalfWidthAscii } from '../../../domain/tekiyou-utils';
 import { renderTemplate } from '../../../template/eta-renderer';
 import {
   buildYearMonthDayDisplayViewModel,
@@ -12,8 +12,8 @@ import {
   type YearMonthDisplayViewModel,
 } from '../view-model/date-display';
 import { getTenkiColorClass } from './receipt-meta';
-import { formatNumber } from './tekiyou-table';
 import type { DataViewRenderOptions } from './tekiyou';
+import { formatNumber } from './tekiyou-table';
 
 interface HokenRowViewModel {
   kubun: string;
@@ -198,7 +198,10 @@ function normalizeShikakuBangou(value: string | null | undefined, normalizeAscii
   return normalizeAscii ? toHalfWidthAscii(value) : value;
 }
 
-function buildHokenCardData(receipt: Receipt, options?: DataViewRenderOptions): {
+function buildHokenCardData(
+  receipt: Receipt,
+  options?: DataViewRenderOptions,
+): {
   rows: HokenRowViewModel[];
   detailParts: string[];
 } {
@@ -320,7 +323,10 @@ function buildKyuufuRows(receipt: Receipt, options?: DataViewRenderOptions): Kyu
     rows.push({
       kubun: `公費${i + 1}`,
       jigyoushaBangou: h.kouhi_futan_iryous[i]?.futansha_bangou ?? '',
-      shikakuBangou: normalizeShikakuBangou(h.kouhi_futan_iryous[i]?.jukyuusha_bangou, normalizeAscii),
+      shikakuBangou: normalizeShikakuBangou(
+        h.kouhi_futan_iryous[i]?.jukyuusha_bangou,
+        normalizeAscii,
+      ),
       shikakuBangouParts: null,
       kaisuu: makeUnitValue(rk.shokuji_seikatsu_ryouyou_kaisuu, '回'),
       goukeiKingaku: makeUnitValue(rk.shokuji_seikatsu_ryouyou_goukei_kingaku, '円'),
