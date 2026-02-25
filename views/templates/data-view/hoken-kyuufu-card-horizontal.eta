@@ -26,7 +26,7 @@
         <th class="<%= it.showMealLifeColumns ? 'sep-strong' : '' %>">負担金額</th>
         <% if (it.showMealLifeColumns) { %>
         <th>回数</th>
-        <th>請求金額</th>
+        <th>食事・生活療養</th>
         <th>標準負担金額</th>
         <% } %>
       </tr>

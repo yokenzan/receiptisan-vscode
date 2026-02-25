@@ -165,7 +165,7 @@ test('renderHokenKyuufuCardHorizontal combines hoken and kyuufu by kubun', () =>
   assert.ok(html.includes('医療保険'));
   assert.ok(html.includes('請求点数'));
   assert.ok(html.includes('標準負担金額'));
-  assert.ok(html.includes('請求金額'));
+  assert.ok(html.includes('食事・生活療養'));
   assert.match(html, /<th class="sep-strong">資格番号<\/th>/);
   assert.ok(html.includes('class="shikaku-layout"'));
   assert.ok(html.includes('class="shikaku-kigou">AB</span>'));
@@ -181,7 +181,7 @@ test('renderHokenKyuufuCardHorizontal hides meal/life columns for gairai', () =>
 
   const html = renderHokenKyuufuCardHorizontal(receipt);
   assert.ok(!html.includes('回数'));
-  assert.ok(!html.includes('請求金額'));
+  assert.ok(!html.includes('食事・生活療養'));
   assert.ok(!html.includes('標準負担金額'));
 });
 
