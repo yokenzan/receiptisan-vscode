@@ -1,3 +1,17 @@
+# [1.8.0](https://github.com/yokenzan/receiptisan-vscode/compare/v1.7.6...v1.8.0) (2026-02-25)
+
+
+### Bug Fixes
+
+* make UKE header label columns the same width ([c37f6a4](https://github.com/yokenzan/receiptisan-vscode/commit/c37f6a455e5d8d7c5d5356c9926f710ea8f77c29))
+
+
+### Features
+
+* **data-view:** add shikaku column to vertical kyuufu section ([e0e047b](https://github.com/yokenzan/receiptisan-vscode/commit/e0e047b2823a965c8294b50968215d43b708796a))
+* **data-view:** add shikaku normalize toggle and align horizontal layout ([9aaf032](https://github.com/yokenzan/receiptisan-vscode/commit/9aaf032046a7074fdf55dc6c403337794a649af8))
+* **data-view:** adjust shikaku number layout in split views ([d566af8](https://github.com/yokenzan/receiptisan-vscode/commit/d566af88df2d6ef10496c4d456f83b1a5f6de6fa))
+
 ## [1.7.6](https://github.com/yokenzan/receiptisan-vscode/compare/v1.7.5...v1.7.6) (2026-02-24)
 
 
