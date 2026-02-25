@@ -2,173 +2,117 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Repository Structure
+## Repository Overview
 
-This repository contains:
+A VSCode extension (`receiptisan-vscode`) that previews **RECEIPTC.UKE** files — the standard electronic format for Japanese medical insurance billing (診療報酬請求). The extension calls the [receiptisan CLI](https://github.com/yokenzan/receiptisan) (a separate Ruby project) to generate output, then renders it in webview panels.
 
-1. **VSCode Extension** (`receiptisan-preview`) — TypeScript extension for previewing RECEIPTC.UKE files
-2. **Symlinks to Ruby CLI tools**:
-   - `receiptisan/` → current version (v2, v0.4.x)
-   - `recediff/` → legacy version (v1, v0.1.0)
+The repo also contains symlinks to Ruby CLI repos (`receiptisan/` → v2, `recediff/` → v1 legacy), which are separate git repositories.
 
-The Ruby CLI tools are separate git repositories. The VSCode extension calls the receiptisan CLI to generate previews.
-
-## VSCode Extension Development
+## Development Commands
 
 ```bash
-# Install dependencies
-npm install
-
-# Compile TypeScript
-npm run compile
-
-# Watch mode
-npm run watch
-
-# Lint (Biome)
-npm run lint
-
-# Lint with auto-fix
-npm run lint:fix
-
-# Format
-npm run format
-
-# Package VSIX
-npx vsce package
+npm install            # Install dependencies
+npm run compile        # TypeScript compile + copy views/ to out/
+npm run watch          # TypeScript watch mode (does NOT copy views/)
+npm run build          # Clean + compile (used by vsce:prepublish)
+npm run lint           # Biome check
+npm run lint:fix       # Biome check with auto-fix
+npm run format         # Biome format
+npm test               # Run tests (pretest auto-compiles)
+npx vsce package       # Package VSIX for distribution
 ```
 
-### Technology Stack
-
-- **Language**: TypeScript
-- **Formatter/Linter**: Biome
-- **Release**: semantic-release (conventional commits)
-- **Branching**: GitHub feature flow (topic branches → PR → main)
-
-### Commit Convention
-
-Follow [Conventional Commits](https://www.conventionalcommits.org/):
-
-- `feat:` — new feature (minor version bump)
-- `fix:` — bug fix (patch version bump)
-- `docs:` — documentation only
-- `chore:` — maintenance, no release
-- `refactor:` — code change that neither fixes a bug nor adds a feature
-
-## Ruby CLI Development
-
-Both Ruby projects share the same command structure:
-
+Tests are plain JS files in `test/` (not TypeScript) that `require()` compiled output from `out/`. Uses Node.js built-in test runner. A single test file:
 ```bash
-# Install dependencies
-cd receiptisan  # or recediff
-bundle install
-
-# Run tests (default rake task)
-bundle exec rake test
-# or directly:
-bundle exec rspec
-
-# Run a single test file
-bundle exec rspec spec/lib/receiptisan/model/receipt_computer/digitalized_receipt/parser/processor/si_processor_spec.rb
-
-# Lint
-bundle exec rake lint
-# or directly:
-bundle exec rubocop
-
-# Run the CLI
-bundle exec ruby exe/receiptisan --preview --format=svg path/to/RECEIPTC.UKE   # v2
-bundle exec exe/recediff --preview path/to/RECEIPTC.UKE --all                  # v1
+npm run compile && node --test test/cards.test.js
 ```
+
+### CI Pipeline
+
+GitHub Actions (`.github/workflows/ci.yml`): lint → test → release (semantic-release on main push).
+
+## Commit Convention
+
+[Conventional Commits](https://www.conventionalcommits.org/): `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `style:`, `test:`, `perf:`. Release is automated via semantic-release.
+
+## Code Style
+
+- **Biome** enforces linting and formatting
+- Single quotes, semicolons always, 2-space indent, 100-char line width
+- TypeScript strict mode, target ES2022, module Node16
+
+## Architecture
+
+### Two Features, One CLI Client
+
+The extension provides two webview-based features that share the same CLI integration layer:
+
+1. **Preview** (`features/preview/`) — SVG rendering of paper receipt layout. Calls CLI with `--format=svg`, displays the raw SVG HTML in a webview.
+2. **Data View** (`features/data-view/`) — Structured HTML table view. Calls CLI with `--format=json`, parses the JSON into TypeScript types, transforms through a view-model layer, and renders via Eta templates.
+
+### Layered Architecture (Data View)
+
+```
+CLI (json) → service.ts → presenter.ts → view-model/build.ts → view/*.ts → Eta templates
+```
+
+- **`service.ts`** — Orchestrates CLI execution and JSON parsing
+- **`presenter.ts`** — Thin adapter calling view-model builder and page renderer
+- **`view-model/`** — Transforms `ReceiptisanJsonOutput` into `DataViewModel` (navigation items + receipt groups). Key sub-modules: `build.ts` (top-level builder), `receipt-label.ts` (sidebar label data), `date-display.ts` (wareki/western date formatting)
+- **`view/*.ts`** — Render functions producing HTML strings per card/section (`cards.ts`, `receipt-section.ts`, `tekiyou-table.ts`, `tekiyou-text.ts`, etc.)
+- **`views/templates/`** — Eta template files (`.eta`) for document shell, cards, styles, and themes
+
+### Key Modules
+
+| Module | Purpose |
+|--------|---------|
+| `src/cli/receiptisan-client.ts` | Spawns CLI process, handles cancellation/errors |
+| `src/cli/config.ts` | Reads `receiptisan.*` workspace settings |
+| `src/cli/args.ts` | Builds `--preview --format=<fmt> <path>` arguments |
+| `src/shared/receiptisan-json-types.ts` | TypeScript types mirroring CLI JSON output schema |
+| `src/domain/tekiyou-utils.ts` | Domain helpers (futan kubun decoding, wareki formatting, full→half-width ASCII) |
+| `src/domain/tekiyou/row-policy.ts` | Separator class logic for tekiyou table rows |
+| `src/template/eta-renderer.ts` | Eta template engine wrapper (views from `out/views/templates/`) |
+| `src/features/data-view/theme.ts` | Theme types and labels (light/dark/original/classic/auto) |
+
+### Template System
+
+Templates use [Eta](https://eta.js.org/) (`.eta` files in `views/templates/`). The compile step copies `views/` into `out/views/` alongside compiled JS. The `watch` script does NOT copy views — you must run `npm run compile` after editing templates.
+
+### Webview Panel Management
+
+- **Preview**: Single `activePanel` variable, reuses/reveals existing panel
+- **Data View**: `Map<string, WebviewPanel>` keyed by `${filePath}:${layoutMode}`, supports multiple simultaneous panels
 
 ## Domain Context
 
-These tools parse **RECEIPTC.UKE** files — the standard electronic format for Japanese medical insurance billing (診療報酬請求). The UKE format is CSV-like, Windows-31J encoded, with record types identified by the first column:
+The UKE format is CSV-like, Windows-31J encoded, with record types (IR, RE, HO, KO, SY, SI, IY, TO, CO) identified by the first column. The CLI parses this and outputs structured JSON. The VSCode extension consumes this JSON.
 
-| Record | Japanese | Meaning |
-|--------|----------|---------|
-| IR | 医療機関情報 | Hospital/facility header |
-| RE | レセプト共通 | Receipt header (one per patient per month) |
-| HO | 保険者 | Medical insurance |
-| KO | 公費 | Public insurance |
-| SY | 傷病名 | Disease/diagnosis |
-| SI | 診療行為 | Medical procedures |
-| IY | 医薬品 | Medications |
-| TO | 特定器材 | Special medical equipment |
-| CO | コメント | Comments |
+Key domain terms in the codebase:
+- **摘要 (tekiyou)** — billing detail section listing procedures/medications
+- **診療識別 (shinryou shikibetsu)** — medical service category
+- **負担区分 (futan kubun)** — insurance burden classification (encoded as bitmask in `tekiyou-utils.ts`)
+- **和暦 (wareki)** — Japanese era calendar dates
+- **療養の給付 (ryouyou no kyuufu)** — treatment benefits/reimbursement
 
-Each record type has fixed column positions defined as constants (e.g., `Record::RE::C_レセプト番号`). Comments in Japanese are standard throughout the codebase.
+Japanese identifiers, comments, and UI strings are standard throughout.
 
-## Architecture: Receiptisan (v2)
+## Ruby CLI Development
 
-### Module Layout
-```
-Receiptisan::Cli                          # dry-cli commands (preview, version)
-Receiptisan::Model::ReceiptComputer
-  ::DigitalizedReceipt                    # Top-level parsed document
-    ::Parser                              # Line-by-line UKE parser
-      ::Processor::{IR,RE,HO,KO,SY,SI,IY,TO,CO}Processor  # Per-record-type processors
-      ::Buffer                            # Parse state accumulator
-      ::Context                           # Line/receipt tracking for error context
-    ::Receipt                             # Domain models (Patient, Tekiyou, etc.)
-  ::Master                                # Reference/master data facade
-    ::Treatment::{ShinryouKoui,Iyakuhin,TokuteiKizai,Comment}
-    ::Diagnosis::{Shoubyoumei,Shuushokugo}
-    ::Loader                              # Year-aware master data loading
-Receiptisan::Output::Preview
-  ::Previewer::{SVG,JSON,YAML}Previewer   # Output formatters (Strategy pattern)
-  ::Parameter::Generator                  # Domain → display parameter conversion
-Receiptisan::Util                         # Encoding (IOWithEncoding), Wareki, DateUtil
+Both Ruby projects (accessed via symlinks) are separate git repos:
+
+```bash
+cd receiptisan  # or recediff
+bundle install
+bundle exec rake test     # or: bundle exec rspec
+bundle exec rake lint     # or: bundle exec rubocop
 ```
 
-### Data Flow
-```
-UKE file → Parser (encoding conversion + record routing) → Processors → DigitalizedReceipt
-    → Parameter::Generator → Previewer → SVG(HTML) / JSON / YAML output
-```
-
-### Key Design Patterns
-- **Processor pattern**: Each record type has a dedicated processor class extracting values by column index
-- **Strategy pattern**: Pluggable previewers (SVG/JSON/YAML)
-- **Year-aware master data**: `config/{2018..2024}/` directories with YAML configs for medical codes that change annually
-- **Encoding refinement**: `IOWithEncoding` uses Ruby refinements for transparent Windows-31J → UTF-8 conversion
-- **Error context reporting**: `Parser::Context::ErrorContextReportable` mixin tracks current line/receipt for debugging
-
-## Architecture: Recediff (v1)
-
-### Module Layout
-```
-Recediff::Cli                    # dry-cli commands (preview, daily-cost-list, ef-like-csv, sokatsu, uke-structure, version)
-Recediff::Parser                 # Monolithic CSV parser with Buffer for state management
-Recediff::Previewer              # ANSI-colored terminal output with masking support
-Recediff::Model::Uke::Enum       # Column index constants per record type
-Recediff::{Receipt,Patient,CalcUnit,Cost,Iho,Kohi,Syobyo,Hospital}  # Flat domain models
-```
-
-### Key Differences from v2
-- Terminal-based text output (ANSI escape codes) vs v2's SVG/JSON/YAML
-- More commands (daily-cost-list, ef-like-csv, sokatsu, uke-structure) vs v2's focused preview-only approach
-- Monolithic parser vs v2's modular processor-per-record-type architecture
-- Master data from static CSV files in `/csv/` vs v2's year-versioned YAML configs
-- Ruby >= 2.6.0 vs v2's >= 3.3.0
-- No type checking vs v2's Sorbet integration
-- Known bugs: TO record parsing incomplete, comment-only calc units unsupported
-
-## Code Style (enforced by RuboCop)
-
-Both projects share these conventions:
+### Ruby Code Style (RuboCop)
 
 - `# frozen_string_literal: true` at top of every file
-- Single quotes for strings
-- 120-char line length
-- `snake_case` variables, non-ASCII identifiers/constants allowed (Japanese constant names like `C_レセプト番号`)
-- Trailing commas in multiline arrays and hashes (`consistent_comma`)
-- Hash alignment: table style for colons
-- Hash shorthand syntax: **never** (always explicit `key: value`, not `key:`)
-- Spaces inside block parameters (`{ | x | ... }`)
-- Japanese comments are standard
-
-### v2-specific
-- Sorbet type annotations (sorbet-runtime, tapioca)
-- RSpec: max 4 nesting levels, max 10-line examples, verified doubles
+- Single quotes, 120-char lines, `snake_case` variables
+- Non-ASCII identifiers/constants allowed (Japanese names like `C_レセプト番号`)
+- Trailing commas in multiline arrays/hashes, table-style hash alignment
+- Hash shorthand syntax: **never** (always explicit `key: value`)
+- v2 uses Sorbet type annotations
