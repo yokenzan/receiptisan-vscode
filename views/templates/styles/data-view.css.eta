@@ -710,11 +710,11 @@ table tr:last-child > * {
   max-width: 320px;
   text-align: left;
 }
-.name-kana-sup {
+.name-kana-sub {
   display: inline;
   color: var(--text-dim);
   font-size: 75%;
-  vertical-align: super;
+  vertical-align: sub;
   line-height: 1;
   margin-left: 0.2em;
   letter-spacing: 0.01em;

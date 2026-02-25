@@ -13,7 +13,7 @@
           <% if (it.name === '-') { %>
           <span class="placeholder">-</span>
           <% } else if (it.nameKana) { %>
-          <span><%= it.name %></span><sup class="name-kana-sup"><%= it.nameKana %></sup>
+          <span><%= it.name %></span><sub class="name-kana-sub"><%= it.nameKana %></sub>
           <% } else { %>
           <%= it.name %>
           <% } %>
