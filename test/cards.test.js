@@ -96,6 +96,23 @@ test('renderKyuufuCard returns empty when no meal/life data exists', () => {
   assert.equal(renderKyuufuCard(receipt), '');
 });
 
+test('renderKyuufuCard includes shikaku column next to jigyousha and uses stacked layout', () => {
+  const receipt = createReceipt();
+  receipt.ryouyou_no_kyuufu.iryou_hoken.shokuji_seikatsu_ryouyou_kaisuu = 2;
+  receipt.ryouyou_no_kyuufu.iryou_hoken.shokuji_seikatsu_ryouyou_goukei_kingaku = 1234;
+  receipt.ryouyou_no_kyuufu.iryou_hoken.shokuji_seikatsu_ryouyou_hyoujun_futangaku = 600;
+  receipt.hokens.iryou_hoken.kigou = 'AB';
+  receipt.hokens.iryou_hoken.bangou = '1234';
+  receipt.hokens.iryou_hoken.edaban = '5';
+
+  const html = renderKyuufuCard(receipt);
+  assert.match(html, /<th class="sep-strong">資格番号<\/th>/);
+  assert.ok(html.includes('class="shikaku-layout"'));
+  assert.ok(html.includes('class="shikaku-kigou">AB</span>'));
+  assert.ok(html.includes('class="shikaku-bangou">1234</span>'));
+  assert.ok(html.includes('class="shikaku-edaban">(5)</span>'));
+});
+
 test('renderPatientCard shows legal age at end of shinryou month', () => {
   const receipt = createReceipt();
   receipt.shinryou_ym = { year: 2025, month: 10, wareki: wareki('R', 7, 10) };
@@ -149,7 +166,10 @@ test('renderHokenKyuufuCardHorizontal combines hoken and kyuufu by kubun', () =>
   assert.ok(html.includes('請求点数'));
   assert.ok(html.includes('標準負担金額'));
   assert.ok(html.includes('食事・生活療養'));
-  assert.ok(html.includes('資格番号:'));
+  assert.match(html, /<th class="sep-strong">資格番号<\/th>/);
+  assert.ok(html.includes('class="shikaku-layout"'));
+  assert.ok(html.includes('class="shikaku-kigou">AB</span>'));
+  assert.ok(html.includes('class="shikaku-bangou">1234</span>'));
 });
 
 test('renderHokenKyuufuCardHorizontal hides meal/life columns for gairai', () => {
@@ -163,4 +183,46 @@ test('renderHokenKyuufuCardHorizontal hides meal/life columns for gairai', () =>
   assert.ok(!html.includes('回数'));
   assert.ok(!html.includes('食事・生活療養'));
   assert.ok(!html.includes('標準負担金額'));
+});
+
+test('renderHokenCard lays out shikaku bangou with stacked symbol/number and right-aligned edaban', () => {
+  const receipt = createReceipt();
+  receipt.hokens.iryou_hoken.kigou = 'AB';
+  receipt.hokens.iryou_hoken.bangou = '1234';
+  receipt.hokens.iryou_hoken.edaban = '5';
+
+  const html = renderHokenCard(receipt);
+  assert.ok(html.includes('class="shikaku-layout"'));
+  assert.ok(html.includes('class="shikaku-main-stack"'));
+  assert.ok(html.includes('class="shikaku-kigou">AB</span>'));
+  assert.ok(html.includes('class="shikaku-bangou">1234</span>'));
+  assert.ok(html.includes('class="shikaku-edaban">(5)</span>'));
+});
+
+test('renderHokenCard normalizes full-width shikaku fields when option is enabled', () => {
+  const receipt = createReceipt();
+  receipt.hokens.iryou_hoken.kigou = 'ＡＢ';
+  receipt.hokens.iryou_hoken.bangou = '１２３４';
+  receipt.hokens.iryou_hoken.edaban = '５';
+
+  const html = renderHokenCard(receipt, { normalizeHokenShikakuAscii: true });
+  assert.ok(html.includes('class="shikaku-kigou">AB</span>'));
+  assert.ok(html.includes('class="shikaku-bangou">1234</span>'));
+  assert.ok(html.includes('class="shikaku-edaban">(5)</span>'));
+});
+
+test('renderHokenKyuufuCardHorizontal keeps full-width shikaku by default and normalizes with option', () => {
+  const receipt = createReceipt();
+  receipt.hokens.iryou_hoken.kigou = 'ＡＢ';
+  receipt.hokens.iryou_hoken.bangou = '１２３４';
+
+  const htmlDefault = renderHokenKyuufuCardHorizontal(receipt);
+  assert.ok(htmlDefault.includes('class="shikaku-kigou">ＡＢ</span>'));
+  assert.ok(htmlDefault.includes('class="shikaku-bangou">１２３４</span>'));
+
+  const htmlNormalized = renderHokenKyuufuCardHorizontal(receipt, {
+    normalizeHokenShikakuAscii: true,
+  });
+  assert.ok(htmlNormalized.includes('class="shikaku-kigou">AB</span>'));
+  assert.ok(htmlNormalized.includes('class="shikaku-bangou">1234</span>'));
 });

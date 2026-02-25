@@ -2,7 +2,7 @@
   "name": "receiptisan-vscode",
   "displayName": "Receiptisan VS Code",
   "description": "Preview RECEIPTC.UKE(電子レセプトファイル) using receiptisan CLI",
-  "version": "1.7.6",
+  "version": "1.8.0",
   "publisher": "yokenzan",
   "license": "MIT",
   "repository": {
@@ -106,6 +106,12 @@
           "default": false,
           "description": "Convert full-width ASCII characters in Tekiyou detail text to half-width in Data View.",
           "markdownDescription": "データビューの摘要欄明細で、診療行為・特定器材・医薬品・コメント名称に含まれる全角の英数字・記号を半角に変換して表示する"
+        },
+        "receiptisan.dataView.normalizeHokenShikakuAscii": {
+          "type": "boolean",
+          "default": false,
+          "description": "Convert full-width ASCII characters in insurance qualification numbers to half-width in Data View.",
+          "markdownDescription": "データビューの保険情報に表示される資格番号（記号・番号・枝番、公費受給者番号を含む）で、全角の英数字・記号を半角に変換して表示する"
         },
         "receiptisan.dataView.theme": {
           "type": "string",

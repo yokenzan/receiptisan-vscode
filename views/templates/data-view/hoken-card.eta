@@ -25,7 +25,21 @@
       <tr>
         <td><%= row.kubun %></td>
         <td class="code"><%= row.hokenjaBangou %></td>
-        <td class="sep-strong"><%= row.shikakuBangou %></td>
+        <td class="sep-strong shikaku-cell">
+          <% if (row.shikakuBangouParts) { %>
+          <span class="shikaku-layout">
+            <span class="shikaku-main-stack">
+              <span class="shikaku-kigou"><%= row.shikakuBangouParts.kigou %></span>
+              <span class="shikaku-bangou"><%= row.shikakuBangouParts.bangou %></span>
+            </span>
+            <% if (row.shikakuBangouParts.edaban) { %>
+            <span class="shikaku-edaban">(<%= row.shikakuBangouParts.edaban %>)</span>
+            <% } %>
+          </span>
+          <% } else { %>
+          <%= row.shikakuBangou %>
+          <% } %>
+        </td>
         <td class="unit-cell">
           <% if (row.jitsunissuu) { %>
           <span class="value-num"><%= row.jitsunissuu.value %></span><span class="value-unit"><%= row.jitsunissuu.unit %></span>
