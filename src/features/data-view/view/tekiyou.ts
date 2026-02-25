@@ -35,6 +35,7 @@ interface TekiyouLayout {
  */
 export interface DataViewRenderOptions {
   normalizeTekiyouAscii?: boolean;
+  normalizeHokenShikakuAscii?: boolean;
 }
 
 /**

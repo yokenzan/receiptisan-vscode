@@ -4,6 +4,7 @@
       <colgroup>
         <col class="col-kubun" />
         <col class="col-jigyousha" />
+        <col class="col-shikaku" />
         <col class="col-kaisuu" />
         <col class="col-goukei-kingaku" />
         <col class="col-hyoujun-futangaku" />
@@ -11,7 +12,8 @@
       <thead>
       <tr>
         <th>区分</th>
-        <th class="sep-strong">事業者番号</th>
+        <th>事業者番号</th>
+        <th class="sep-strong">資格番号</th>
         <th>回数</th>
         <th>合計金額</th>
         <th>標準負担額</th>
@@ -20,7 +22,24 @@
       <% for (const row of it.rows) { %>
       <tr>
         <td><%= row.kubun %></td>
-        <td class="code sep-strong"><%= row.jigyoushaBangou %></td>
+        <td class="code"><%= row.jigyoushaBangou %></td>
+        <td class="sep-strong shikaku-cell">
+          <% if (row.shikakuBangouParts) { %>
+          <span class="shikaku-layout">
+            <span class="shikaku-main-stack">
+              <span class="shikaku-kigou"><%= row.shikakuBangouParts.kigou %></span>
+              <span class="shikaku-bangou"><%= row.shikakuBangouParts.bangou %></span>
+            </span>
+            <% if (row.shikakuBangouParts.edaban) { %>
+            <span class="shikaku-edaban">(<%= row.shikakuBangouParts.edaban %>)</span>
+            <% } %>
+          </span>
+          <% } else if (row.shikakuBangou) { %>
+          <%= row.shikakuBangou %>
+          <% } else { %>
+          <span class="placeholder">-</span>
+          <% } %>
+        </td>
         <td class="unit-cell">
           <% if (row.kaisuu) { %><span class="value-num"><%= row.kaisuu.value %></span><span class="value-unit"><%= row.kaisuu.unit %></span><% } %>
         </td>

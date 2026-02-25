@@ -18,8 +18,17 @@ export async function generateDataViewHtml(
     const data: ReceiptisanJsonOutput = JSON.parse(result.stdout);
     const config = vscode.workspace.getConfiguration('receiptisan');
     const normalizeTekiyouAscii = config.get<boolean>('dataView.normalizeTekiyouAscii', false);
+    const normalizeHokenShikakuAscii = config.get<boolean>(
+      'dataView.normalizeHokenShikakuAscii',
+      false,
+    );
     const theme = config.get<DataViewTheme>('dataView.theme', 'auto');
-    return presentDataView(data, layoutMode, normalizeTekiyouAscii, theme);
+    return presentDataView(
+      data,
+      layoutMode,
+      { normalizeTekiyouAscii, normalizeHokenShikakuAscii },
+      theme,
+    );
   } catch (err) {
     const error: CliError =
       err instanceof SyntaxError
