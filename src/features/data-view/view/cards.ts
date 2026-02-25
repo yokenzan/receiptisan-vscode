@@ -1,10 +1,15 @@
-import { formatWarekiShort } from '../../../domain/tekiyou-utils';
 import type {
   DigitalizedReceipt,
   Receipt,
   ShoubyoumeiGroup,
 } from '../../../shared/receiptisan-json-types';
 import { renderTemplate } from '../../../template/eta-renderer';
+import {
+  buildYearMonthDayDisplayViewModel,
+  buildYearMonthDisplayViewModel,
+  type YearMonthDayDisplayViewModel,
+  type YearMonthDisplayViewModel,
+} from '../view-model/date-display';
 import { getTenkiColorClass } from './receipt-meta';
 import { formatNumber } from './tekiyou-table';
 
@@ -49,7 +54,7 @@ interface ShoubyoumeiRowViewModel {
   isWorpro: boolean;
   fullText: string;
   comment: string;
-  startDate: string;
+  startDate: YearMonthDayDisplayViewModel;
   tenkiClass: string;
   tenkiName: string;
 }
@@ -59,6 +64,27 @@ interface UnitValue {
   unit: string;
   prefix?: string;
   suffix?: string;
+}
+
+interface ReceiptHeaderViewModel extends Record<string, unknown> {
+  id: number;
+  shinryouYm: YearMonthDisplayViewModel;
+  nyuugai: string;
+  typeBadges: Array<{ code: string; name: string }>;
+  tokkiJikous: Array<{ code: string; name: string }>;
+  nyuuinDateCell: YearMonthDayDisplayViewModel | null;
+  byoushouCell: string;
+}
+
+interface PatientCardViewModel extends Record<string, unknown> {
+  patientId: string;
+  name: string;
+  nameKana: string | null;
+  sexName: string;
+  sexKind: 'male' | 'female' | 'other';
+  birthDate: YearMonthDayDisplayViewModel | null;
+  ageYearsMonths: { years: number; months: number } | null;
+  isBirthMonth: boolean;
 }
 
 function fallbackDash(value: string | null | undefined): string {
@@ -82,7 +108,7 @@ function endOfMonthDate(year: number, month: number): Date {
   return new Date(year, month, 0);
 }
 
-function buildReceiptHeaderViewModel(receipt: Receipt) {
+function buildReceiptHeaderViewModel(receipt: Receipt): ReceiptHeaderViewModel {
   const t = receipt.type;
   const typeBadges = [
     t.tensuu_hyou_type,
@@ -96,8 +122,8 @@ function buildReceiptHeaderViewModel(receipt: Receipt) {
   }));
   const nyuuinDateCell =
     receipt.nyuugai === 'nyuuin' && receipt.nyuuin_date
-      ? formatWarekiShort(receipt.nyuuin_date.wareki, receipt.nyuuin_date.year)
-      : '';
+      ? buildYearMonthDayDisplayViewModel(receipt.nyuuin_date.wareki, receipt.nyuuin_date.year)
+      : null;
   const byoushouCell =
     receipt.nyuugai === 'nyuuin' && receipt.byoushou_types.length > 0
       ? receipt.byoushou_types.map((b) => b.short_name).join('、')
@@ -105,7 +131,10 @@ function buildReceiptHeaderViewModel(receipt: Receipt) {
 
   return {
     id: receipt.id,
-    shinryouYm: formatWarekiShort(receipt.shinryou_ym.wareki, receipt.shinryou_ym.year),
+    shinryouYm: buildYearMonthDisplayViewModel(
+      receipt.shinryou_ym.wareki,
+      receipt.shinryou_ym.year,
+    ),
     nyuugai: receipt.nyuugai,
     typeBadges,
     tokkiJikous,
@@ -114,13 +143,13 @@ function buildReceiptHeaderViewModel(receipt: Receipt) {
   };
 }
 
-function buildPatientCardViewModel(receipt: Receipt) {
+function buildPatientCardViewModel(receipt: Receipt): PatientCardViewModel {
   const p = receipt.patient;
   const sexKind =
     String(p.sex.code) === '1' ? 'male' : String(p.sex.code) === '2' ? 'female' : 'other';
   const birthDate = p.birth_date?.wareki
-    ? formatWarekiShort(p.birth_date.wareki, p.birth_date.year)
-    : '-';
+    ? buildYearMonthDayDisplayViewModel(p.birth_date.wareki, p.birth_date.year)
+    : null;
   const asOf = endOfMonthDate(receipt.shinryou_ym.year, receipt.shinryou_ym.month);
   const ageYearsMonths = p.birth_date
     ? calculateLegalAgeYearsMonthsAt(
@@ -300,14 +329,15 @@ export function renderUkeHeader(digitalizedReceipt: DigitalizedReceipt): string 
   const hospital = digitalizedReceipt.hospital;
 
   const auditPayer = digitalizedReceipt.audit_payer;
-  const seikyuuYm = formatWarekiShort(
+  const seikyuuYm = buildYearMonthDisplayViewModel(
     digitalizedReceipt.seikyuu_ym.wareki,
     digitalizedReceipt.seikyuu_ym.year,
   );
   const auditPayerLabel = auditPayer.short_name ? `${auditPayer.short_name}保` : '';
 
   return renderTemplate('data-view/uke-header.eta', {
-    title: `${seikyuuYm}${auditPayerLabel}請求分 - ${hospital.name ?? hospital.code}`,
+    auditPayerLabel,
+    hospitalDisplayName: hospital.name ?? hospital.code,
     hospitalCode: formatHospitalCode(hospital.code),
     prefectureName: digitalizedReceipt.prefecture.name,
     location: hospital.location ?? '',
@@ -370,7 +400,7 @@ export function renderShoubyoumeiCard(groups: ShoubyoumeiGroup[]): string {
         isWorpro: s.is_worpro === true,
         fullText: s.full_text,
         comment: s.comment ?? '',
-        startDate: formatWarekiShort(s.start_date.wareki, s.start_date.year),
+        startDate: buildYearMonthDayDisplayViewModel(s.start_date.wareki, s.start_date.year),
         tenkiClass: getTenkiColorClass(s.tenki.code),
         tenkiName: s.tenki.name,
       });

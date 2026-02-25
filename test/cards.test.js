@@ -103,7 +103,7 @@ test('renderPatientCard shows legal age at end of shinryou month', () => {
 
   const html = renderPatientCard(receipt);
   assert.ok(html.includes('生年月日'));
-  assert.match(html, /2000.*\(H12\).*10\.10/s);
+  assert.match(html, /2000.*H12.*10\.10/s);
   assert.match(html, /25.*歳.*0.*ヶ月.*🎂/s);
 });
 
@@ -113,7 +113,7 @@ test('renderPatientCard handles Feb 29 birth with legal age rule', () => {
   receipt.patient.birth_date = { year: 2000, month: 2, day: 29, wareki: wareki('H', 12, 2, 29) };
 
   const html = renderPatientCard(receipt);
-  assert.match(html, /2000.*\(H12\).*02\.29/s);
+  assert.match(html, /2000.*H12.*02\.29/s);
   assert.match(html, /25.*歳.*0.*ヶ月.*🎂/s);
 });
 
@@ -123,7 +123,7 @@ test('renderPatientCard includes month-age when not anniversary month-end yet', 
   receipt.patient.birth_date = { year: 2000, month: 10, day: 10, wareki: wareki('H', 12, 10, 10) };
 
   const html = renderPatientCard(receipt);
-  assert.match(html, /2000.*\(H12\).*10\.10/s);
+  assert.match(html, /2000.*H12.*10\.10/s);
   assert.match(html, /24.*歳.*11.*ヶ月/s);
 });
 

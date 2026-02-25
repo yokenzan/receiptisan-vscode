@@ -562,10 +562,15 @@ table tr:last-child > * {
 .date-value {
   font-family: inherit;
   font-variant-numeric: normal;
+  white-space: nowrap;
 }
-.date-wareki {
-  font-size: 90%;
+.date-wareki-sup {
   color: var(--text-dim);
+  font-size: 75%;
+  vertical-align: super;
+  line-height: 1;
+  margin-left: 0.08em;
+  letter-spacing: 0.01em;
 }
 .age-display {
   margin-left: 0.55em;
@@ -705,13 +710,14 @@ table tr:last-child > * {
   max-width: 320px;
   text-align: left;
 }
-.data-section-patient-receipt-horizontal .name-kana-inline {
-  display: inline-block;
+.name-kana-sup {
+  display: inline;
   color: var(--text-dim);
-  font-size: 10px;
-  margin-left: 0.25em;
-  transform: scaleX(0.9);
-  transform-origin: left center;
+  font-size: 75%;
+  vertical-align: super;
+  line-height: 1;
+  margin-left: 0.2em;
+  letter-spacing: 0.01em;
 }
 
 /* 保険情報カード */

@@ -47,20 +47,22 @@ export interface Gengou {
   base_year: number;
 }
 
-/** 和暦表現付きの日付要素。 */
-export interface Wareki {
+/** 年月の和暦表現。 */
+export interface WarekiYearMonth {
   gengou: Gengou;
   year: number;
   month: number;
-  day?: number;
   text: string;
 }
+
+/** 年月日の和暦表現。 */
+export type WarekiDate = WarekiYearMonth & { day: number };
 
 /** 年月値。 */
 export interface YearMonth {
   year: number;
   month: number;
-  wareki: Wareki;
+  wareki: WarekiYearMonth;
 }
 
 /** 年月日値。 */
@@ -68,7 +70,7 @@ export interface DateValue {
   year: number;
   month: number;
   day: number;
-  wareki: Wareki;
+  wareki: WarekiDate;
 }
 
 /** コードと名称の組み合わせ。 */
