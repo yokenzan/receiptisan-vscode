@@ -823,6 +823,10 @@ table tr:last-child > * {
   min-width: 24px;
   max-width: 40px;
 }
+.shoubyoumei-table th:first-child,
+.shoubyoumei-table td:first-child {
+  text-align: right;
+}
 .shoubyoumei-table .col-code {
   min-width: 64px;
   max-width: 100px;
