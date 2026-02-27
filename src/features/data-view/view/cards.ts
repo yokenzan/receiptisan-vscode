@@ -77,6 +77,8 @@ interface ShoubyoumeiRowViewModel {
   tenkiName: string;
 }
 
+const SHUUSHOKUGO_CODE_DISPLAY_LIMIT = 3;
+
 interface UnitValue {
   value: string;
   unit: string;
@@ -446,6 +448,11 @@ export function renderShoubyoumeiCard(groups: ShoubyoumeiGroup[]): string {
   for (const group of groups) {
     for (const s of group.shoubyoumeis) {
       idx++;
+      const shuushokugoCodes = s.master_shuushokugos.map((m) => m.code);
+      const shuushokugoCodesForDisplay =
+        shuushokugoCodes.length > SHUUSHOKUGO_CODE_DISPLAY_LIMIT
+          ? [...shuushokugoCodes.slice(0, SHUUSHOKUGO_CODE_DISPLAY_LIMIT), '…']
+          : shuushokugoCodes;
 
       const rowClasses: string[] = [];
       if (s.is_main) rowClasses.push('disease-main');
@@ -455,9 +462,9 @@ export function renderShoubyoumeiCard(groups: ShoubyoumeiGroup[]): string {
         rowClass: rowClasses.join(' '),
         index: idx,
         code: s.master_shoubyoumei.code,
-        shuushokugoCodes: s.master_shuushokugos.map((m) => m.code),
+        shuushokugoCodes: shuushokugoCodesForDisplay,
         isMain: s.is_main,
-        isUtagai: s.master_shuushokugos.some((m) => String(m.code) === '8002'),
+        isUtagai: shuushokugoCodes.some((code) => String(code) === '8002'),
         isWorpro: s.is_worpro === true,
         fullText: s.full_text,
         comment: s.comment ?? '',
