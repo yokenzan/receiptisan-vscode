@@ -835,8 +835,7 @@ table tr:last-child > * {
   line-height: 1.05;
 }
 .shoubyoumei-table .col-main-badge,
-.shoubyoumei-table .col-utagai-badge,
-.shoubyoumei-table .col-worpro-badge {
+.shoubyoumei-table .col-utagai-badge {
   min-width: 28px;
   max-width: 48px;
 }
