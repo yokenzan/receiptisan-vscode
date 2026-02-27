@@ -605,8 +605,11 @@ table tr:last-child > * {
   text-decoration: underline wavy #e07040;
 }
 .sub-code {
+  display: block;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 8.5px;
+  line-height: 1;
+  margin: -1px 0 0;
   color: var(--text-dim);
 }
 
@@ -823,6 +826,9 @@ table tr:last-child > * {
 .shoubyoumei-table .col-code {
   min-width: 64px;
   max-width: 100px;
+}
+.shoubyoumei-table td.code {
+  line-height: 1.05;
 }
 .shoubyoumei-table .col-main-badge,
 .shoubyoumei-table .col-utagai-badge,
