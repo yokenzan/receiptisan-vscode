@@ -828,8 +828,8 @@ table tr:last-child > * {
   text-align: right;
 }
 .shoubyoumei-table .col-code {
-  min-width: 64px;
-  max-width: 100px;
+  min-width: 77px;
+  max-width: 120px;
 }
 .shoubyoumei-table td.code {
   line-height: 1.05;
