@@ -605,8 +605,11 @@ table tr:last-child > * {
   text-decoration: underline wavy #e07040;
 }
 .sub-code {
+  display: block;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 8.5px;
+  line-height: 1.15;
+  margin-top: 1px;
   color: var(--text-dim);
 }
 
@@ -820,13 +823,19 @@ table tr:last-child > * {
   min-width: 24px;
   max-width: 40px;
 }
+.shoubyoumei-table th:first-child,
+.shoubyoumei-table td:first-child {
+  text-align: right;
+}
 .shoubyoumei-table .col-code {
-  min-width: 64px;
-  max-width: 100px;
+  min-width: 77px;
+  max-width: 120px;
+}
+.shoubyoumei-table td.code {
+  line-height: 1.05;
 }
 .shoubyoumei-table .col-main-badge,
-.shoubyoumei-table .col-utagai-badge,
-.shoubyoumei-table .col-worpro-badge {
+.shoubyoumei-table .col-utagai-badge {
   min-width: 28px;
   max-width: 48px;
 }

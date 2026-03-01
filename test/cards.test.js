@@ -91,6 +91,19 @@ test('card renderers output expected sections', () => {
   assert.ok(renderShoubyoumeiCard(receipt.shoubyoumeis).includes('傷病名'));
 });
 
+test('renderShoubyoumeiCard truncates shuushokugo codes with ellipsis when 4+ codes exist', () => {
+  const receipt = createReceipt();
+  receipt.shoubyoumeis[0].shoubyoumeis[0].master_shuushokugos = [
+    { code: '1001' },
+    { code: '1002' },
+    { code: '1003' },
+    { code: '1004' },
+  ];
+
+  const html = renderShoubyoumeiCard(receipt.shoubyoumeis);
+  assert.match(html, /class="sub-code">\s*1001\s+1002\s+1003\s+…\s*<\/span>/);
+  assert.ok(!html.includes('1004'));
+});
 test('renderKyuufuCard returns empty when no meal/life data exists', () => {
   const receipt = createReceipt();
   assert.equal(renderKyuufuCard(receipt), '');

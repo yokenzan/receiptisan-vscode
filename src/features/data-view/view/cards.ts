@@ -69,12 +69,20 @@ interface ShoubyoumeiRowViewModel {
   shuushokugoCodes: string[];
   isMain: boolean;
   isUtagai: boolean;
-  isWorpro: boolean;
   fullText: string;
   comment: string;
   startDate: YearMonthDayDisplayViewModel;
   tenkiClass: string;
   tenkiName: string;
+}
+
+const SHOUBYOUMEI_SHUUSHOKUGO_CODE_DISPLAY_LIMIT = 3;
+const SHUUSHOKUGO_CODE_UTAGAI = '8002';
+
+function truncateShuushokugoCodesForDisplay(codes: string[]): string[] {
+  if (codes.length <= SHOUBYOUMEI_SHUUSHOKUGO_CODE_DISPLAY_LIMIT) return codes;
+
+  return [...codes.slice(0, SHOUBYOUMEI_SHUUSHOKUGO_CODE_DISPLAY_LIMIT), '…'];
 }
 
 interface UnitValue {
@@ -446,6 +454,8 @@ export function renderShoubyoumeiCard(groups: ShoubyoumeiGroup[]): string {
   for (const group of groups) {
     for (const s of group.shoubyoumeis) {
       idx++;
+      const shuushokugoCodes = s.master_shuushokugos.map((m) => m.code);
+      const shuushokugoCodesForDisplay = truncateShuushokugoCodesForDisplay(shuushokugoCodes);
 
       const rowClasses: string[] = [];
       if (s.is_main) rowClasses.push('disease-main');
@@ -455,10 +465,9 @@ export function renderShoubyoumeiCard(groups: ShoubyoumeiGroup[]): string {
         rowClass: rowClasses.join(' '),
         index: idx,
         code: s.master_shoubyoumei.code,
-        shuushokugoCodes: s.master_shuushokugos.map((m) => m.code),
+        shuushokugoCodes: shuushokugoCodesForDisplay,
         isMain: s.is_main,
-        isUtagai: s.master_shuushokugos.some((m) => String(m.code) === '8002'),
-        isWorpro: s.is_worpro === true,
+        isUtagai: shuushokugoCodes.some((code) => String(code) === SHUUSHOKUGO_CODE_UTAGAI),
         fullText: s.full_text,
         comment: s.comment ?? '',
         startDate: buildYearMonthDayDisplayViewModel(s.start_date.wareki, s.start_date.year),

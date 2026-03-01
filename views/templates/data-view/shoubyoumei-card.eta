@@ -6,13 +6,12 @@
         <col class="col-code" />
         <col class="col-main-badge" />
         <col class="col-utagai-badge" />
-        <col class="col-worpro-badge" />
         <col class="col-name" />
         <col class="col-start-date" />
         <col class="col-tenki" />
       </colgroup>
       <thead>
-      <tr><th>#</th><th>コード</th><th>主</th><th>疑</th><th class="sep-strong">ワープロ</th><th>名称</th><th>開始日</th><th>転帰</th></tr>
+      <tr><th>#</th><th>コード</th><th>主</th><th>疑</th><th>名称</th><th>開始日</th><th>転帰</th></tr>
       </thead>
       <% for (const row of it.rows) { %>
       <tr<% if (row.rowClass) { %> class="<%= row.rowClass %>"<% } %>>
@@ -20,12 +19,11 @@
         <td class="code">
           <%= row.code %>
           <% if (row.shuushokugoCodes.length > 0) { %>
-          <br/><span class="sub-code"><%= row.shuushokugoCodes.join(' ') %></span>
+          <span class="sub-code"><%= row.shuushokugoCodes.join(' ') %></span>
           <% } %>
         </td>
         <td><% if (row.isMain) { %><span class="tag tag-main">主</span><% } %></td>
         <td><% if (row.isUtagai) { %><span class="tag tag-utagai">疑</span><% } %></td>
-        <td class="sep-strong"><% if (row.isWorpro) { %><span class="tag tag-worpro">未</span><% } %></td>
         <td>
           <%= row.fullText %>
           <% if (row.comment) { %> <span class="text-dim">（<%= row.comment %>）</span><% } %>
