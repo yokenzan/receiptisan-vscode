@@ -19,7 +19,7 @@
         <td class="code">
           <%= row.code %>
           <% if (row.shuushokugoCodes.length > 0) { %>
-          <br/><span class="sub-code"><%= row.shuushokugoCodes.join(' ') %></span>
+          <span class="sub-code"><%= row.shuushokugoCodes.join(' ') %></span>
           <% } %>
         </td>
         <td><% if (row.isMain) { %><span class="tag tag-main">主</span><% } %></td>

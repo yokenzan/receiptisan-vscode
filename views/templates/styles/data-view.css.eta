@@ -608,8 +608,8 @@ table tr:last-child > * {
   display: block;
   font-family: var(--font-mono);
   font-size: 8.5px;
-  line-height: 1;
-  margin: -1px 0 0;
+  line-height: 1.15;
+  margin-top: 1px;
   color: var(--text-dim);
 }
 

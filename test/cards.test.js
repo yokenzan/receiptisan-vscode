@@ -101,10 +101,9 @@ test('renderShoubyoumeiCard truncates shuushokugo codes with ellipsis when 4+ co
   ];
 
   const html = renderShoubyoumeiCard(receipt.shoubyoumeis);
-  assert.ok(html.includes('1001 1002 1003 …'));
+  assert.match(html, /class="sub-code">\s*1001\s+1002\s+1003\s+…\s*<\/span>/);
   assert.ok(!html.includes('1004'));
 });
-
 test('renderKyuufuCard returns empty when no meal/life data exists', () => {
   const receipt = createReceipt();
   assert.equal(renderKyuufuCard(receipt), '');
