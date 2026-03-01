@@ -1,3 +1,11 @@
+## [1.8.2](https://github.com/yokenzan/receiptisan-vscode/compare/v1.8.1...v1.8.2) (2026-03-01)
+
+
+### Bug Fixes
+
+* compact shoubyoumei modifier code line height ([94b06be](https://github.com/yokenzan/receiptisan-vscode/commit/94b06be91d9348f845ecd9045df66540bd66f631))
+* truncate shoubyoumei shuushokugo code display ([f44c30d](https://github.com/yokenzan/receiptisan-vscode/commit/f44c30d6b84c54334b7195d344cd1855fc0d1a76))
+
 ## [1.8.1](https://github.com/yokenzan/receiptisan-vscode/compare/v1.8.0...v1.8.1) (2026-02-25)
 
 
