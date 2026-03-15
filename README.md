@@ -1,73 +1,14 @@
-# Receiptisan Preview
+# receiptisan-vscode
 
-RECEIPTC.UKE ファイル（日本の電子レセプトファイル）をSVGでプレビューするVSCode拡張です。
+電子レセプトファイル `RECEIPTC.UKE` の紙レセプト形式でプレビューしたりいわゆる会計カード的に可視化するVSCode拡張です。
 
-![プレビュー画面](docs/images/preview-screenshot.png)
+UKEファイルの解析等バックエンドには[receiptisan](https://github.com/yokenzan/receiptisan)を利用しています。
 
-## 機能
 
-- `.UKE` ファイルを開いた状態でコマンドパレットから「Receiptisan: Preview」を実行すると、レセプト用紙のSVGプレビューを隣カラムに表示
-- キャンセル可能なプログレス表示付き
+| スクリーンショット                            |
+|-----------------------------------------------|
+| ![screenshot-1](docs/images/screenshot-1.png) |
+| ![screenshot-2](docs/images/screenshot-2.png) |
+| ![screenshot-3](docs/images/screenshot-3.png) |
+| ![screenshot-4](docs/images/screenshot-4.png) |
 
-## 前提条件
-
-この拡張機能を使用するには、[receiptisan](https://github.com/yokenzan/receiptisan) CLIが必要です。
-
-### receiptisan のインストール
-
-```bash
-gem install receiptisan
-```
-
-または、Gemfileを使う場合:
-
-```ruby
-gem 'receiptisan'
-```
-
-## インストール
-
-### Marketplace から（予定）
-
-Visual Studio Code Marketplaceで「Receiptisan Preview」を検索してインストール。
-
-### VSIX ファイルから
-
-1. [Releases](https://github.com/yokenzan/receiptisan-preview/releases) からVSIXファイルをダウンロード
-2. VSCodeで「拡張機能」ビュー → 「...」メニュー → 「VSIXからインストール」を選択
-3. ダウンロードしたVSIXファイルを選択
-
-## 使い方
-
-1. `.UKE` ファイルを開く
-2. コマンドパレット（`Ctrl+Shift+P` / `Cmd+Shift+P`）を開く
-3. 「Receiptisan: Preview」を選択
-4. 隣カラムにSVGプレビューが表示される
-
-## 設定
-
-| 設定項目 | 説明 | デフォルト値 |
-|---------|------|-------------|
-| `receiptisan.executable` | receiptisan CLIの実行ファイル | `receiptisan` |
-| `receiptisan.args` | 実行ファイルに渡す引数配列 | `[]` |
-| `receiptisan.cwd` | CLI実行時の作業ディレクトリ | (なし) |
-
-### 設定例
-
-#### gem install した場合（デフォルト）
-
-設定変更は不要です。
-
-#### bundle exec を使用する場合
-
-```json
-{
-  "receiptisan.executable": "bundle",
-  "receiptisan.args": ["exec", "ruby", "exe/receiptisan"],
-  "receiptisan.cwd": "/path/to/receiptisan"
-}
-```
-
-## ライセンス
-
-MIT
