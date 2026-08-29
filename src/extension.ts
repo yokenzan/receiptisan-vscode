@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { createUkeInlayHintsProvider } from './inlay-hints';
 import { showDataView } from './features/data-view/command';
 import { showPreview } from './features/preview/command';
 
@@ -25,6 +26,10 @@ export function activate(context: vscode.ExtensionContext): void {
     }
   });
 
+  const inlayHintsProvider = vscode.languages.registerInlayHintsProvider(
+    'uke',
+    createUkeInlayHintsProvider(),
+  );
   const dataViewVerticalCommand = vscode.commands.registerCommand(
     'receiptisan.dataViewVertical',
     async () => {
@@ -47,7 +52,12 @@ export function activate(context: vscode.ExtensionContext): void {
     },
   );
 
-  context.subscriptions.push(previewCommand, dataViewVerticalCommand, dataViewHorizontalCommand);
+  context.subscriptions.push(
+    previewCommand,
+    dataViewVerticalCommand,
+    dataViewHorizontalCommand,
+    inlayHintsProvider,
+  );
 }
 
 /**
